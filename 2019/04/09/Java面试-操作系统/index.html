@@ -138,13 +138,21 @@
                         
                         
                         <li>
-                            <a href="/categories/Hexo/">Hexo</a>
+                            <a href="/categories/python/">python</a>
                         </li>
                         
                         <li>
-                            <a href="/categories/面试/">面试</a>
+                            <a href="/categories/ElasticSearch/">ElasticSearch</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/JAVA/">JAVA</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="/categories">...</a>
+                        </li>
                         
                         
                     </ul>
@@ -163,11 +171,11 @@
                         
                         
                         <li>
-                            <a href="/tags/hexo/">hexo</a>
+                            <a href="/tags/Markdown/">Markdown</a>
                         </li>
                         
                         <li>
-                            <a href="/tags/个人博客/">个人博客</a>
+                            <a href="/tags/Django/">Django</a>
                         </li>
                         
                         <li>
@@ -537,8 +545,20 @@
 <p>　　由于资料的写入动作包含许多的细节，像是改变文件标头资料. 搜寻磁盘可写入空间. 一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。</p>
 <p>　　然而，在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</p>
 <h2 id="5-Ext4"><a href="#5-Ext4" class="headerlink" title="5. Ext4"></a>5. Ext4</h2><p>　　Linux kernel 自 2.6.28 开始正式支持新的文件系统 Ext4。Ext4 是 Ext3 的改进版，修改了 Ext3 中部分重要的数据结构，而不仅仅像 Ext3 对 Ext2 那样，只是增加了一个日志功能而已。Ext4 可以提供更佳的性能和可靠性，还有更为丰富的功能：</p>
-<p>  　　1. 与 Ext3 兼容。执行若干条命令，就能从 Ext3 在线迁移到 Ext4，而无须重新格式化磁盘或重新安装系统。原有 Ext3 数据结构照样保留，Ext4 作用于新数据，当然，整个文件系统因此也就获得了 Ext4 所支持的更大容量。<br>    　　2. 更大的文件系统和更大的文件。较之 Ext3 目前所支持的最大 16TB 文件系统和最大 2TB 文件，Ext4 分别支持 1EB（1，048，576TB， 1EB=1024PB， 1PB=1024TB）的文件系统，以及 16TB 的文件。<br>      　　3. 无限数量的子目录。Ext3 目前只支持 32，000 个子目录，而 Ext4 支持无限数量的子目录。<br>        　　4. Extents。Ext3 采用间接块映射，当操作大文件时，效率极其低下。比如一个 100MB 大小的文件，在 Ext3 中要建立 25，600 个数据块（每个数据块大小为 4KB）的映射表。而 Ext4 引入了现代文件系统中流行的 extents 概念，每个 extent 为一组连续的数据块，上述文件则表示为“该文件数据保存在接下来的 25，600 个数据块中”，提高了不少效率。<br>          　　5. 多块分配。当写入数据到 Ext3 文件系统中时，Ext3 的数据块分配器每次只能分配一个 4KB 的块，写一个 100MB 文件就要调用 25，600 次数据块分配器，而 Ext4 的多块分配器“multiblock allocator”（mballoc） 支持一次调用分配多个数据块。<br>            　　6. 延迟分配。Ext3 的数据块分配策略是尽快分配，而 Ext4 和其它现代文件操作系统的策略是尽可能地延迟分配，直到文件在 cache 中写完才开始分配数据块并写入磁盘，这样就能优化整个文件的数据块分配，与前两种特性搭配起来可以显著提升性能。<br>              　　7. 快速 fsck。以前执行 fsck 第一步就会很慢，因为它要检查所有的 inode，现在 Ext4 给每个组的 inode 表中都添加了一份未使用 inode 的列表，今后 fsck Ext4 文件系统就可以跳过它们而只去检查那些在用的 inode 了。<br>                　　8. 日志校验。日志是最常用的部分，也极易导致磁盘硬件故障，而从损坏的日志中恢复数据会导致更多的数据损坏。Ext4 的日志校验功能可以很方便地判断日志数据是否损坏，而且它将 Ext3 的两阶段日志机制合并成一个阶段，在增加安全性的同时提高了性能。<br>                  　　9. “无日志”（No Journaling）模式。日志总归有一些开销，Ext4 允许关闭日志，以便某些有特殊需求的用户可以借此提升性能。<br>                    　　10. 在线碎片整理。尽管延迟分配. 多块分配和 extents 能有效减少文件系统碎片，但碎片还是不可避免会产生。Ext4 支持在线碎片整理，并将提供 e4defrag 工具进行个别文件或整个文件系统的碎片整理。<br>                      　　11. inode 相关特性。Ext4 支持更大的 inode，较之 Ext3 默认的 inode 大小 128 字节，Ext4 为了在 inode 中容纳更多的扩展属性（如纳秒时间戳或 inode 版本），默认 inode 大小为 256 字节。Ext4 还支持快速扩展属性（fast extended attributes）和 inode 保留（inodes reservation）。<br>                        　　12. 持久预分配（Persistent preallocation）。P2P 软件为了保证下载文件有足够的空间存放，常常会预先创建一个与所下载文件大小相同的空文件，以免未来的数小时或数天之内磁盘空间不足导致下载失败。Ext4 在文件系统层面实现了持久预分配并提供相应的 API（libc 中的 posix_fallocate（）），比应用软件自己实现更有效率。<br>                          　　13. 默认启用 barrier。磁盘上配有内部缓存，以便重新调整批量数据的写操作顺序，优化写入性能，因此文件系统必须在日志数据写入磁盘之后才能写 commit 记录，若 commit 记录写入在先，而日志有可能损坏，那么就会影响数据完整性。Ext4 默认启用 barrier，只有当 barrier 之前的数据全部写入磁盘，才能写 barrier 之后的数据。（可通过 “mount -o barrier=0” 命令禁用该特性。）</p>
-<h2 id="6-ZFS"><a href="#6-ZFS" class="headerlink" title="6. ZFS"></a>6. ZFS</h2><p>　　ZFS源自于Sun Microsystems为Solaris操作系统开发的文件系统。ZFS是一个具有高存储容量. 文件系统与卷管理概念整合. 崭新的磁盘逻辑结构的轻量级文件系统，同时也是一个便捷的存储池管理系统。ZFS是一个使用CDDL协议条款授权的开源项目。</p>
+<pre><code>  　　1. 与 Ext3 兼容。执行若干条命令，就能从 Ext3 在线迁移到 Ext4，而无须重新格式化磁盘或重新安装系统。原有 Ext3 数据结构照样保留，Ext4 作用于新数据，当然，整个文件系统因此也就获得了 Ext4 所支持的更大容量。
+  　　2. 更大的文件系统和更大的文件。较之 Ext3 目前所支持的最大 16TB 文件系统和最大 2TB 文件，Ext4 分别支持 1EB（1，048，576TB， 1EB=1024PB， 1PB=1024TB）的文件系统，以及 16TB 的文件。
+  　　3. 无限数量的子目录。Ext3 目前只支持 32，000 个子目录，而 Ext4 支持无限数量的子目录。
+  　　4. Extents。Ext3 采用间接块映射，当操作大文件时，效率极其低下。比如一个 100MB 大小的文件，在 Ext3 中要建立 25，600 个数据块（每个数据块大小为 4KB）的映射表。而 Ext4 引入了现代文件系统中流行的 extents 概念，每个 extent 为一组连续的数据块，上述文件则表示为“该文件数据保存在接下来的 25，600 个数据块中”，提高了不少效率。
+  　　5. 多块分配。当写入数据到 Ext3 文件系统中时，Ext3 的数据块分配器每次只能分配一个 4KB 的块，写一个 100MB 文件就要调用 25，600 次数据块分配器，而 Ext4 的多块分配器“multiblock allocator”（mballoc） 支持一次调用分配多个数据块。
+  　　6. 延迟分配。Ext3 的数据块分配策略是尽快分配，而 Ext4 和其它现代文件操作系统的策略是尽可能地延迟分配，直到文件在 cache 中写完才开始分配数据块并写入磁盘，这样就能优化整个文件的数据块分配，与前两种特性搭配起来可以显著提升性能。
+  　　7. 快速 fsck。以前执行 fsck 第一步就会很慢，因为它要检查所有的 inode，现在 Ext4 给每个组的 inode 表中都添加了一份未使用 inode 的列表，今后 fsck Ext4 文件系统就可以跳过它们而只去检查那些在用的 inode 了。
+  　　8. 日志校验。日志是最常用的部分，也极易导致磁盘硬件故障，而从损坏的日志中恢复数据会导致更多的数据损坏。Ext4 的日志校验功能可以很方便地判断日志数据是否损坏，而且它将 Ext3 的两阶段日志机制合并成一个阶段，在增加安全性的同时提高了性能。
+  　　9. “无日志”（No Journaling）模式。日志总归有一些开销，Ext4 允许关闭日志，以便某些有特殊需求的用户可以借此提升性能。
+  　　10. 在线碎片整理。尽管延迟分配. 多块分配和 extents 能有效减少文件系统碎片，但碎片还是不可避免会产生。Ext4 支持在线碎片整理，并将提供 e4defrag 工具进行个别文件或整个文件系统的碎片整理。
+  　　11. inode 相关特性。Ext4 支持更大的 inode，较之 Ext3 默认的 inode 大小 128 字节，Ext4 为了在 inode 中容纳更多的扩展属性（如纳秒时间戳或 inode 版本），默认 inode 大小为 256 字节。Ext4 还支持快速扩展属性（fast extended attributes）和 inode 保留（inodes reservation）。
+  　　12. 持久预分配（Persistent preallocation）。P2P 软件为了保证下载文件有足够的空间存放，常常会预先创建一个与所下载文件大小相同的空文件，以免未来的数小时或数天之内磁盘空间不足导致下载失败。Ext4 在文件系统层面实现了持久预分配并提供相应的 API（libc 中的 posix_fallocate（）），比应用软件自己实现更有效率。
+  　　13. 默认启用 barrier。磁盘上配有内部缓存，以便重新调整批量数据的写操作顺序，优化写入性能，因此文件系统必须在日志数据写入磁盘之后才能写 commit 记录，若 commit 记录写入在先，而日志有可能损坏，那么就会影响数据完整性。Ext4 默认启用 barrier，只有当 barrier 之前的数据全部写入磁盘，才能写 barrier 之后的数据。（可通过 “mount -o barrier=0” 命令禁用该特性。）
+</code></pre><h2 id="6-ZFS"><a href="#6-ZFS" class="headerlink" title="6. ZFS"></a>6. ZFS</h2><p>　　ZFS源自于Sun Microsystems为Solaris操作系统开发的文件系统。ZFS是一个具有高存储容量. 文件系统与卷管理概念整合. 崭新的磁盘逻辑结构的轻量级文件系统，同时也是一个便捷的存储池管理系统。ZFS是一个使用CDDL协议条款授权的开源项目。</p>
 <h2 id="7-HFS"><a href="#7-HFS" class="headerlink" title="7. HFS"></a>7. HFS</h2><p>　　1. HFS文件系统概念</p>
 <p>　　分层文件系统（Hierarchical File System，HFS）是一种由苹果电脑开发，并使用在Mac OS上的文件系统。最初被设计用于软盘和硬盘，同时也可以在在只读媒体如CD-ROM上见到。</p>
 <p>　　2. HFS文件系统开发过程</p>
@@ -664,13 +684,61 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
+                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
                 </span>
             </li>
             
@@ -692,13 +760,61 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Mysql导入和导出Sql文件/">Mysql导入和导出Sql文件</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
+                    <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/">eclipse开发Hadoop时异常org.apache.hadoop.security.AccessControlException:</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
                 </span>
             </li>
             
@@ -731,15 +847,37 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/hexo/" style="font-size: 15.40000776991397px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/Markdown/" style="font-size: 15.899616750077648px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/个人博客/" style="font-size: 10.97828962582001px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/Django/" style="font-size: 9.517180799320064px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 18.70262151575099px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 12.773266074902477px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/面试/" style="font-size: 10.652890065327924px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/配置/" style="font-size: 13.765757729235208px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/操作系统/" style="font-size: 19.841882413525152px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/基础/" style="font-size: 12.772759481788508px;" class="tag-cloud-link">基础</a>
+    
+    <a href="/tags/Mybatis/" style="font-size: 10.980177142338988px;" class="tag-cloud-link">Mybatis</a>
+    
+    <a href="/tags/开发/" style="font-size: 11.324088909226216px;" class="tag-cloud-link">开发</a>
+    
+    <a href="/tags/高可用/" style="font-size: 13.589997609925138px;" class="tag-cloud-link">高可用</a>
+    
+    <a href="/tags/备份/" style="font-size: 14.264291017979215px;" class="tag-cloud-link">备份</a>
+    
+    <a href="/tags/deepin/" style="font-size: 8.975992193059945px;" class="tag-cloud-link">deepin</a>
+    
+    <a href="/tags/eclipse/" style="font-size: 19.49096626585103px;" class="tag-cloud-link">eclipse</a>
+    
+    <a href="/tags/hexo/" style="font-size: 8.683441484388574px;" class="tag-cloud-link">hexo</a>
+    
+    <a href="/tags/个人博客/" style="font-size: 10.45636572616791px;" class="tag-cloud-link">个人博客</a>
+    
+    <a href="/tags/zookeeper/" style="font-size: 10.805271716966304px;" class="tag-cloud-link">zookeeper</a>
+    
+    <a href="/tags/面试/" style="font-size: 12.573717337513589px;" class="tag-cloud-link">面试</a>
+    
+    <a href="/tags/操作系统/" style="font-size: 18.565432484117316px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 
