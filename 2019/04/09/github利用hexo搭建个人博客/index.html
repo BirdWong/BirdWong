@@ -51,6 +51,7 @@
         }
       }
     </script>-->
+    
 </head></html>
 <body>
     <!-- 背景轮播图功能 -->
@@ -349,6 +350,13 @@
     }
 </script>
 
+<link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+<script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+  document.body.oncopy = function() {
+    swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+  };
+</script>
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
     <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
@@ -482,15 +490,15 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/hexo/" style="font-size: 9.184154566051992px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 11.508472926044798px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 15.692732251739695px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 9.15468145657385px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/踩坑/" style="font-size: 18.040375628276536px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 15.588011071333447px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/面试/" style="font-size: 14.021549111956794px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 8.654968907285049px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 12.720080247291616px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 15.633042820524018px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 
@@ -545,6 +553,8 @@
       mermaid.initialize({theme: 'forest'});
     }
   </script>
+
+
 
 </body>
 <script src="/js/activate-power-mode.js"></script>
