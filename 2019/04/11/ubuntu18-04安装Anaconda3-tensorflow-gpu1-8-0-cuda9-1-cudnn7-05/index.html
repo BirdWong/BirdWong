@@ -204,6 +204,9 @@
             </ul>
         </div>
     </div>
+    <div id="ImHere" class="mouse_float">
+      转载请保留原文链接
+    </div>
 </header>
     <div id="gal-body">
         <div class="container">
@@ -380,10 +383,50 @@
 
 <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
 <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+
+
+
+<!-- 复制转载提示 -->
 <script>
   document.body.oncopy = function() {
     swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
   };
+</script>
+
+
+<script>
+var eleImgShare = document.getElementById("ImHere");
+var oldtxt = "";
+var $sinaMiniBlogShare = function(eleShare, eleContainer) {
+  var eleTitle = document.getElementsByTagName("title")[0];
+  eleContainer = eleContainer || document;
+  var funGetSelectTxt = function() {
+    var txt = "";
+    if(document.selection) {
+      txt = document.selection.createRange().text;  // IE
+    } else {
+      txt = document.getSelection();
+    }
+    return txt.toString();
+  };
+  eleContainer.onmouseup = function(e) {
+    e = e || window.event;
+    var txt = funGetSelectTxt(), sh = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    var left = (e.clientX - 40 < 0) ? e.clientX + 20 : e.clientX - 40, top = (e.clientY - 40 < 0) ? e.clientY + sh + 20 : e.clientY + sh - 40;
+    
+    if (txt && txt !== oldtxt) {
+      eleShare.style.display = "inline";
+      eleShare.style.left = left + "px";
+      eleShare.style.top = top + "px";
+      oldtxt = txt;
+      console.log(e.clientX)
+    } else {
+      eleShare.style.display = "none";
+      oldtxt = "";
+    }
+  };
+}(eleImgShare);
 </script>
 
 <script>
@@ -551,7 +594,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
                 </span>
             </li>
             
@@ -563,7 +612,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
+                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
                 </span>
             </li>
             
@@ -575,37 +630,25 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
+                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/">eclipse开发Hadoop时异常org.apache.hadoop.security.AccessControlException:</a>
+                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/12/redis原码-sds/">redis原码_sds</a>
+                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
                 </span>
             </li>
             
@@ -638,41 +681,41 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 15.660972288310331px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 12.604326654826574px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 9.265033605375717px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 17.66230481257591px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 17.98172191532811px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 15.696481771516801px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 18.00758449411423px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 14.585035987781932px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/基础/" style="font-size: 11.224143511443497px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 11.207344874289738px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 11.134433911309074px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/高可用/" style="font-size: 15.549563051346862px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/开发/" style="font-size: 14.272237102815389px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/Mybatis/" style="font-size: 18.257129951010565px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/备份/" style="font-size: 13.276089574938574px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/开发/" style="font-size: 11.615436149487362px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/高可用/" style="font-size: 15.289973313385396px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/deepin/" style="font-size: 14.47252578068765px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/deepin/" style="font-size: 15.969627637683914px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/eclipse/" style="font-size: 16.789639723178556px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/hexo/" style="font-size: 9.351857582548009px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/备份/" style="font-size: 13.172228511419366px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/个人博客/" style="font-size: 8.6607366882871px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/hexo/" style="font-size: 19.521925187410613px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/eclipse/" style="font-size: 9.914165509614154px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/个人博客/" style="font-size: 19.910325933174008px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/sds/" style="font-size: 12.328180931109378px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 17.884598519279894px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/原码/" style="font-size: 16.882315431317267px;" class="tag-cloud-link">原码</a>
+    <a href="/tags/原码/" style="font-size: 18.164608014825877px;" class="tag-cloud-link">原码</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 17.882078294378775px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 17.53746492233091px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/面试/" style="font-size: 8.325878983372313px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 19.243329550279903px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 8.337803574378508px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 17.31511108832691px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 
@@ -811,5 +854,7 @@
     }
 </script>
 <script src="/js/comment/gitment.js"></script>
+
+
 
 </html>
