@@ -272,6 +272,17 @@
         </center>
     </div>
     <div class="content-article">
+          <!--Table of Contents begin-->
+          
+            <div id="toc" class="toc-article">
+              <strong class="toc-title">目录</strong>
+              <a class="js-toggle-toc" href="javascript:void(0)"></a>
+              <div class="toc-content">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IK分词器建立类型"><span class="toc-number">1.</span> <span class="toc-text">IK分词器建立类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过查询删除数据"><span class="toc-number">2.</span> <span class="toc-text">通过查询删除数据</span></a></li></ol>
+              </div>
+            </div>
+          
+          
         <h2 id="IK分词器建立类型"><a href="#IK分词器建立类型" class="headerlink" title="IK分词器建立类型"></a>IK分词器建立类型</h2><p>请求的链接:    <a href="http://127.0.0.1:9200/noob/goods/_mapping" target="_blank" rel="noopener">127.0.0.1:9200/noob/goods/_mapping</a><br>请求类型: PUT<br>请求数据:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">			<span class="attr">"properties"</span>: &#123;</span><br><span class="line">					<span class="attr">"id"</span>: &#123;</span><br><span class="line">						<span class="attr">"type"</span>: <span class="string">"long"</span> //long类型</span><br><span class="line">					&#125;,</span><br><span class="line">		            <span class="attr">"title"</span>: &#123;</span><br><span class="line">		                "type": "text", // 字符类型</span><br><span class="line">		                "analyzer": "ik_max_word", // 使用ik分词器 ik_max_word : 最细粒度	 ik_smart : 最粗粒度</span><br><span class="line">		                "search_analyzer": "ik_max_word"</span><br><span class="line">		            &#125;,</span><br><span class="line">		            "type": &#123;</span><br><span class="line">		            	"type": "text",</span><br><span class="line">		            	"analyzer": "ik_max_word",</span><br><span class="line">		                "search_analyzer": "ik_max_word"</span><br><span class="line">		            &#125;,</span><br><span class="line">		            "goodsId":&#123;</span><br><span class="line">		            	"type": "long"</span><br><span class="line">		            &#125;</span><br><span class="line">			&#125;</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <hr>
 
@@ -296,6 +307,30 @@
   document.body.oncopy = function() {
     swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
   };
+</script>
+
+<script>
+
+    function init()
+     {
+      $(".js-toggle-toc").css('color', '#FF4081');
+         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
+     
+         $(".js-toggle-toc").click(function(){
+             var toc = $(".toc-content");
+             toc.toggle();
+             if (toc.is(":hidden")) {
+                 $(this).text("丨★丨 展开 》》");
+             } else {
+                 $(this).text("丨☆丨 收起  Ⅴ");
+             }
+             return false;
+         });
+     }
+    
+
+    window.onload = init;
+    
 </script>
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
@@ -445,13 +480,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
+                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
                 </span>
             </li>
             
@@ -463,7 +492,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
                 </span>
             </li>
             
@@ -475,25 +516,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/12/redis原码-sds/">redis原码_sds</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
                 </span>
             </li>
             
@@ -526,41 +561,41 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 11.03291705971539px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 9.00880370130586px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 12.878615813553335px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 10.78690194146046px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 15.063739311788499px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 19.301614539470492px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 11.552638192535456px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 14.071351523469284px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/基础/" style="font-size: 11.61300398697631px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 19.71172844170887px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 13.28021479890857px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 18.700395452339762px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 19.68659254002518px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 9.82237970389155px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/备份/" style="font-size: 19.332170587575682px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 15.768876625414357px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/高可用/" style="font-size: 19.66633321949847px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 13.094792279385016px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/deepin/" style="font-size: 17.07351021297672px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 11.314741848116764px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/eclipse/" style="font-size: 8.290840502608214px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 19.391824948433253px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/hexo/" style="font-size: 11.29467391414358px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 9.058979520655104px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 11.727037330959462px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 17.000843113029198px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/sds/" style="font-size: 19.952481098075786px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 10.549914574763562px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/原码/" style="font-size: 14.29357119013873px;" class="tag-cloud-link">原码</a>
+    <a href="/tags/原码/" style="font-size: 13.735591402231936px;" class="tag-cloud-link">原码</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 19.944472500582837px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 11.615961311154528px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/面试/" style="font-size: 12.857296096794613px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 9.893950406900089px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 16.502789728342282px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 18.667309987641147px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 

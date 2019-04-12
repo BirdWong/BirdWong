@@ -272,6 +272,17 @@
         </center>
     </div>
     <div class="content-article">
+          <!--Table of Contents begin-->
+          
+            <div id="toc" class="toc-article">
+              <strong class="toc-title">目录</strong>
+              <a class="js-toggle-toc" href="javascript:void(0)"></a>
+              <div class="toc-content">
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#线程与进程"><span class="toc-number">1.</span> <span class="toc-text">线程与进程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程与进程理论"><span class="toc-number">1.1.</span> <span class="toc-text">线程与进程理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程-amp-锁"><span class="toc-number">1.2.</span> <span class="toc-text">线程&amp;锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#储存器管理"><span class="toc-number">2.</span> <span class="toc-text">储存器管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O管理"><span class="toc-number">3.</span> <span class="toc-text">I/O管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-操作系统与设备之间的IO"><span class="toc-number">3.1.</span> <span class="toc-text">一.操作系统与设备之间的IO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-操作系统与用户进程间的IO"><span class="toc-number">3.2.</span> <span class="toc-text">二.操作系统与用户进程间的IO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO管理"><span class="toc-number">3.3.</span> <span class="toc-text">IO管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘调度算法"><span class="toc-number">3.4.</span> <span class="toc-text">磁盘调度算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#磁盘I-O传输时间"><span class="toc-number">3.4.1.</span> <span class="toc-text">磁盘I/O传输时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#磁盘调度算法-1"><span class="toc-number">3.4.2.</span> <span class="toc-text">磁盘调度算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#先进先出算法-FIFO"><span class="toc-number">3.4.2.1.</span> <span class="toc-text">先进先出算法(FIFO)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最短服务时间优先-SSTF"><span class="toc-number">3.4.2.2.</span> <span class="toc-text">最短服务时间优先(SSTF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#扫描算法-SCAN"><span class="toc-number">3.4.2.3.</span> <span class="toc-text">扫描算法(SCAN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#循环扫描算法-C-SCAN"><span class="toc-number">3.4.2.4.</span> <span class="toc-text">循环扫描算法(C-SCAN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-LOOK算法"><span class="toc-number">3.4.2.5.</span> <span class="toc-text">C-LOOK算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#N步扫描-N-Step-SCAN-算法"><span class="toc-number">3.4.2.6.</span> <span class="toc-text">N步扫描(N-Step-SCAN)算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#双队列扫描算法-FSCAN"><span class="toc-number">3.4.2.7.</span> <span class="toc-text">双队列扫描算法(FSCAN)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件管理"><span class="toc-number">4.</span> <span class="toc-text">文件管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux"><span class="toc-number">5.</span> <span class="toc-text">Linux</span></a></li></ol>
+              </div>
+            </div>
+          
+          
         <h1 id="线程与进程"><a href="#线程与进程" class="headerlink" title="线程与进程"></a>线程与进程</h1><h2 id="线程与进程理论"><a href="#线程与进程理论" class="headerlink" title="线程与进程理论"></a>线程与进程理论</h2><ol>
 <li><p>进程和线程以及他们的区别</p>
 <ul>
@@ -818,6 +829,30 @@
     swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
   };
 </script>
+
+<script>
+
+    function init()
+     {
+      $(".js-toggle-toc").css('color', '#FF4081');
+         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
+     
+         $(".js-toggle-toc").click(function(){
+             var toc = $(".toc-content");
+             toc.toggle();
+             if (toc.is(":hidden")) {
+                 $(this).text("丨★丨 展开 》》");
+             } else {
+                 $(this).text("丨☆丨 收起  Ⅴ");
+             }
+             return false;
+         });
+     }
+    
+
+    window.onload = init;
+    
+</script>
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
     <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
@@ -966,13 +1001,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
+                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Mysql导入和导出Sql文件/">Mysql导入和导出Sql文件</a>
+                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
                 </span>
             </li>
             
@@ -990,19 +1025,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                    <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/12/redis原码-sds/">redis原码_sds</a>
+                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
                 </span>
             </li>
             
@@ -1014,7 +1049,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                    <a href="/2019/04/12/redis原码-sds/">redis原码_sds</a>
                 </span>
             </li>
             
@@ -1047,41 +1082,41 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 10.77622696612571px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 14.59553894279576px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 16.13767288941384px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 16.224588816693px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 15.374378681354969px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 19.30315076954041px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 9.782701839138749px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 13.190225641037536px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/基础/" style="font-size: 9.005703479129505px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 8.049497839250698px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 8.443952220404359px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 19.145314666311393px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 17.841823295290904px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 18.862053798100696px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/备份/" style="font-size: 19.481648689330207px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 15.445396110878029px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/高可用/" style="font-size: 10.304712677852208px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 17.548596972367722px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/deepin/" style="font-size: 13.119581454959839px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 9.352030881357493px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/eclipse/" style="font-size: 16.488880395047808px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 19.387405119612104px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/hexo/" style="font-size: 8.697546378056014px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 18.88995590679094px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 9.560231981996699px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 19.661114710014864px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/sds/" style="font-size: 12.74826976950994px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 9.165501918839666px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/原码/" style="font-size: 16.45562786644142px;" class="tag-cloud-link">原码</a>
+    <a href="/tags/原码/" style="font-size: 13.656573324885919px;" class="tag-cloud-link">原码</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 16.041852507196545px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 12.217054788729698px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/面试/" style="font-size: 18.555932764122563px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 12.373762287545318px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 11.105507290819414px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 12.671676206447874px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 

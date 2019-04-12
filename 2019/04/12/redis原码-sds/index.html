@@ -272,7 +272,19 @@
         </center>
     </div>
     <div class="content-article">
-        <h1 id="SDS-动态字符串定义"><a href="#SDS-动态字符串定义" class="headerlink" title="SDS-动态字符串定义"></a>SDS-动态字符串定义</h1><p>SDS定义于<code>sds.h/sds.c</code>文件<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *  这个版本中， 不同的字符串长度使用的都是同一个结构体，</span></span><br><span class="line"><span class="comment"> *  这样会造成一定的内存浪费</span></span><br><span class="line"><span class="comment"> *  version 3.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> &#123;</span></span><br><span class="line">    <span class="comment">// 字符串的长度 </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> len;</span><br><span class="line">    <span class="comment">// 记录buf中未使用字节的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="comment">// 字节数组，用于保存字符串</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 提供五种header定义，满足各种字符串大小</span></span><br><span class="line"><span class="comment"> * len：字符串的长度</span></span><br><span class="line"><span class="comment"> * alloc：字符串最大容量</span></span><br><span class="line"><span class="comment"> * flags：标记header的类型</span></span><br><span class="line"><span class="comment"> * buf： 字节数组，用于保存字符串</span></span><br><span class="line"><span class="comment"> * version 5.0 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></span><br><span class="line"><span class="comment"> * However is here to document the layout of type 5 SDS strings. */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, and 5 msb of string length */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint8_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint8_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint16_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint64_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+          <!--Table of Contents begin-->
+          
+            <div id="toc" class="toc-article">
+              <strong class="toc-title">目录</strong>
+              <a class="js-toggle-toc" href="javascript:void(0)"></a>
+              <div class="toc-content">
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SDS-动态字符串定义"><span class="toc-number">1.</span> <span class="toc-text">SDS-动态字符串定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SDS与C的字符串区别"><span class="toc-number">2.</span> <span class="toc-text">SDS与C的字符串区别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常数复杂度获取字符串长度"><span class="toc-number">2.1.</span> <span class="toc-text">常数复杂度获取字符串长度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#杜绝缓冲区溢出"><span class="toc-number">2.2.</span> <span class="toc-text">杜绝缓冲区溢出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SDS空间分配策略"><span class="toc-number">2.2.1.</span> <span class="toc-text">SDS空间分配策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#减少修改字符串时带来的内存重分配次数"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">减少修改字符串时带来的内存重分配次数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#空间预分配"><span class="toc-number">2.2.1.1.1.</span> <span class="toc-text">空间预分配</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#惰性空间释放"><span class="toc-number">2.2.1.1.2.</span> <span class="toc-text">惰性空间释放</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二进制安全"><span class="toc-number">2.2.2.</span> <span class="toc-text">二进制安全</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#兼容部分C字符串函数"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">兼容部分C字符串函数</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SDS-nbsp-API"><span class="toc-number">3.</span> <span class="toc-text">SDS API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsnewlen-nbsp-nbsp-创建一个init为初始字符串，initlen为长度的SDS"><span class="toc-number">3.1.</span> <span class="toc-text">sdsnewlen   创建一个init为初始字符串，initlen为长度的SDS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsempty-nbsp-nbsp-创建一个不包含任何内容的空-SDS-。"><span class="toc-number">3.2.</span> <span class="toc-text">sdsempty   创建一个不包含任何内容的空 SDS 。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsnew-nbsp-nbsp-创建一个包含给定-C-字符串的-SDS-。"><span class="toc-number">3.3.</span> <span class="toc-text">sdsnew    创建一个包含给定 C 字符串的 SDS 。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsdup-复制sds字符串"><span class="toc-number">3.4.</span> <span class="toc-text">sdsdup 复制sds字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsfree-释放给定的sds字符串"><span class="toc-number">3.5.</span> <span class="toc-text">sdsfree 释放给定的sds字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sdsclear-nbsp-在不释放-SDS-的字符串空间的情况下，重置-SDS-所保存的字符串为空字符串"><span class="toc-number">3.6.</span> <span class="toc-text">sdsclear   在不释放 SDS 的字符串空间的情况下，重置 SDS 所保存的字符串为空字符串</span></a></li></ol></li></ol>
+              </div>
+            </div>
+          
+          
+        <p>[TOC]</p>
+<h1 id="SDS-动态字符串定义"><a href="#SDS-动态字符串定义" class="headerlink" title="SDS-动态字符串定义"></a>SDS-动态字符串定义</h1><p>SDS定义于<code>sds.h/sds.c</code>文件<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *  这个版本中， 不同的字符串长度使用的都是同一个结构体，</span></span><br><span class="line"><span class="comment"> *  这样会造成一定的内存浪费</span></span><br><span class="line"><span class="comment"> *  version 3.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> &#123;</span></span><br><span class="line">    <span class="comment">// 字符串的长度 </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> len;</span><br><span class="line">    <span class="comment">// 记录buf中未使用字节的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="comment">// 字节数组，用于保存字符串</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 提供五种header定义，满足各种字符串大小</span></span><br><span class="line"><span class="comment"> * len：字符串的长度</span></span><br><span class="line"><span class="comment"> * alloc：字符串最大容量</span></span><br><span class="line"><span class="comment"> * flags：标记header的类型</span></span><br><span class="line"><span class="comment"> * buf： 字节数组，用于保存字符串</span></span><br><span class="line"><span class="comment"> * version 5.0 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></span><br><span class="line"><span class="comment"> * However is here to document the layout of type 5 SDS strings. */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, and 5 msb of string length */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint8_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint8_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint16_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint64_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p>例如：<br>    目前：free=0、len=5、buf是一个char类型数组，我们向里面存入redis五个字符，则buf里面将会存入’r’,’e’,’d’,’i’,’s’,’\0’,最后一个是空字符，这个并不会被len所记录，并且为空字符分配额外的1字节空间，以及添加空字符到字符串末尾等操作都是SDS函数自动完成的，所以这个空字符对于SDS的使用者是完全透明的，这个空字符对于但是却很重要，关系到我们重用C字符串函数库里面的函数</p>
 <p><img src="http://img.jijiking51.cn/2015-09-13_55f50d7faffa3.png" alt="结构图"></p>
 <h1 id="SDS与C的字符串区别"><a href="#SDS与C的字符串区别" class="headerlink" title="SDS与C的字符串区别"></a>SDS与C的字符串区别</h1><h2 id="常数复杂度获取字符串长度"><a href="#常数复杂度获取字符串长度" class="headerlink" title="常数复杂度获取字符串长度"></a>常数复杂度获取字符串长度</h2><p>场景：<br>C字符串长度为N，则需要N+1长度数组存储（最后一位存空字符），现在需要获取字符串长度需要的复杂度是多少？<br>答案：O(n)， 过程是我们遍历整个字符串，对每个字符进行计数，直到遇到代表字符串结尾的空字符。</p>
@@ -344,6 +356,30 @@
   document.body.oncopy = function() {
     swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
   };
+</script>
+
+<script>
+
+    function init()
+     {
+      $(".js-toggle-toc").css('color', '#FF4081');
+         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
+     
+         $(".js-toggle-toc").click(function(){
+             var toc = $(".toc-content");
+             toc.toggle();
+             if (toc.is(":hidden")) {
+                 $(this).text("丨★丨 展开 》》");
+             } else {
+                 $(this).text("丨☆丨 收起  Ⅴ");
+             }
+             return false;
+         });
+     }
+    
+
+    window.onload = init;
+    
 </script>
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
@@ -487,6 +523,12 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
                 </span>
             </li>
@@ -505,25 +547,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Mysql导入和导出Sql文件/">Mysql导入和导出Sql文件</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
@@ -535,7 +559,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
                 </span>
             </li>
             
@@ -574,41 +610,41 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 14.047334116978595px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 18.37606188945776px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 9.503447971550392px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 16.85806253645103px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 9.321105298887923px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 9.171056384636039px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 12.106303022940695px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 8.874002579171167px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/基础/" style="font-size: 13.233058878483071px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 9.31230574781683px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 17.019365481170816px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 15.952048266807811px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 16.23246350872133px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 12.929496607495508px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/备份/" style="font-size: 14.142386027987804px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 11.902278601190847px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/高可用/" style="font-size: 8.133952819980513px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 13.835241998422577px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/deepin/" style="font-size: 8.74443452140812px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 17.72586636725616px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/eclipse/" style="font-size: 15.571397276669234px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 9.405479407687334px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/hexo/" style="font-size: 15.706713086821411px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 15.328206176747024px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 19.874102124210243px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 15.870159258333402px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/sds/" style="font-size: 18.615448674675378px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 16.998961057329247px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/原码/" style="font-size: 8.537194287629557px;" class="tag-cloud-link">原码</a>
+    <a href="/tags/原码/" style="font-size: 12.614730889138071px;" class="tag-cloud-link">原码</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 17.700543408773203px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 12.98853150384312px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/面试/" style="font-size: 18.616469190853802px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 16.196414759607908px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 9.74464024514753px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 17.029341913460858px;" class="tag-cloud-link">操作系统</a>
     
 </div>
                 
