@@ -10,7 +10,7 @@
     
     
     
-    <title>eclipse设置自动补全并取消空格代码补全 | RocWong</title>
+    <title>tags: 源码 | RocWong</title>
     <link href="”https://jijiking51.cn“" rel="”prefetch”">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -212,40 +212,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 gal-right" id="mainstay">
-                    
-<article class="article well article-body" id="article">
+                    <article class="article well article-body" id="article-tag">
     <div class="breadcrumb">
         <i class="fa fa-home"></i>
         <a href="https://jijiking51.cn">RocWong</a>
         >
-        <span>eclipse设置自动补全并取消空格代码补全</span>
+        <span>标签</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                <a href="/tags/源码/index.html">源码</a>
             </h1>
-        </div>
-        <div class="tag-article">
-            
-            <span class="label label-gal">
-                <i class="fa fa-tags"></i>
-                
-                <a href="/tags/踩坑/">踩坑</a>, 
-                
-                <a href="/tags/eclipse/">eclipse</a>
-                
-            </span>
-            
-            <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2019-04-11
-            </span>
-            
-            <span class="label label-gal">
-                <i class="fa fa-eye"></i>
-            </span>
-            
         </div>
     </div>
     <!-- 小型设备详细文章 -->
@@ -253,146 +232,21 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                    <a href="/tags/源码/index.html">源码</a>
                 </h4>
             </div>
-            <p>
-                <i class="fa fa-calendar"></i> 2019-04-11
-            </p>
-            <p>
-                
-                <i class="fa fa-tags"></i>
-                
-                <a href="/tags/踩坑/">踩坑</a>, 
-                
-                <a href="/tags/eclipse/">eclipse</a>
-                
-                
-                
-                <i class="fa fa-eye"></i>
-                
-            </p>
         </center>
     </div>
-    <div class="content-article">
-          <!--Table of Contents begin-->
-          
-            <div id="toc" class="toc-article">
-              <strong class="toc-title">目录</strong>
-              <a class="js-toggle-toc" href="javascript:void(0)"></a>
-              <div class="toc-content">
-                
-              </div>
-            </div>
-          
-          
-        <p>在网上找了很久但是都不尽人意，发现此篇文章，成功修改，借鉴一下，<br>重要的不是修改那个文件，对于新版的eclipse关键是找到文件，如果你的没有，就去那个网址下一个吧</p>
-<p>设置代码提示</p>
-<p>打开 Eclipse 依次选择 Window -&gt; Perferences -&gt; Java -&gt; Editor -&gt; Content Assist，Auto activation triggers for Java：设置框中默认是”.”</p>
-<p>现在将它改为：</p>
-<p>　　.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_</p>
-<p>有老版本的Eclipse不支持定义这么多触发器，可以通过修改配置文件实现，网上资料很多。</p>
-<p>然后你就会发现Eclipse可以使用更智能的代码提示了。但是现在有一个比较大的问题是，Eclipse智能过头了，它总想帮我们完成一些我们不想要的代码补完。比如按“=”和空格以后就会自动补完代码，这对很多人真的不能忍。</p>
-<p>幸好Eclipse是开源软件，解决办法是直接修改代码提示功能的源代码，以完成我们需要的功能。</p>
-<p>首先打开window-&gt;show view，选择Plug-ins，再找到org.eclipse.jface.text，右键单击，选择import as－&gt; Source Project，导入完成后，在你的workspace就可以看到这个project了。如果没有src这个文件夹，说明你使用的版本中没有带源代码，我正好也是这种情况。</p>
-<p>源代码可以去这个地址下载（找了我好久好久）</p>
-<p><a href="http://archive.eclipse.org/eclipse/downloads/" target="_blank" rel="noopener">http://archive.eclipse.org/eclipse/downloads/</a></p>
-<p>在页面上选择你Eclipse版本的连接（我使用的是4.4.2），然后在新页面中下载eclipse-SDK-(***).zip，根据自己的需要选择合适的版本下载，大概200M左右。下载完成以后解压缩，在.\eclipse\plugins\文件夹下找到 org.eclipse.jface.text.source_3.9.2.v20141003-1326.jar （这是对应我使用的Eclipse版本的文件，实际请根据你自己的版本进行选择），将这个文件复制到你自己的Eclipse安装目录下的.\eclipse\plugins\文件夹下，然后重新启动Eclipse。重复上面的操作导入(import)org.eclipse.jface.text，此时就能够看到src文件夹了。</p>
-<p>技术分享</p>
-<p>在src文件夹下org.eclipse.jface.text.contentassist.CompletionProposalPopup#verifyKey()”函数中有一段代码:</p>
-<p>if(contains(triggers, key)){<br>…<br>}</p>
-<p>将这段代码改为</p>
-<p>if(key!=0x20&amp;&amp; key!=‘=‘&amp;&amp; key!=‘;‘&amp;&amp; contains(triggers, key)){<br>…<br>}</p>
-<p>还有把这段代码之上的代码</p>
-<p>case‘\t‘:<br>e.doit=false;<br>fProposalShell.setFocus();<br>returnfalse;</p>
-<p>修改为</p>
-<p>case‘\t‘:<br>e.doit=false;<br>insertSelectedProposalWithMask(e.stateMask);<br>break;</p>
-<p>经过上述操作，这个辅助输入插件已经排除了空格与“=”的选中功能，增加了TAB键的选中功能。最后就是导出修改后的插件，右键点击你的workspace里的工程，选择Export－&gt;Deployable plugins and fragments，点击Next，选择Destination选项卡，选择Directory，选择一个要保存插件的目录，然后Finish。然后就会在你所选的目录下产生一个新的plugins目录，里面有一个jar文件，用它替换掉eclipse/plugins里面的org.eclipse.jface.text，记得覆盖前对原文件进行备份。然后重新启动Eclipse</p>
-
+    <div class="content-article" style="margin-top: 30px;">
+        <div class="alert alert-info" style="font-size: 14px; line-height: 2; font-weight: bold;">
+            
+            <a href="/2019/04/15/redis原码-sds/">redis源码-sds</a>
+            <br>
+            
+            
+        </div>
     </div>
 </article>
-
-
-<div id="comments-template"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script>
-	if(!window.commentConfig) {
-      window.commentConfig = {}
-      window.commentConfig.title = 'eclipse设置自动补全并取消空格代码补全'
-    }
-</script>
-
-<link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
-<script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
-
-
-
-
-<!-- 复制转载提示 -->
-<script>
-  document.body.oncopy = function() {
-    swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
-  };
-</script>
-
-
-<script>
-var eleImgShare = document.getElementById("ImHere");
-var oldtxt = "";
-var $sinaMiniBlogShare = function(eleShare, eleContainer) {
-  var eleTitle = document.getElementsByTagName("title")[0];
-  eleContainer = eleContainer || document;
-  var funGetSelectTxt = function() {
-    var txt = "";
-    if(document.selection) {
-      txt = document.selection.createRange().text;  // IE
-    } else {
-      txt = document.getSelection();
-    }
-    return txt.toString();
-  };
-  eleContainer.onmouseup = function(e) {
-    e = e || window.event;
-    var txt = funGetSelectTxt(), sh = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    var left = (e.clientX - 40 < 0) ? e.clientX + 20 : e.clientX - 40, top = (e.clientY - 40 < 0) ? e.clientY + sh + 20 : e.clientY + sh - 40;
-    
-    if (txt && txt !== oldtxt) {
-      eleShare.style.display = "inline";
-      eleShare.style.left = left + "px";
-      eleShare.style.top = top + "px";
-      oldtxt = txt;
-      console.log(e.clientX)
-    } else {
-      eleShare.style.display = "none";
-      oldtxt = "";
-    }
-  };
-}(eleImgShare);
-</script>
-
-<script>
-
-    function init()
-     {
-      $(".js-toggle-toc").css('color', '#FF4081');
-         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
-     
-         $(".js-toggle-toc").click(function(){
-             var toc = $(".toc-content");
-             toc.toggle();
-             if (toc.is(":hidden")) {
-                 $(this).text("丨★丨 展开 》》");
-             } else {
-                 $(this).text("丨☆丨 收起  Ⅴ");
-             }
-             return false;
-         });
-     }
-    
-
-    window.onload = init;
-    
-</script>
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
     <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
@@ -535,24 +389,6 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/Mysql导入和导出Sql文件/">Mysql导入和导出Sql文件</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
                 </span>
             </li>
@@ -565,7 +401,13 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
                 </span>
             </li>
             
@@ -583,7 +425,19 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
                 </span>
             </li>
             
@@ -604,17 +458,17 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 
                 
                 <li>
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
+                    <a href="/tags/源码/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
+                    <a href="/tags/源码/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/tags/源码/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
@@ -622,41 +476,41 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 10.982279194091163px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 12.524698950397788px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 8.25485136409878px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 14.150062762274814px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/踩坑/" style="font-size: 14.99088264193239px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 19.98653619922814px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 17.88157233419151px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 13.259575892688215px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/基础/" style="font-size: 16.240544871911723px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 10.487438773635517px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/备份/" style="font-size: 8.336683536881154px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 9.950375040988028px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 11.10166938966982px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 18.453956702723893px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 17.018361315617664px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 19.940968800705214px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/高可用/" style="font-size: 14.002124335729835px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 16.435844037560265px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/deepin/" style="font-size: 12.876761476382331px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 18.401656482613006px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/hexo/" style="font-size: 19.08914070255079px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 8.817529930193169px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 16.423794111565204px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 18.477435381794507px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/eclipse/" style="font-size: 14.964193789253418px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 17.789131644694976px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 8.789556407259695px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 8.014167879392577px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/面试/" style="font-size: 14.250209302197877px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 18.22074891926871px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 14.16540997116687px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 11.412198230685366px;" class="tag-cloud-link">操作系统</a>
     
-    <a href="/tags/源码/" style="font-size: 8.95560874760762px;" class="tag-cloud-link">源码</a>
+    <a href="/tags/源码/" style="font-size: 13.394746349987386px;" class="tag-cloud-link">源码</a>
     
-    <a href="/tags/sds/" style="font-size: 15.32615558588667px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 13.703434662791192px;" class="tag-cloud-link">sds</a>
     
 </div>
                 
@@ -777,7 +631,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 <script src="https://myau.moe/js/comment/gitment.browser.js"></script>
 <script>
     if(window.commentConfig) {
-      window.commentConfig.id = 'Thu Apr 11 2019 17:23:55 GMT+0800'
+      window.commentConfig.id = ''
       window.commentConfig.owner = 'BirdWong'
       window.commentConfig.repo = 'RocWong'
       window.commentConfig.client_id = '2318105e2020b5f29a07'
@@ -785,7 +639,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
       window.commentConfig.redirect_uri = ''
     } else {
       window.commentConfig = {
-      	id: 'Thu Apr 11 2019 17:23:55 GMT+0800',
+      	id: '',
         owner: 'BirdWong',
         repo: 'RocWong',
         client_id: '2318105e2020b5f29a07',
