@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="RocWong">
+    
+    
+    
+    
+    
+    
+    <title>redis源码-字典 | RocWong</title>
+    <link href="”https://jijiking51.cn“" rel="”prefetch”">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/aos.css">
+<link rel="stylesheet" href="/css/style.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/aos.js"></script>
+    <script src="/js/highslide/highslide-full.min.js"></script>
+    <link rel="stylesheet" href="/js/highslide/highslide.css">
+    <style type="text/css">
+        @media (max-width: 768px) {
+            body {
+                background-color: #f0f0f0;
+                background: url('/imgs/xsbg.gif');
+                background-attachment: fixed;
+            }
+        }
+    </style>
+    
+    <script src="//cdn1.lncld.net/static/js/3.4.2/av-min.js"></script>
+    <script>
+      AV.init({
+        appId: 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+        appKey: 'Nzpwf4hnsjlU9jOzMC0HmReR'
+      })
+    </script>
+    
+    <!--<script type="text/javascript">
+      if (document.images) {
+        var avatar = new Image();
+        avatar.src = '/imgs/avatar.jpg'
+        var previews = 'preview1.jpg,preview2.jpg,preview3.jpg,preview4.jpg'.split(',')
+        var previewsPreLoad = []
+        for(var i = 0; i < length; i++) {
+          previewsPreLoad.push(new Image())
+          previewsPreLoad[previewsPreLoad.length - 1].src = '/imgs/preview' + previews[i]
+        }
+      }
+    </script>-->
+    
+</head></html>
+<body>
+    <!-- 背景轮播图功能 -->
+    <section class="hidden-xs">
+    <ul class="cb-slideshow">
+        <li><span>天若</span></li>
+        <li><span>有情</span></li>
+        <li><span>天亦老</span></li>
+        <li><span>我为</span></li>
+        <li><span>长者</span></li>
+        <li><span>续一秒</span></li>
+    </ul>
+</section>
+    <!-- 欧尼酱功能, 谁用谁知道 -->
+    
+    <div class="gal-menu gal-dropdown">
+    <div class="circle" id="gal">
+        <div class="ring">
+            <a href="https://jijiking51.cn" class="menuItem" style="left: 50%; top: 15%;">首页</a>
+            
+            <a class="menuItem" style="left: 80.3109%; top: 32.5%;">下一页</a>
+            
+            <a href="/archives" class="menuItem" style="left: 80.3109%; top: 67.5%;">归档</a>
+            <a href="/about" class="menuItem" style="left: 50%; top: 85%;">关于</a>
+            <a href="/message" class="menuItem" style="left: 19.6891%; top: 67.5%;">留言板</a>
+            
+            <a class="menuItem" style="left: 19.6891%; top: 32.5%;">上一页</a>
+            
+        </div>
+        <audio id="audio" src="/imgs/oni.mp3"></audio>
+    </div>
+</div>
+    
+    <header class="navbar navbar-inverse" id="gal-header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-navbar-collapse" aria-expanded="false">
+                <span class="fa fa-lg fa-reorder"></span>
+            </button>
+            <a href="https://jijiking51.cn">
+                
+                <style>
+                    #gal-header .navbar-brand {
+                        height: 54px;
+                        line-height: 24px;
+                        font-size: 28px;
+                        opacity: 1;
+                        background-color: rgba(0,0,0,0);
+                        text-shadow: 0 0 5px #fff,0 0 10px #fff,0 0 15px #fff,0 0 20px #228DFF,0 0 35px #228DFF,0 0 40px #228DFF,0 0 50px #228DFF,0 0 75px #228DFF;
+                    }
+                </style>
+                <!-- 这里使用文字(navbar_text or config.title) -->
+                <div class="navbar-brand">RocWong</div>
+                
+            </a>
+        </div>
+        <div class="collapse navbar-collapse bs-navbar-collapse">
+            <ul class="nav navbar-nav" id="menu-gal">
+                
+                
+                <li class>
+                    <a href="/">
+                        <i class="fa fa-home"></i>首页
+                    </a>
+                </li>
+                
+                
+                
+                <li class>
+                    <a href="/archives/">
+                        <i class="fa fa-archive"></i>归档
+                    </a>
+                </li>
+                
+                
+                
+                
+                <li class="dropdown">
+                    <!-- TODO 添加hover dropdown效果 -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
+                        <i class="fa fa-list"></i>分类
+                    </a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li>
+                            <a href="/categories/JAVA/">JAVA</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/python/">python</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/ElasticSearch/">ElasticSearch</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="/categories">...</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                
+                
+                <li class="dropdown">
+                    <!-- TODO 添加hover dropdown效果 -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
+                        <i class="fa fa-tags"></i>标签
+                    </a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li>
+                            <a href="/tags/基础/">基础</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags/Markdown/">Markdown</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags/Django/">Django</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="/tags">...</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                
+                <li class>
+                    <a href="/about/">
+                        <i class="fa fa-user"></i>关于我
+                    </a>
+                </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+    <div id="ImHere" class="mouse_float">
+      转载请保留原文链接
+    </div>
+</header>
+    <div id="gal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 gal-right" id="mainstay">
+                    
+<article class="article well article-body" id="article">
+    <div class="breadcrumb">
+        <i class="fa fa-home"></i>
+        <a href="https://jijiking51.cn">RocWong</a>
+        >
+        <span>redis源码-字典</span>
+    </div>
+    <!-- 大型设备详细文章 -->
+    <div class="hidden-xs">
+        <div class="title-article">
+            <h1>
+                <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
+            </h1>
+        </div>
+        <div class="tag-article">
+            
+            <span class="label label-gal">
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/源码/">源码</a>, 
+                
+                <a href="/tags/字典/">字典</a>
+                
+            </span>
+            
+            <span class="label label-gal">
+                <i class="fa fa-calendar"></i> 2019-04-16
+            </span>
+            
+            <span class="label label-gal">
+                <i class="fa fa-eye"></i>
+            </span>
+            
+        </div>
+    </div>
+    <!-- 小型设备详细文章 -->
+    <div class="visible-xs">
+        <center>
+            <div class="title-article">
+                <h4>
+                    <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
+                </h4>
+            </div>
+            <p>
+                <i class="fa fa-calendar"></i> 2019-04-16
+            </p>
+            <p>
+                
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/源码/">源码</a>, 
+                
+                <a href="/tags/字典/">字典</a>
+                
+                
+                
+                <i class="fa fa-eye"></i>
+                
+            </p>
+        </center>
+    </div>
+    <div class="content-article">
+          <!--Table of Contents begin-->
+          
+            <div id="toc" class="toc-article">
+              <strong class="toc-title">目录</strong>
+              <a class="js-toggle-toc" href="javascript:void(0)"></a>
+              <div class="toc-content">
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#字典的实现"><span class="toc-text">字典的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表"><span class="toc-text">哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表节点"><span class="toc-text">哈希表节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字典"><span class="toc-text">字典</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hash算法"><span class="toc-text">hash算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hash实现"><span class="toc-text">hash实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决键冲突"><span class="toc-text">解决键冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rehash"><span class="toc-text">rehash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表的扩展与收缩"><span class="toc-text">哈希表的扩展与收缩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#渐进式rehash"><span class="toc-text">渐进式rehash</span></a></li></ol></li></ol>
+              </div>
+            </div>
+          
+          
+        <h1 id="字典的实现"><a href="#字典的实现" class="headerlink" title="字典的实现"></a>字典的实现</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Redis的字典是使用哈希表作为底层实现原理的，一个哈希表可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p>
+<h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* This is our hash table structure. Every dictionary has two of this as we</span></span><br><span class="line"><span class="comment"> * implement incremental rehashing, for the old to the new table. */</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 哈希表</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 每个字典都使用两个哈希表，从而实现渐进式 rehash 。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictht</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 哈希表数组</span></span><br><span class="line">    dictEntry **table;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 哈希表大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> size;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 哈希表大小掩码，用于计算索引值</span></span><br><span class="line">    <span class="comment">// 总是等于 size - 1</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sizemask;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 该哈希表已有节点的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> used;</span><br><span class="line"></span><br><span class="line">&#125; dictht;</span><br></pre></td></tr></table></figure>
+<p>table是一个数组，数组中的每个元素都是一个哈希节点，<br>哈希表中的size属性记录了哈希表的大小，也就是table数组的大小，而used属性记录了目前已有节点的数量。sizemask属性的值总是等于size-1，这个属性和哈希值一起决定一个键应该被放到table数组的哪个索引上面。</p>
+<p><img src="http://img.jijiking51.cn/5b7a532c76c537fce6f169f45c04242e.png" alt="空哈希表示意图"></p>
+<h2 id="哈希表节点"><a href="#哈希表节点" class="headerlink" title="哈希表节点"></a>哈希表节点</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 哈希表节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictEntry</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 键</span></span><br><span class="line">    <span class="keyword">void</span> *key;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 值</span></span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">void</span> *val;</span><br><span class="line">        <span class="keyword">uint64_t</span> u64;</span><br><span class="line">        <span class="keyword">int64_t</span> s64;</span><br><span class="line">    &#125; v;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向下个哈希表节点，形成链表</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dictEntry</span> *<span class="title">next</span>;</span></span><br><span class="line"></span><br><span class="line">&#125; dictEntry;</span><br></pre></td></tr></table></figure>
+<p>key属性保存着键值对中的键，而v属性则保存键值对中的值，其中键值对的值可以是一个指针或者一个unint64_t整数或者int64_t整数。<br>next属性是指向另一个哈希表节点的指针，这个指针可以将多个哈希值相同的键值对链接在一起，以此解决冲突问题。<br>例如k1和k0的索引值相同将会如下图：</p>
+<p><img src="http://img.jijiking51.cn/9561f077d1aed6aa988d6a317599eaaf.png" alt="索引值相同情况"></p>
+<h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 字典</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dict</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 类型特定函数</span></span><br><span class="line">    dictType *type;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 私有数据</span></span><br><span class="line">    <span class="keyword">void</span> *privdata;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 哈希表</span></span><br><span class="line">    dictht ht[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rehash 索引</span></span><br><span class="line">    <span class="comment">// 当 rehash 不在进行时，值为 -1</span></span><br><span class="line">    <span class="keyword">int</span> rehashidx; <span class="comment">/* rehashing not in progress if rehashidx == -1 */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 目前正在运行的安全迭代器的数量</span></span><br><span class="line">    <span class="keyword">int</span> iterators; <span class="comment">/* number of iterators currently running */</span></span><br><span class="line"></span><br><span class="line">&#125; dict;</span><br></pre></td></tr></table></figure>
+<p>type属性和privdata属性针对不同类型的键值对，为创建多态字典而设置的</p>
+<ul>
+<li>type属性是一个指向dictType结构的指针，每个dictType结构保存了一簇用于操作特定类型键值对的函数，redis会为用途不同的字典设置不同的类型特定函数</li>
+<li>privdata属性则保存了需要传给哪些类型特定函数的可选参数</li>
+</ul>
+<p>ht是一个包含两个项的数组，数组中的每个项都是一个dictht哈希表，一般情况下，字典只使用ht[0]哈希表，ht[1]哈希表只会在对ht[0]哈希表进行rehash时使用。除了ht[1]之外，另一个rehash有关的属性就是rehashidx，它记录了rehash目前的进度，如果目前没有在进行rehash，那么他的值为-1。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 字典类型特定函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictType</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算哈希值的函数</span></span><br><span class="line">    <span class="function"><span class="keyword">unsigned</span> <span class="title">int</span> <span class="params">(*hashFunction)</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *key)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制键的函数</span></span><br><span class="line">    <span class="keyword">void</span> *(*keyDup)(<span class="keyword">void</span> *privdata, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制值的函数</span></span><br><span class="line">    <span class="keyword">void</span> *(*valDup)(<span class="keyword">void</span> *privdata, <span class="keyword">const</span> <span class="keyword">void</span> *obj);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对比键的函数</span></span><br><span class="line">    <span class="keyword">int</span> (*keyCompare)(<span class="keyword">void</span> *privdata, <span class="keyword">const</span> <span class="keyword">void</span> *key1, <span class="keyword">const</span> <span class="keyword">void</span> *key2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 销毁键的函数</span></span><br><span class="line">    <span class="keyword">void</span> (*keyDestructor)(<span class="keyword">void</span> *privdata, <span class="keyword">void</span> *key);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 销毁值的函数</span></span><br><span class="line">    <span class="keyword">void</span> (*valDestructor)(<span class="keyword">void</span> *privdata, <span class="keyword">void</span> *obj);</span><br><span class="line"></span><br><span class="line">&#125; dictType;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.jijiking51.cn/26ad0a3bd970d09595da01111e4e1043.png" alt="没有进行rehash的字典"></p>
+<h1 id="hash算法"><a href="#hash算法" class="headerlink" title="hash算法"></a>hash算法</h1><h2 id="hash实现"><a href="#hash实现" class="headerlink" title="hash实现"></a>hash实现</h2><p>当一个新的键值对添加到字典里面时，程序需要先根据键值对的键值计算出哈希值和索引值，然后再根据索引值，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p>
+<p>redis计算hash值和索引值的方法:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 使用字典设置的哈希函数，计算键key的哈希值</span><br><span class="line">hash = dict-&gt;type-&gt;hashFunction(key);</span><br><span class="line"></span><br><span class="line"># 使用hash表的sizemask属性和哈希值，计算出索引值</span><br><span class="line"># 根据情况不同，ht[x]可以是ht[<span class="number">0</span>]或者ht[<span class="number">1</span>]</span><br><span class="line">index = hash &amp; dict-&gt;ht[x].sizemask;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.jijiking51.cn/12a04d9640a696795917f48a48af43ae.png" alt="空字典"></p>
+<p>如果我们要将键值对k0和v0添加到字典里面，流程如下：</p>
+<ol>
+<li>hash = dict-&gt;type-&gt;hashFunction(k0);<br> 计算k0的哈希值。如果计算为8</li>
+<li>index = hash&amp;dict-&gt;ht[0].sizemask = 8 &amp; 3 = 0;<br> 计算出键k0的索引值0，这表示包含键值对k0和v0的节点应该被放置到哈希表数组的索引0位置上</li>
+</ol>
+<p><img src="http://img.jijiking51.cn/cb5dbacc40a4805b7962f98afd06a72a.png" alt="键值对添加过程"></p>
+<p>当字典被用作数据库底层实现，或者哈希键的底层是现时，redis使用<a href="https://github.com/aappleby/smhasher" target="_blank" rel="noopener">murmurHash2</a>算法来计算键的哈希值</p>
+<h2 id="解决键冲突"><a href="#解决键冲突" class="headerlink" title="解决键冲突"></a>解决键冲突</h2><p>当有两个或以上数量的键被分配到了哈希表数组的同一个索引上面时，我们称这些键发生了冲突。<br>redis的哈希表使用链地址法来解决键冲突，每个哈希表节点都有一个next指针，多个哈希表节点可以用next指针构成一个单向链表，被分配到同一个索引上的多个节点可以用这个单向链表连接起来，这就解决了键冲突的问题。<br>例如将键值对k2和v2添加到哈希表中，并且计算出k2的索引为2，与k1冲突，那么解决冲突的办法就是使用next指针将键k2和k1所在的节点连接起来。因为dictEntry节点组成的链表没有指向链表表尾的指针，所以为了速度考虑，程序总是将新节点添加到链表的头位置，排在其他已有的节点前面。</p>
+<p><img src="http://img.jijiking51.cn/3b105bde40d2f167f8d26060f4af08a4.png" alt="目前的hash表"></p>
+<p><img src="http://img.jijiking51.cn/d0bbbca101b507e3d14c7fff08e6c30b.png" alt="插入后的hash表"></p>
+<h2 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h2><p>随着操作的执行，哈希表保存的键值对会逐渐增多或者减少，为了让哈希表的负载因子位置在一个合理的范围之内，当哈希表保存的键值对数量太多或者太少时，程序需要对哈希表的大小进行相应的扩展或者收缩。<br>rehash操作流程：</p>
+<ol>
+<li>为字典的ht[1]哈希表分配空间，这个哈希表的空间大小取决于要执行的操作，以及ht[0]当前包含的键值对数量(也即是ht[0].used属性的值)：<ul>
+<li>如果执行的是扩展操作，那么ht[1]的大小为第一个大小等于ht[0].used*2的2^n</li>
+<li>如果执行的是收缩操作，那么ht[1]的大小为第一个大于等于ht[0].used的2^n。</li>
+</ul>
+</li>
+<li>将保存在ht[0]中所有键值对rehash到ht[1]上面：rehash指的是重新计算键的哈希值和索引值，然后将键值对放置到ht[1]哈希表的指定位置上</li>
+<li>当ht[0]包含的所有键值对都迁移到了ht[1]之后，石方ht[0]，将ht[1]设置为ht[0]，并且在ht[1]新创建一个空哈希表为下一次rehash做准备</li>
+</ol>
+<p>例如，要对下图的ht[0]进行扩展操作，那么程序将执行以下步骤：<br><img src="http://img.jijiking51.cn/cc9aceecfb6d8f3904c3763686af1a72.png" alt="执行之前的字典"></p>
+<ol>
+<li>ht[0].used 当前的值为 4 ， 4 * 2 = 8 ， 而 8 （2^3）恰好是第一个大于等于 4 的 2 的 n 次方， 所以程序会将 ht[1] 哈希表的大小设置为 8 。 </li>
+</ol>
+<p><img src="http://img.jijiking51.cn/85ee4c1c8c48587ee9140159542f72d2.png" alt="为字典的ht[1]分配空间"></p>
+<ol start="2">
+<li>将 ht[0] 包含的四个键值对都 rehash 到 ht[1] ， </li>
+</ol>
+<p><img src="http://img.jijiking51.cn/b80ea968a58c1aa34dfaa45c882b986c.png" alt="所有键值对都被迁移到ht[1]"></p>
+<ol start="3">
+<li>释放 ht[0] ，并将 ht[1] 设置为 ht[0] ，然后为 ht[1] 分配一个空白哈希表，</li>
+</ol>
+<p><img src="http://img.jijiking51.cn/0f3ed345dedc979ec1d9905b8bb35b06.png" alt="完成rehash字典之后的样子"></p>
+<ol start="4">
+<li>至此，对哈希表的扩展操作执行完毕， 程序成功将哈希表的大小从原来的4改为了现在的8。</li>
+</ol>
+<h2 id="哈希表的扩展与收缩"><a href="#哈希表的扩展与收缩" class="headerlink" title="哈希表的扩展与收缩"></a>哈希表的扩展与收缩</h2><p>当以下条件中的任意一个被满足时， 程序会自动开始对哈希表执行扩展操作：</p>
+<ol>
+<li>服务器目前没有在执行 BGSAVE 命令或者 BGREWRITEAOF 命令， 并且哈希表的负载因子大于等于 1 ；</li>
+<li><p>服务器目前正在执行 BGSAVE 命令或者 BGREWRITEAOF 命令， 并且哈希表的负载因子大于等于 5 ；<br>其中哈希表的负载因子可以通过公式：</p>
+<p> #负载因子 = 哈希表已保存节点数量 / 哈希表大小<br> load_factor = ht[0].used / ht[0].size<br>计算得出。</p>
+</li>
+</ol>
+<p>比如说， 对于一个大小为 4 ， 包含 4 个键值对的哈希表来说， 这个哈希表的负载因子为：</p>
+<pre><code>load_factor = 4 / 4 = 1
+</code></pre><p>又比如说， 对于一个大小为 512 ， 包含 256 个键值对的哈希表来说， 这个哈希表的负载因子为：</p>
+<pre><code>load_factor = 256 / 512 = 0.5
+</code></pre><p>根据 BGSAVE 命令或 BGREWRITEAOF 命令是否正在执行， 服务器执行扩展操作所需的负载因子并不相同， 这是因为在执行 BGSAVE 命令或BGREWRITEAOF 命令的过程中， Redis 需要创建当前服务器进程的子进程， 而大多数操作系统都采用写时复制（copy-on-write）技术来优化子进程的使用效率， 所以在子进程存在期间， 服务器会提高执行扩展操作所需的负载因子， 从而尽可能地避免在子进程存在期间进行哈希表扩展操作， 这可以避免不必要的内存写入操作， 最大限度地节约内存。</p>
+<p>另一方面， 当哈希表的负载因子小于 0.1 时， 程序自动开始对哈希表执行收缩操作。</p>
+<h2 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h2><p>扩展或者搜索哈希表需要将ht[0]里面的所有键值对rehash到ht[1]，但是这个动作并不是一次性、集中式的完成的，二十分多次、渐进式地完成的。<br>这样做的原因在于，如果ht[0]里面保存大量键值对时，一次将这些键值对rehash到ht[1]的话，<code>庞大</code>的计算量可能会导致服务器在一段时间内<code>暂停服务</code>。<br>因此为了避免rehash对服务器的性能造成太大影响，服务器将进行多次rehash。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 在给定毫秒数内，以 100 步为单位，对字典进行 rehash 。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(N)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dictRehashMilliseconds</span><span class="params">(dict *d, <span class="keyword">int</span> ms)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 记录开始时间</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> start = timeInMilliseconds();</span><br><span class="line">    <span class="keyword">int</span> rehashes = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(dictRehash(d,<span class="number">100</span>)) &#123;</span><br><span class="line">        rehashes += <span class="number">100</span>;</span><br><span class="line">        <span class="comment">// 如果时间已过，跳出</span></span><br><span class="line">        <span class="keyword">if</span> (timeInMilliseconds()-start &gt; ms) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rehashes;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Performs N steps of incremental rehashing. Returns 1 if there are still</span></span><br><span class="line"><span class="comment"> * keys to move from the old to the new hash table, otherwise 0 is returned.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 执行 N 步渐进式 rehash 。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 返回 1 表示仍有键需要从 0 号哈希表移动到 1 号哈希表，</span></span><br><span class="line"><span class="comment"> * 返回 0 则表示所有键都已经迁移完毕。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Note that a rehashing step consists in moving a bucket (that may have more</span></span><br><span class="line"><span class="comment"> * than one key as we use chaining) from the old to the new hash table.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 注意，每步 rehash 都是以一个哈希表索引（桶）作为单位的，</span></span><br><span class="line"><span class="comment"> * 一个桶里可能会有多个节点，</span></span><br><span class="line"><span class="comment"> * 被 rehash 的桶里的所有节点都会被移动到新哈希表。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(N)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dictRehash</span><span class="params">(dict *d, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 只可以在 rehash 进行中时执行</span></span><br><span class="line">    <span class="keyword">if</span> (!dictIsRehashing(d)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 进行 N 步迁移</span></span><br><span class="line">    <span class="comment">// T = O(N)</span></span><br><span class="line">    <span class="keyword">while</span>(n--) &#123;</span><br><span class="line">        dictEntry *de, *nextde;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Check if we already rehashed the whole table... */</span></span><br><span class="line">        <span class="comment">// 如果 0 号哈希表为空，那么表示 rehash 执行完毕</span></span><br><span class="line">        <span class="comment">// T = O(1)</span></span><br><span class="line">        <span class="keyword">if</span> (d-&gt;ht[<span class="number">0</span>].used == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 释放 0 号哈希表</span></span><br><span class="line">            zfree(d-&gt;ht[<span class="number">0</span>].table);</span><br><span class="line">            <span class="comment">// 将原来的 1 号哈希表设置为新的 0 号哈希表</span></span><br><span class="line">            d-&gt;ht[<span class="number">0</span>] = d-&gt;ht[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">// 重置旧的 1 号哈希表</span></span><br><span class="line">            _dictReset(&amp;d-&gt;ht[<span class="number">1</span>]);</span><br><span class="line">            <span class="comment">// 关闭 rehash 标识</span></span><br><span class="line">            d-&gt;rehashidx = <span class="number">-1</span>;</span><br><span class="line">            <span class="comment">// 返回 0 ，向调用者表示 rehash 已经完成</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Note that rehashidx can't overflow as we are sure there are more</span></span><br><span class="line"><span class="comment">         * elements because ht[0].used != 0 */</span></span><br><span class="line">        <span class="comment">// 确保 rehashidx 没有越界</span></span><br><span class="line">        assert(d-&gt;ht[<span class="number">0</span>].size &gt; (<span class="keyword">unsigned</span>)d-&gt;rehashidx);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 略过数组中为空的索引，找到下一个非空索引</span></span><br><span class="line">        <span class="keyword">while</span>(d-&gt;ht[<span class="number">0</span>].table[d-&gt;rehashidx] == <span class="literal">NULL</span>) d-&gt;rehashidx++;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 指向该索引的链表表头节点</span></span><br><span class="line">        de = d-&gt;ht[<span class="number">0</span>].table[d-&gt;rehashidx];</span><br><span class="line">        <span class="comment">/* Move all the keys in this bucket from the old to the new hash HT */</span></span><br><span class="line">        <span class="comment">// 将链表中的所有节点迁移到新哈希表</span></span><br><span class="line">        <span class="comment">// T = O(1)</span></span><br><span class="line">        <span class="keyword">while</span>(de) &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> h;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 保存下个节点的指针</span></span><br><span class="line">            nextde = de-&gt;next;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* Get the index in the new hash table */</span></span><br><span class="line">            <span class="comment">// 计算新哈希表的哈希值，以及节点插入的索引位置</span></span><br><span class="line">            h = dictHashKey(d, de-&gt;key) &amp; d-&gt;ht[<span class="number">1</span>].sizemask;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 插入节点到新哈希表</span></span><br><span class="line">            de-&gt;next = d-&gt;ht[<span class="number">1</span>].table[h];</span><br><span class="line">            d-&gt;ht[<span class="number">1</span>].table[h] = de;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新计数器</span></span><br><span class="line">            d-&gt;ht[<span class="number">0</span>].used--;</span><br><span class="line">            d-&gt;ht[<span class="number">1</span>].used++;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 继续处理下个节点</span></span><br><span class="line">            de = nextde;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将刚迁移完的哈希表索引的指针设为空</span></span><br><span class="line">        d-&gt;ht[<span class="number">0</span>].table[d-&gt;rehashidx] = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="comment">// 更新 rehash 索引</span></span><br><span class="line">        d-&gt;rehashidx++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>为ht[1]分配空间，让字典同时持有ht[0]、ht[1]两个哈希表<br><img src="http://img.jijiking51.cn/7f82f8818aaf9fe29eea50c70ee9464a.png" alt="准备开始"></li>
+<li>在字典中维持一个索引计数器变量rehashidx，并且它的值设置为0，表示rehash正式开始<br><img src="http://img.jijiking51.cn/ab2a1e146aa800a25a812338039e2c6f.png" alt="开始执行"></li>
+<li>在rehash期间，每次对字典执行添加、删除、查找或者更新操作时，程序除了执行指定的操作以外，还会顺带将ht[0]哈希表在rehashidx索引上的所有键值对rehash到ht[1]，当rehash工作完成之后，程序将rehashidx属性的值增1<br><img src="http://img.jijiking51.cn/7d91ab5cdc7726749d7fee3bdb9b3a4e.png" alt="执行1"><br><img src="http://img.jijiking51.cn/adc50dd0fdaba3a69d926c20c45da158.png" alt="执行2"><br><img src="http://img.jijiking51.cn/eb7ffb82992c9d7a2895b0db3fbdba13.png" alt="执行3"></li>
+<li>在某个时间点上，ht[0]的所有键值对都会被rehash到ht[1]，这时设置rehashidx为-1，表示rehash已经完成<br><img src="http://img.jijiking51.cn/3d1a5380fcbe37cc9370db40bd8ff96f.png" alt="执行完成"></li>
+</ol>
+<p>渐进式是采用分治的方式，将rehash键值对所需要的计算工作均摊到对字典的每个添加、删除、查找和更新操作上，从而避免庞大的计算量</p>
+<p><strong>rehash期间的哈希表操作</strong></p>
+<p>因为在进行渐进式rehash的过程中，字典会同时使用 ht[0]和ht[1]两个哈希表，所以在渐进式rehash进行期间，字典的删除（delete）、查找（find）、更新（update）等操作会在两个哈希表上进行：比如说， 要在字典里面查找一个键的话，程序会先在ht[0]里面进行查找，如果没找到的话，就会继续到ht[1]里面进行查找，诸如此类。</p>
+<p>另外，在渐进式rehash执行期间，新添加到字典的键值对一律会被保存到ht[1]里面，而ht[0]则不再进行任何添加操作：这一措施保证了ht[0]包含的键值对数量会只减不增，并随着rehash操作的执行而最终变成空表</p>
+
+    </div>
+</article>
+
+
+<div id="comments-template"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script>
+	if(!window.commentConfig) {
+      window.commentConfig = {}
+      window.commentConfig.title = 'redis源码-字典'
+    }
+</script>
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+<script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+
+
+
+<!-- 复制转载提示 -->
+<script>
+  document.body.oncopy = function() {
+    swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+  };
+</script>
+
+
+<script>
+var eleImgShare = document.getElementById("ImHere");
+var oldtxt = "";
+var $sinaMiniBlogShare = function(eleShare, eleContainer) {
+  var eleTitle = document.getElementsByTagName("title")[0];
+  eleContainer = eleContainer || document;
+  var funGetSelectTxt = function() {
+    var txt = "";
+    if(document.selection) {
+      txt = document.selection.createRange().text;  // IE
+    } else {
+      txt = document.getSelection();
+    }
+    return txt.toString();
+  };
+  eleContainer.onmouseup = function(e) {
+    e = e || window.event;
+    var txt = funGetSelectTxt(), sh = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    var left = (e.clientX - 40 < 0) ? e.clientX + 20 : e.clientX - 40, top = (e.clientY - 40 < 0) ? e.clientY + sh + 20 : e.clientY + sh - 40;
+    
+    if (txt && txt !== oldtxt) {
+      eleShare.style.display = "inline";
+      eleShare.style.left = left + "px";
+      eleShare.style.top = top + "px";
+      oldtxt = txt;
+      console.log(e.clientX)
+    } else {
+      eleShare.style.display = "none";
+      oldtxt = "";
+    }
+  };
+}(eleImgShare);
+</script>
+
+<script>
+
+    function init()
+     {
+      $(".js-toggle-toc").css('color', '#FF4081');
+         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
+     
+         $(".js-toggle-toc").click(function(){
+             var toc = $(".toc-content");
+             toc.toggle();
+             if (toc.is(":hidden")) {
+                 $(this).text("丨★丨 展开 》》");
+             } else {
+                 $(this).text("丨☆丨 收起  Ⅴ");
+             }
+             return false;
+         });
+     }
+    
+
+    window.onload = init;
+    
+</script>
+                </div>
+                <aside class="col-md-4 gal-left" id="sidebar">
+    <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
+<aside id="sidebar-search">
+    <div class="search hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+        <form class="form-inline clearfix" id="search-form" method="get" action="/search/index.html">
+            <input type="text" name="s" class="form-control" id="searchInput" placeholder="搜索文章~" autocomplete="off">
+            <button class="btn btn-danger btn-gal" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</aside>
+    <aside id="sidebar-author">
+    <div class="panel panel-gal" data-aos="flip-right" data-aos-duration="3000">
+        <div class="panel-heading" style="text-align: center">
+            <i class="fa fa-quote-left"></i>
+            RocWong
+            <i class="fa fa-quote-right"></i>
+        </div>
+        <div class="author-panel text-center">
+            <img src="/imgs/avatar.jpg" width="140" height="140" alt="个人头像" class="author-image">
+            <p class="author-description"></p>
+        </div>
+    </div>
+</aside>
+    
+    <aside id="sidebar-recent_comments">
+    <div class="panel panel-gal recent hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+        <div class="panel-heading">
+            <i class="fa fa-comments"></i>
+            最新评论
+            <i class="fa fa-times-circle panel-remove"></i>
+            <i class="fa fa-chevron-circle-up panel-toggle"></i>
+        </div>
+        <ul class="list-group list-group-flush"></ul>
+    </div>
+</aside>
+    
+    <!-- 要配置好leancloud才能开启此小工具 -->
+    
+    <aside id="sidebar-hot_posts">
+    <div class="panel panel-gal hot hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+        <div class="panel-heading">
+            <i class="fa fa-fire"></i>
+            最热文章
+            <i class="fa fa-times-circle panel-remove"></i>
+            <i class="fa fa-chevron-circle-up panel-toggle"></i>
+        </div>
+        <ul class="list-group list-group-flush"></ul>
+    </div>
+</aside>
+    
+    
+    <aside id="sidebar-recent_posts">
+    <div class="panel panel-gal recent hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+        <div class="panel-heading">
+            <i class="fa fa-refresh"></i>
+            近期文章
+            <i class="fa fa-times-circle panel-remove"></i>
+            <i class="fa fa-chevron-circle-up panel-toggle"></i>
+        </div>
+        <ul class="list-group list-group-flush">
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/16/redis源码-adlist/">redis源码-adlist</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/15/redis源码-sds/">redis源码-sds</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                </span>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+    
+    
+    <aside id="sidebar-rand_posts">
+    <div class="panel panel-gal recent hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+        <div class="panel-heading">
+            <i class="fa fa-refresh"></i>
+            随机文章
+            <i class="fa fa-times-circle panel-remove"></i>
+            <i class="fa fa-chevron-circle-up panel-toggle"></i>
+        </div>
+        <ul class="list-group list-group-flush">
+            
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
+                </span>
+            </li>
+            
+        </ul>
+    </div>
+</aside>
+    
+    
+    <aside id="gal-sets">
+        <div class="panel panel-gal hidden-xs" data-aos="fade-up" data-aos-duration="2000">
+            <ul class="nav nav-pills pills-gal">
+
+                
+                <li>
+                    <a href="/2019/04/16/redis源码-字典/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
+                </li>
+                
+                
+                <li>
+                    <a href="/2019/04/16/redis源码-字典/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
+                </li>
+                
+                
+                <li>
+                    <a href="/2019/04/16/redis源码-字典/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                </li>
+                
+            </ul>
+            <div class="tab-content">
+                
+                <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
+    
+    <a href="/tags/基础/" style="font-size: 11.486462944758978px;" class="tag-cloud-link">基础</a>
+    
+    <a href="/tags/Markdown/" style="font-size: 18.539927235021914px;" class="tag-cloud-link">Markdown</a>
+    
+    <a href="/tags/Django/" style="font-size: 17.621300161035776px;" class="tag-cloud-link">Django</a>
+    
+    <a href="/tags/踩坑/" style="font-size: 13.816972587314321px;" class="tag-cloud-link">踩坑</a>
+    
+    <a href="/tags/配置/" style="font-size: 19.769794478996587px;" class="tag-cloud-link">配置</a>
+    
+    <a href="/tags/高可用/" style="font-size: 13.663579469404246px;" class="tag-cloud-link">高可用</a>
+    
+    <a href="/tags/deepin/" style="font-size: 11.24567492734004px;" class="tag-cloud-link">deepin</a>
+    
+    <a href="/tags/eclipse/" style="font-size: 16.16122964193907px;" class="tag-cloud-link">eclipse</a>
+    
+    <a href="/tags/hexo/" style="font-size: 19.60920081587123px;" class="tag-cloud-link">hexo</a>
+    
+    <a href="/tags/个人博客/" style="font-size: 15.246628799289851px;" class="tag-cloud-link">个人博客</a>
+    
+    <a href="/tags/Mybatis/" style="font-size: 8.028060018488734px;" class="tag-cloud-link">Mybatis</a>
+    
+    <a href="/tags/开发/" style="font-size: 13.652836231083892px;" class="tag-cloud-link">开发</a>
+    
+    <a href="/tags/备份/" style="font-size: 13.266171854464297px;" class="tag-cloud-link">备份</a>
+    
+    <a href="/tags/源码/" style="font-size: 10.246155682088075px;" class="tag-cloud-link">源码</a>
+    
+    <a href="/tags/字典/" style="font-size: 8.532948764258613px;" class="tag-cloud-link">字典</a>
+    
+    <a href="/tags/zookeeper/" style="font-size: 17.79109139243046px;" class="tag-cloud-link">zookeeper</a>
+    
+    <a href="/tags/adlist/" style="font-size: 8.596196032166642px;" class="tag-cloud-link">adlist</a>
+    
+    <a href="/tags/sds/" style="font-size: 8.19664559346004px;" class="tag-cloud-link">sds</a>
+    
+    <a href="/tags/面试/" style="font-size: 16.165817573470328px;" class="tag-cloud-link">面试</a>
+    
+    <a href="/tags/操作系统/" style="font-size: 13.602655115791453px;" class="tag-cloud-link">操作系统</a>
+    
+</div>
+                
+                
+                <div class="friend-links tab-pane nav bs-sidenav fade" id="sidebar-friend-links">
+    
+    <li>
+        <a href target="_blank">等待认领</a>
+    </li>
+    
+</div>
+                
+                
+                <div class="links tab-pane nav bs-sidenav fade" id="sidebar-links">
+    
+    <li>
+        <a href="https://github.com/BirdWong/" target="_blank">Github</a>
+    </li>
+    
+    <li>
+        <a href="https://dev.tencent.com/u/BirdWong" target="_blank">Coding</a>
+    </li>
+    
+    <li>
+        <a href="https://www.zhihu.com/people/e-ke-13/activities" target="_blank">知乎</a>
+    </li>
+    
+</div>
+                
+            </div>
+        </div>
+    </aside>
+    
+</aside>
+            </div>
+        </div>
+    </div>
+    <footer id="gal-footer">
+    <div class="container">
+        Copyright © 2019 RocWong Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
+    </div>
+</footer>
+
+<!-- 回到顶端 -->
+<div id="gal-gotop">
+    <i class="fa fa-angle-up"></i>
+</div>
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+</body>
+<script src="/js/activate-power-mode.js"></script>
+<script>
+
+    // 配置highslide
+	hs.graphicsDir = '/js/highslide/graphics/'
+    hs.outlineType = "rounded-white";
+    hs.dimmingOpacity = 0.8;
+    hs.outlineWhileAnimating = true;
+    hs.showCredits = false;
+    hs.captionEval = "this.thumb.alt";
+    hs.numberPosition = "caption";
+    hs.align = "center";
+    hs.transitions = ["expand", "crossfade"];
+    hs.lang.number = '共%2张图, 当前是第%1张';
+    hs.addSlideshow({
+      interval: 5000,
+      repeat: true,
+      useControls: true,
+      fixedControls: "fit",
+      overlayOptions: {
+        opacity: 0.75,
+        position: "bottom center",
+        hideOnMouseOut: true
+      }
+    })
+
+    // 初始化aos
+    AOS.init({
+      duration: 1000,
+      delay: 0,
+      easing: 'ease-out-back'
+    });
+
+</script>
+<script>
+	POWERMODE.colorful = 'true';    // make power mode colorful
+	POWERMODE.shake = 'true';       // turn off shake
+	// TODO 这里根据具体情况修改
+	document.body.addEventListener('input', POWERMODE);
+</script>
+<script>
+    window.slideConfig = {
+      prefix: 'http://img.jijiking51.cn/background',
+      ext: 'jpg',
+      maxCount: '12'
+    }
+</script>
+<script src="/js/hs.js"></script>
+<script src="/js/blog.js"></script>
+
+<script src="/js/oni.js"></script>
+
+
+<script>
+    window.hot_posts_count = '10'
+    // window.use_leancloud = 'true'
+</script>
+<script src="/js/comment/leancloud.js"></script>
+
+
+<script src="https://myau.moe/js/comment/gitment.browser.js"></script>
+<script>
+    if(window.commentConfig) {
+      window.commentConfig.id = 'Tue Apr 16 2019 17:41:08 GMT+0800'
+      window.commentConfig.owner = 'BirdWong'
+      window.commentConfig.repo = 'RocWong'
+      window.commentConfig.client_id = '2318105e2020b5f29a07'
+      window.commentConfig.client_secret = '541af30582394a9cd84a80634b53a34ee783a70f'
+      window.commentConfig.redirect_uri = ''
+    } else {
+      window.commentConfig = {
+      	id: 'Tue Apr 16 2019 17:41:08 GMT+0800',
+        owner: 'BirdWong',
+        repo: 'RocWong',
+        client_id: '2318105e2020b5f29a07',
+        client_secret: '541af30582394a9cd84a80634b53a34ee783a70f',
+        redirect_uri: ''
+      }
+    }
+</script>
+<script src="/js/comment/gitment.js"></script>
+
+
+
+</html>
