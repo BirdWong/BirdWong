@@ -138,15 +138,15 @@
                         
                         
                         <li>
-                            <a href="/categories/python/">python</a>
-                        </li>
-                        
-                        <li>
                             <a href="/categories/ElasticSearch/">ElasticSearch</a>
                         </li>
                         
                         <li>
                             <a href="/categories/JAVA/">JAVA</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/Nginx/">Nginx</a>
                         </li>
                         
                         
@@ -171,15 +171,15 @@
                         
                         
                         <li>
-                            <a href="/tags/Markdown/">Markdown</a>
-                        </li>
-                        
-                        <li>
-                            <a href="/tags/Django/">Django</a>
-                        </li>
-                        
-                        <li>
                             <a href="/tags/踩坑/">踩坑</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags/配置/">配置</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags/基础/">基础</a>
                         </li>
                         
                         
@@ -239,6 +239,9 @@
     </div>
     <div class="content-article" style="margin-top: 30px;">
         <div class="alert alert-info" style="font-size: 14px; line-height: 2; font-weight: bold;">
+            
+            <a href="/2019/04/18/redis-skiplist/">redis源码-skiplist</a>
+            <br>
             
             <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
             <br>
@@ -319,6 +322,18 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/18/redis-skiplist/">redis源码-skiplist</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/18/redis源码-skiplist/">redis-skiplist</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
                 </span>
             </li>
@@ -365,18 +380,6 @@
                 </span>
             </li>
             
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
-                </span>
-            </li>
-            
         </ul>
     </div>
 </aside>
@@ -395,7 +398,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
+                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
                 </span>
             </li>
             
@@ -407,19 +410,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">Nginx安装配置并使用keepalived实现高可用双机热备</a>
+                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/">eclipse开发Hadoop时异常org.apache.hadoop.security.AccessControlException:</a>
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
                 </span>
             </li>
             
@@ -431,7 +428,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                    <a href="/2019/04/11/python连接mysql/">python连接mysql</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
                 </span>
             </li>
             
@@ -444,12 +453,6 @@
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2019/04/09/Java面试-操作系统/">Java面试_操作系统</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
                 </span>
             </li>
             
@@ -482,45 +485,47 @@
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 8.995723323982098px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/踩坑/" style="font-size: 13.288572085192369px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/Django/" style="font-size: 9.51400026302798px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/配置/" style="font-size: 14.475669090505445px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/踩坑/" style="font-size: 8.964796960955042px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/基础/" style="font-size: 17.515363640007838px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/配置/" style="font-size: 13.912915580571063px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/Mybatis/" style="font-size: 10.886029845634983px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/基础/" style="font-size: 12.34618434146904px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/开发/" style="font-size: 9.634780922909279px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 15.640041708000965px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/高可用/" style="font-size: 16.277435359396467px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/开发/" style="font-size: 15.480290991569362px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/deepin/" style="font-size: 12.248469878065109px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/备份/" style="font-size: 8.719284358655216px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/eclipse/" style="font-size: 14.528653898538092px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/高可用/" style="font-size: 11.735474423249281px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/备份/" style="font-size: 18.948278421687377px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/deepin/" style="font-size: 10.752060875449887px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/Markdown/" style="font-size: 19.677350607478573px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/eclipse/" style="font-size: 10.101341598278154px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/Django/" style="font-size: 12.147304246999408px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/hexo/" style="font-size: 17.72649368829274px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 17.791981852593274px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 17.00244031335959px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 15.56336320987402px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 17.10979846901372px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/源码/" style="font-size: 11.293756276899527px;" class="tag-cloud-link">源码</a>
     
-    <a href="/tags/源码/" style="font-size: 12.953594584535086px;" class="tag-cloud-link">源码</a>
+    <a href="/tags/zookeeper/" style="font-size: 12.299441856685721px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/adlist/" style="font-size: 17.45583269353373px;" class="tag-cloud-link">adlist</a>
+    <a href="/tags/adlist/" style="font-size: 12.103479006683358px;" class="tag-cloud-link">adlist</a>
     
-    <a href="/tags/sds/" style="font-size: 11.943022443462082px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/skiplist/" style="font-size: 18.257972989796798px;" class="tag-cloud-link">skiplist</a>
     
-    <a href="/tags/面试/" style="font-size: 15.23570906544832px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/sds/" style="font-size: 15.45434611227269px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/操作系统/" style="font-size: 15.943094282204115px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/面试/" style="font-size: 13.992884311569817px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/字典/" style="font-size: 15.187416816260171px;" class="tag-cloud-link">字典</a>
+    <a href="/tags/操作系统/" style="font-size: 13.5829206249911px;" class="tag-cloud-link">操作系统</a>
+    
+    <a href="/tags/字典/" style="font-size: 13.965790084684738px;" class="tag-cloud-link">字典</a>
     
 </div>
                 
