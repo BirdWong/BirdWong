@@ -11,7 +11,7 @@
     
     
     
-    <title>RocWong</title>
+    <title>tags: 压缩列表 | RocWong</title>
     <link href="”https://jijiking51.cn“" rel="”prefetch”">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -210,7 +210,7 @@
                 
                 
                 
-                <li class="current">
+                <li class>
                     <a href="/about/">
                         <i class="fa fa-user"></i>关于我
                     </a>
@@ -228,21 +228,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 gal-right" id="mainstay">
-                    <!-- 搜索页面(尽可能接近ZanBlog搜索功能) -->
-
-
-<article class="article well article-body" id="article">
+                    <article class="article well article-body" id="article-tag">
+    <div class="breadcrumb">
+        <i class="fa fa-home"></i>
+        <a href="https://jijiking51.cn">RocWong</a>
+        >
+        <span>标签</span>
+    </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/about/index.html"></a>
+                <a href="/tags/压缩列表/index.html">压缩列表</a>
             </h1>
-        </div>
-        <div class="tag-article">
-            <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2019-04-24
-            </span>
         </div>
     </div>
     <!-- 小型设备详细文章 -->
@@ -250,114 +248,21 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/about/index.html"></a>
+                    <a href="/tags/压缩列表/index.html">压缩列表</a>
                 </h4>
             </div>
-            <p>
-                <i class="fa fa-calendar"></i> 2019-04-24
-            </p>
         </center>
     </div>
-    <div class="content-article">
-
-          <!--Table of Contents begin-->
-          
-            <div id="toc" class="toc-article">
-              <strong class="toc-title">目录</strong>
-              <a class="js-toggle-toc" href="javascript:void(0)"></a>
-              <div class="toc-content">
-                
-              </div>
-            </div>
-          
-          
-
-        
+    <div class="content-article" style="margin-top: 30px;">
+        <div class="alert alert-info" style="font-size: 14px; line-height: 2; font-weight: bold;">
+            
+            <a href="/2019/04/22/redis源码-压缩列表/">redis源码-压缩列表</a>
+            <br>
+            
+            
+        </div>
     </div>
 </article>
-
-
-<div id="comments-template"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script>
-	if(!window.commentConfig) {
-      window.commentConfig = {}
-      window.commentConfig.title = ''
-    }
-</script>
-
-<link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
-<script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
-
-
-
-
-<!-- 复制转载提示 -->
-<script>
-  document.body.oncopy = function() {
-    swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
-  };
-</script>
-
-
-<script>
-var eleImgShare = document.getElementById("ImHere");
-var oldtxt = "";
-var $sinaMiniBlogShare = function(eleShare, eleContainer) {
-  var eleTitle = document.getElementsByTagName("title")[0];
-  eleContainer = eleContainer || document;
-  var funGetSelectTxt = function() {
-    var txt = "";
-    if(document.selection) {
-      txt = document.selection.createRange().text;  // IE
-    } else {
-      txt = document.getSelection();
-    }
-    return txt.toString();
-  };
-  eleContainer.onmouseup = function(e) {
-    e = e || window.event;
-    var txt = funGetSelectTxt(), sh = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    var left = (e.clientX - 40 < 0) ? e.clientX + 20 : e.clientX - 40, top = (e.clientY - 40 < 0) ? e.clientY + sh + 20 : e.clientY + sh - 40;
-    
-    if (txt && txt !== oldtxt) {
-      eleShare.style.display = "inline";
-      eleShare.style.left = left + "px";
-      eleShare.style.top = top + "px";
-      oldtxt = txt;
-      console.log(e.clientX)
-    } else {
-      eleShare.style.display = "none";
-      oldtxt = "";
-    }
-  };
-}(eleImgShare);
-</script>
-
-<script>
-
-    function init()
-     {
-      $(".js-toggle-toc").css('color', '#FF4081');
-         $(".js-toggle-toc").text("丨☆丨 收起  Ⅴ");
-     
-         $(".js-toggle-toc").click(function(){
-             var toc = $(".toc-content");
-             toc.toggle();
-             if (toc.is(":hidden")) {
-                 $(this).text("丨★丨 展开 》》");
-             } else {
-                 $(this).text("丨☆丨 收起  Ⅴ");
-             }
-             return false;
-         });
-     }
-    
-
-    window.onload = init;
-    
-</script>
-
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
     <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
@@ -500,25 +405,25 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ElasticSearch使用记录/">ElasticSearch使用记录</a>
+                    <a href="/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">JAVA_返回引用可变对象的访问器方法避免破坏封装性</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/">eclipse设置自动补全并取消空格代码补全</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/11/deepin开机后假死/">deepin开机后假死</a>
                 </span>
             </li>
             
@@ -536,6 +441,18 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/Django2-0使用/">Django2.0使用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2019/04/16/redis源码-adlist/">redis源码-adlist</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
                 </span>
             </li>
@@ -543,18 +460,6 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2019/04/21/redis源码-整数集合/">redis源码-整数集合</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/15/redis源码-sds/">redis源码-sds</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/16/redis源码-字典/">redis源码-字典</a>
                 </span>
             </li>
             
@@ -569,17 +474,17 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 
                 
                 <li>
-                    <a href="/about/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
+                    <a href="/tags/压缩列表/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/about/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
+                    <a href="/tags/压缩列表/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/about/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/tags/压缩列表/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
@@ -587,51 +492,51 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 15.034153147784705px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 13.279651397286685px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 11.880100078161433px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 9.451420609161815px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/基础/" style="font-size: 19.065391547658407px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 8.855351976951571px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/踩坑/" style="font-size: 9.767503324696108px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 11.800552285673035px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 18.206266812982946px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 19.500462189974012px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 10.62376907407031px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 8.196195546448953px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 19.593306828009844px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 12.256818509683754px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/备份/" style="font-size: 18.46216424624703px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 12.521528050437315px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/高可用/" style="font-size: 14.080912107807476px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 13.165350298232628px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/eclipse/" style="font-size: 11.095315531047348px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 12.80769705402248px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/deepin/" style="font-size: 19.48192494099085px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 17.406902471281633px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/hexo/" style="font-size: 9.479148006786412px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 16.818564810686347px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 13.294690938896508px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 14.92924003872357px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/源码/" style="font-size: 16.80205970961697px;" class="tag-cloud-link">源码</a>
+    <a href="/tags/源码/" style="font-size: 12.066544294887443px;" class="tag-cloud-link">源码</a>
     
-    <a href="/tags/压缩列表/" style="font-size: 9.983342856182984px;" class="tag-cloud-link">压缩列表</a>
+    <a href="/tags/压缩列表/" style="font-size: 18.923277697482188px;" class="tag-cloud-link">压缩列表</a>
     
-    <a href="/tags/adlist/" style="font-size: 15.77968811054751px;" class="tag-cloud-link">adlist</a>
+    <a href="/tags/adlist/" style="font-size: 17.175313029937886px;" class="tag-cloud-link">adlist</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 8.500711111541921px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 15.30782040772966px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/整数集合/" style="font-size: 15.958708952335662px;" class="tag-cloud-link">整数集合</a>
+    <a href="/tags/整数集合/" style="font-size: 8.160821861545578px;" class="tag-cloud-link">整数集合</a>
     
-    <a href="/tags/skiplist/" style="font-size: 17.428284648296867px;" class="tag-cloud-link">skiplist</a>
+    <a href="/tags/skiplist/" style="font-size: 18.820978907187296px;" class="tag-cloud-link">skiplist</a>
     
-    <a href="/tags/sds/" style="font-size: 9.328945168601148px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 9.04129337467911px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/面试/" style="font-size: 14.748456874658636px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 14.31054605530839px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 15.87386869776951px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 16.554600595811344px;" class="tag-cloud-link">操作系统</a>
     
-    <a href="/tags/字典/" style="font-size: 13.20392803326419px;" class="tag-cloud-link">字典</a>
+    <a href="/tags/字典/" style="font-size: 16.08432598643143px;" class="tag-cloud-link">字典</a>
     
 </div>
                 
@@ -758,7 +663,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 <script src="https://myau.moe/js/comment/gitment.browser.js"></script>
 <script>
     if(window.commentConfig) {
-      window.commentConfig.id = 'Wed Apr 24 2019 20:55:11 GMT+0800'
+      window.commentConfig.id = ''
       window.commentConfig.owner = 'BirdWong'
       window.commentConfig.repo = 'RocWong'
       window.commentConfig.client_id = '2318105e2020b5f29a07'
@@ -766,7 +671,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
       window.commentConfig.redirect_uri = ''
     } else {
       window.commentConfig = {
-      	id: 'Wed Apr 24 2019 20:55:11 GMT+0800',
+      	id: '',
         owner: 'BirdWong',
         repo: 'RocWong',
         client_id: '2318105e2020b5f29a07',

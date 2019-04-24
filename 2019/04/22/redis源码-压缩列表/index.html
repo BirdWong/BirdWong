@@ -11,7 +11,7 @@
     
     
     
-    <title>github利用hexo搭建个人博客 | RocWong</title>
+    <title>redis源码-压缩列表 | RocWong</title>
     <link href="”https://jijiking51.cn“" rel="”prefetch”">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -234,13 +234,13 @@
         <i class="fa fa-home"></i>
         <a href="https://jijiking51.cn">RocWong</a>
         >
-        <span>github利用hexo搭建个人博客</span>
+        <span>redis源码-压缩列表</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
+                <a href="/2019/04/22/redis源码-压缩列表/">redis源码-压缩列表</a>
             </h1>
         </div>
         <div class="tag-article">
@@ -248,16 +248,14 @@
             <span class="label label-gal">
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/踩坑/">踩坑</a>, 
+                <a href="/tags/源码/">源码</a>, 
                 
-                <a href="/tags/hexo/">hexo</a>, 
-                
-                <a href="/tags/个人博客/">个人博客</a>
+                <a href="/tags/压缩列表/">压缩列表</a>
                 
             </span>
             
             <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2019-04-09
+                <i class="fa fa-calendar"></i> 2019-04-22
             </span>
             
             <span class="label label-gal">
@@ -271,21 +269,19 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/">github利用hexo搭建个人博客</a>
+                    <a href="/2019/04/22/redis源码-压缩列表/">redis源码-压缩列表</a>
                 </h4>
             </div>
             <p>
-                <i class="fa fa-calendar"></i> 2019-04-09
+                <i class="fa fa-calendar"></i> 2019-04-22
             </p>
             <p>
                 
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/踩坑/">踩坑</a>, 
+                <a href="/tags/源码/">源码</a>, 
                 
-                <a href="/tags/hexo/">hexo</a>, 
-                
-                <a href="/tags/个人博客/">个人博客</a>
+                <a href="/tags/压缩列表/">压缩列表</a>
                 
                 
                 
@@ -301,79 +297,123 @@
               <strong class="toc-title">目录</strong>
               <a class="js-toggle-toc" href="javascript:void(0)"></a>
               <div class="toc-content">
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装git"><span class="toc-text">安装git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Node-JS"><span class="toc-text">安装Node.JS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-text">安装Hexo</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化配置Hexo"><span class="toc-text">初始化配置Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建根目录"><span class="toc-text">创建根目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装git插件安装配置"><span class="toc-text">安装git插件安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装git插件"><span class="toc-text">安装git插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改配置文件"><span class="toc-text">修改配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看效果"><span class="toc-text">查看效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github准备"><span class="toc-text">github准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建博客仓库"><span class="toc-text">创建博客仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置ssh私钥"><span class="toc-text">配置ssh私钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置个人域名"><span class="toc-text">配置个人域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#坑"><span class="toc-text">坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#更换主题"><span class="toc-text">更换主题</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#压缩列表"><span class="toc-text">压缩列表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩列表的构成"><span class="toc-text">压缩列表的构成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩列表节点的构成"><span class="toc-text">压缩列表节点的构成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#previous-entry-length"><span class="toc-text">previous_entry_length</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#encoding"><span class="toc-text">encoding</span></a></li></ol></li></ol></li></ol>
               </div>
             </div>
           
           
-        <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p><a href="https://windows.github.com/" target="_blank" rel="noopener">GitHub Windows</a></p>
-<h2 id="安装Node-JS"><a href="#安装Node-JS" class="headerlink" title="安装Node.JS"></a>安装Node.JS</h2><p><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.JS</a></p>
-<p>确认npm命令已经配置好</p>
-<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<h1 id="初始化配置Hexo"><a href="#初始化配置Hexo" class="headerlink" title="初始化配置Hexo"></a>初始化配置Hexo</h1><h2 id="创建根目录"><a href="#创建根目录" class="headerlink" title="创建根目录"></a>创建根目录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 创建博客根目录</span><br><span class="line">mkdir blogroot</span><br></pre></td></tr></table></figure>
-<h2 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 进入根目录</span><br><span class="line">cd blogroot</span><br><span class="line"><span class="meta">#</span> 初始化项目</span><br><span class="line">hexo init</span><br><span class="line"><span class="meta">#</span> 安装插件</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<h2 id="安装git插件安装配置"><a href="#安装git插件安装配置" class="headerlink" title="安装git插件安装配置"></a>安装git插件安装配置</h2><h3 id="安装git插件"><a href="#安装git插件" class="headerlink" title="安装git插件"></a>安装git插件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装git插件</span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改根目录下的_config.yml</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span> <span class="string">//</span> <span class="string">上传方式</span></span><br><span class="line"><span class="attr">  repository:</span> <span class="string">//项目地址</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">//</span> <span class="string">上传分支</span></span><br><span class="line"><span class="attr">  message:</span> <span class="string">//</span> <span class="string">上传时默认信息，如果不设置则为上传时的时间</span></span><br></pre></td></tr></table></figure>
-<h2 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 生成文章</span><br><span class="line">hexo n</span><br><span class="line"><span class="meta">#</span> 生成public静态文件</span><br><span class="line">hexo g</span><br><span class="line"><span class="meta">#</span> 本地预览效果</span><br><span class="line">hexo s</span><br><span class="line"><span class="meta">#</span> 将public静态文件上传到github</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-<h1 id="github准备"><a href="#github准备" class="headerlink" title="github准备"></a>github准备</h1><h2 id="创建博客仓库"><a href="#创建博客仓库" class="headerlink" title="创建博客仓库"></a>创建博客仓库</h2><ol>
-<li><p>创建项目</p>
-<p><img src="http://img.jijiking51.cn/7523.523.png" alt="创建项目"></p>
+        <h1 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h1><p>是列表键和哈希键的底层实现之一。</p>
+<ul>
+<li>当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。</li>
+<li>当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现</li>
+</ul>
+<h2 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h2><p>压缩列表是为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的顺序性数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或一个整数值。</p>
+<p>压缩列表的组成：<img src="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png" alt="压缩列表组成"></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>长度</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zlbytes</code></td>
+<td><code>uint32_t</code></td>
+<td><code>4</code> 字节</td>
+<td>记录整个压缩列表占用的内存字节数：在对压缩列表进行内存重分配， 或者计算 <code>zlend</code> 的位置时使用。</td>
+</tr>
+<tr>
+<td><code>zltail</code></td>
+<td><code>uint32_t</code></td>
+<td><code>4</code> 字节</td>
+<td>记录压缩列表表尾节点距离压缩列表的起始地址有多少字节： 通过这个偏移量，程序无须遍历整个压缩列表就可以确定表尾节点的地址。</td>
+</tr>
+<tr>
+<td><code>zllen</code></td>
+<td><code>uint16_t</code></td>
+<td><code>2</code> 字节</td>
+<td>记录了压缩列表包含的节点数量： 当这个属性的值小于 <code>UINT16_MAX</code> （<code>65535</code>）时， 这个属性的值就是压缩列表包含节点的数量； 当这个值等于 <code>UINT16_MAX</code> 时， 节点的真实数量需要遍历整个压缩列表才能计算得出。</td>
+</tr>
+<tr>
+<td><code>entryX</code></td>
+<td>列表节点</td>
+<td>不定</td>
+<td>压缩列表包含的各个节点，节点的长度由节点保存的内容决定。</td>
+</tr>
+<tr>
+<td><code>zlend</code></td>
+<td><code>uint8_t</code></td>
+<td><code>1</code> 字节</td>
+<td>特殊值 <code>0xFF</code> （十进制 <code>255</code> ），用于标记压缩列表的末端。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ziplist 属性宏</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 bytes 属性，该属性记录了整个 ziplist 所占用的内存字节数</span></span><br><span class="line"><span class="comment">// 用于取出 bytes 属性的现有值，或者为 bytes 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_BYTES(zl)       (*((uint32_t*)(zl)))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 offset 属性，该属性记录了到达表尾节点的偏移量</span></span><br><span class="line"><span class="comment">// 用于取出 offset 属性的现有值，或者为 offset 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_TAIL_OFFSET(zl) (*((uint32_t*)((zl)+sizeof(uint32_t))))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 length 属性，该属性记录了 ziplist 包含的节点数量</span></span><br><span class="line"><span class="comment">// 用于取出 length 属性的现有值，或者为 length 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_LENGTH(zl)      (*((uint16_t*)((zl)+sizeof(uint32_t)*2)))</span></span><br><span class="line"><span class="comment">// 返回 ziplist 表头的大小</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_HEADER_SIZE     (sizeof(uint32_t)*2+sizeof(uint16_t))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 第一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_HEAD(zl)  ((zl)+ZIPLIST_HEADER_SIZE)</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 最后一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_TAIL(zl)  ((zl)+intrev32ifbe(ZIPLIST_TAIL_OFFSET(zl)))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 末端 ZIP_END （的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_END(zl)   ((zl)+intrev32ifbe(ZIPLIST_BYTES(zl))-1)</span></span><br></pre></td></tr></table></figure>
+<p>下图展示了一个包含三个节点的压缩列表示例：</p>
+<ul>
+<li>列表 zlbytes 属性的值为 0x50 （十进制 80）， 表示压缩列表的总长为 80 字节。</li>
+<li>列表 zltail 属性的值为 0x3（十进制 60）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 60 ， 就可以计算出表尾节点 entry3 的地址。</li>
+<li>列表 zllen 属性的值为 0x3 （十进制 3）， 表示压缩列表包含三个节点。</li>
+</ul>
+<p><img src="http://img.jijiking51.cn/c0bae8fd18038741181489bf05040822.png" alt="包含三个节点的压缩列表"></p>
+<p>展示了一个包含五个节点压缩列表示例：</p>
+<ul>
+<li>列表 zlbytes 属性的值为 0xd2 （十进制 210）， 表示压缩列表的总长为 210 字节。</li>
+<li>列表 zltail 属性的值为 0xb3 （十进制 179）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 179 ， 就可以计算出表尾节点 entry5 的地址。</li>
+<li>列表 zllen 属性的值为 0x5（十进制 5）， 表示压缩列表包含五个节点。</li>
+</ul>
+<h2 id="压缩列表节点的构成"><a href="#压缩列表节点的构成" class="headerlink" title="压缩列表节点的构成"></a>压缩列表节点的构成</h2><p>每个压缩列表可以保存一个字节数组或者一个整数值，其中，字节数组可以是一下三种长度的其中一种：</p>
+<ul>
+<li>长度小于等于63（2^6-1）字节的字节数组</li>
+<li>长度小于等于16383（2^14-1）字节的字节数组</li>
+<li>长度小于等于4294967295（2^32-1）字节的字节数组</li>
+</ul>
+<p>整数值可以是一下六种长度的其中一种：</p>
+<ul>
+<li>4位长，介于0至12之间的无符号整数</li>
+<li>1字节的有符号整数</li>
+<li>3字节长的有符号整数</li>
+<li>int16_t类型整数</li>
+<li>int32_t类型整数</li>
+<li>int64_t类型整数</li>
+</ul>
+<p>每个压缩列表都是由previous_entry_length/encoding/content三个部分组成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 保存 ziplist 节点信息的结构</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zlentry</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// prevrawlen ：前置节点的长度</span></span><br><span class="line">    <span class="comment">// prevrawlensize ：编码 prevrawlen 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> prevrawlensize, prevrawlen;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// len ：当前节点值的长度</span></span><br><span class="line">    <span class="comment">// lensize ：编码 len 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> lensize, len;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点 header 的大小</span></span><br><span class="line">    <span class="comment">// 等于 prevrawlensize + lensize</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> headersize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点值所使用的编码类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> encoding;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向当前节点的指针</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p;</span><br><span class="line"></span><br><span class="line">&#125; zlentry;</span><br></pre></td></tr></table></figure>
+<h3 id="previous-entry-length"><a href="#previous-entry-length" class="headerlink" title="previous_entry_length"></a>previous_entry_length</h3><p>节点的previous_entry_length属性以字节为单位，记录了压缩列表中前一个节点的长度。previous_entry_length属性的长度可以是1字节或者5字节</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Decode the number of bytes required to store the length of the previous</span></span><br><span class="line"><span class="comment"> * element, from the perspective of the entry pointed to by 'ptr'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 解码 ptr 指针，</span></span><br><span class="line"><span class="comment"> * 取出编码前置节点长度所需的字节数，并将它保存到 prevlensize 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_DECODE_PREVLENSIZE(ptr, prevlensize) do &#123;                          \</span></span><br><span class="line">    <span class="keyword">if</span> ((ptr)[<span class="number">0</span>] &lt; ZIP_BIGLEN) &#123;                                               \</span><br><span class="line">        (prevlensize) = <span class="number">1</span>;                                                     \</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                                                                   \</span><br><span class="line">        (prevlensize) = <span class="number">5</span>;                                                     \</span><br><span class="line">    &#125;                                                                          \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>如果前一个节点的长度小于254字节，那么previous_entry_length属性的长度，为1字节，前一个节点的长度就保存在这个字节里面</p>
 </li>
-<li><p>项目名为<code>用户名.github.io</code></p>
-<p><img src="http://img.jijiking51.cn/16550419103133126.jpg" alt="16550419103133126.jpg"></p>
+<li><p>如果前一节点的长度大于等于254字节，那么previous_entry_length属性的长度为5字节：其中属性的第一个字节会被设置为0xFE(十进制254)，之后的四个字节则用于保存前一节点的长度</p>
 </li>
-<li><p>点击项目setting，下翻到GitHub Pages，设置上传的分支（与上面配置里面写的相同），并且按change theme选择主题（默认就行）</p>
-</li>
-</ol>
-<h2 id="配置ssh私钥"><a href="#配置ssh私钥" class="headerlink" title="配置ssh私钥"></a>配置ssh私钥</h2><ol>
-<li><p>右键git bash</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> username和email@email.com替换为自己的</span><br><span class="line">git config --global user.name "username"</span><br><span class="line">git config --global user.email "email@email.com"</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>生成秘钥</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 输入后一路回车就好</span><br><span class="line">ssh-keygen -t rsa -C "账户邮箱"</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>输入<code>eval &quot;$(ssh-agent -s)&quot;</code>，添加密钥到ssh-agent。</p>
-<p>再输入<code>ssh-add ~/.ssh/id_rsa</code>，添加生成的SSH key到ssh-agent。</p>
-</li>
-<li><p>github的个人setting中找到<code>SSH and GPG keys</code>，添加新的ssh，打开C:\Users\Administrator.ssh\id_rsa.pub 文件，将里面的内容张贴到里面</p>
-</li>
-<li><p>输入<code>ssh -T git@github.com</code>，出现用户名则表示成功</p>
-</li>
-</ol>
-<h2 id="配置个人域名"><a href="#配置个人域名" class="headerlink" title="配置个人域名"></a>配置个人域名</h2><ol>
-<li><p>github点击<code>settings</code>，拉到下面<code>Custom domain</code>处 ，填写自己域名</p>
-<p><img src="http://img.jijiking51.cn/v2-dea19c65560424590c7c3141315e4663_hd[1].jpg" alt="v2-dea19c65560424590c7c3141315e4663_hd[1].jpg"></p>
-</li>
-<li><p>本地的source中添加CNAME文件（更新博客的时候保证每次都带有这个文件），检查项目下是否出现了CNAME文件，内容是填写的域名（不要加http，www），如果没有就创建一个新的文件并填写对应内容</p>
-</li>
-<li><p><code>ping</code>一下github分配的博客页面，得到一个IP，在自己的域名解析中，将www和@的都解析到这个IP上</p>
-</li>
-</ol>
-<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p>配置好github Page后报错<code>Page build failed: Date is not a valid datetime</code>,这是非jekyll生成的站点，要添加.nojekyll空文件在repository的根目录下，关闭针对jekyll的检查。</p>
-<p>方法：</p>
-<p>​    在github根目录下创建空文件<code>.nojekyll</code>,同样，我们要在source中添加这个文件</p>
-<h1 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h1><p>使用<a href="https://github.com/ZEROKISEKI/hexo-theme-gal" target="_blank" rel="noopener">gal主题</a></p>
+</ul>
+<p><img src="http://img.jijiking51.cn/9c117388959ff9bfc31910cc1b4aceb5.png" alt="1个字节长度的previous_entry_length"></p>
+<p><img src="http://img.jijiking51.cn/71218b6227b0f49714aebf0a537a5fec.png" alt="5个字节长度的previous_entry_length"></p>
 <ol>
-<li><p>获取主题</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ZEROKISEKI/hexo-theme-gal.git themes/gal</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将clone下来的文件<code>/_source/</code>的<code>tags</code>和<code>categories</code>文件夹拷贝到博客根目录下的<code>source</code>文件夹下 </p>
-</li>
-<li><p>在博客根目录下下载对应插件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-sass --save </span><br><span class="line"></span><br><span class="line">npm install hexo-renderer-scss --save</span><br><span class="line"></span><br><span class="line">npm install hexo-generator-json-content --save</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加内容到根目录下的<code>_config.yml</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">jsonContent:</span><br><span class="line">  dateFormat: MM-DD</span><br><span class="line">  pages:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    preview: true</span><br><span class="line">  posts:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    tags: [&#123;</span><br><span class="line">      name: tag.name,</span><br><span class="line">      slug: tag.slug,</span><br><span class="line">      permalink: tag.permalink</span><br><span class="line">    &#125;]</span><br><span class="line">    preview: true</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开启搜索，404，分类，标签页面</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo new page "search"              // 搜索功能的必须步骤</span><br><span class="line">hexo new page "404"                 // 开启404页面</span><br><span class="line">hexo new page "categories"			// 开启分类页面</span><br><span class="line">hexo new page "tags"				// 开启标签页面</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置分类和标签页面</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 修改根目录下的source/categories/index.md文件</span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span> 添加 type: "categories"</span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "categories"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 修改根目录下source/tags/index.md文件</span><br><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: 2017-05-27 14:22:08</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span> 添加type: "tags"</span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "tags"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 以后写文章头部示例</span><br><span class="line">---</span><br><span class="line">title: 测试</span><br><span class="line">date: 2019-04-2 14:02:57</span><br><span class="line">categories: </span><br><span class="line">- demo</span><br><span class="line">tags:</span><br><span class="line">- 测试标签1</span><br><span class="line">- 测试标签2</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>其他配置参考<a href="https://github.com/ZEROKISEKI/hexo-theme-gal/wiki/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">gal项目wiki</a></p>
-</li>
+<li>第一幅图表示一个属性值为0x05的previous_entry_length，表示前一个节点的长度为5字节</li>
+<li>第二幅图表示一个属性为0xFE00002766的previous_entry_length，最高位的0xFE表示这是五个字节的属性，后面的0x00002766才是表示节点长度的值(十进制10086)</li>
 </ol>
+<p>因为节点的previous_entry_length属性记录了前一个节点的长度，所以程序可以通过指针运算，更具当前节点的起始地址来计算出前一个节点的起始地址。<br>例如：<br>    我们有一个指向当前节点起始地址的指针C，那么我们只要用c减去当前节点的previous_entry_length属性的值，就可以得出一个指向前一个节点起始地址的指针P</p>
+<p>压缩列表的从表尾向表头便利操作就是适用这个原理实现的，只要我们拥有了一个指向某个节点起始地址的指针，那么通过这个指针以及这个节点的previous_entry_length属性，程序就可以一直想前一个节点回溯，最终到达压缩列表的头结点。</p>
+<ol>
+<li>首先我们拥有指向压缩列表表尾节点entry4起始地址的指针p1（指向表尾节点的指针可以通过指向压缩列表起始地址的指针加上zltail属性的值得出）</li>
+<li>通过p1减去entry4节点的previous_entry_length属性的值，我们得到一个指向entry4前一节点entry3起始地址的指针p2</li>
+<li>通过用p2减去entry3节点previous_entry_length属性的值，我们得到一个指向entry3前一节点entry2起始地址的指针p3</li>
+<li>通过用p3减去entry2节点previous_entry_length属性的值，我们得到一个指向entry2前一节点entry1起始地址的指针p4，entry1为压缩列表的表头节点</li>
+<li>最终我们从表尾节点向表头节点遍历了整个列表</li>
+</ol>
+<p><img src="http://img.jijiking51.cn/6c5dd4ae5afbde41d7e483efaf168620.png" alt="1"></p>
+<p><img src="http://img.jijiking51.cn/678a191d34e8304fb3aaee5202043ee3.png" alt="2"></p>
+<p><img src="http://img.jijiking51.cn/c784af9861ebd06a3057819b864aaded.png" alt="3"></p>
+<p><img src="http://img.jijiking51.cn/23bf70c1dfbf8f02e932291bbad9dabc.png" alt="4"></p>
+<h3 id="encoding"><a href="#encoding" class="headerlink" title="encoding"></a>encoding</h3><p>节点的encoding属性记录了节点的content属性所保存数据的类型以及长度</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Extract the encoding from the byte pointed by 'ptr' and set it into</span></span><br><span class="line"><span class="comment"> * 'encoding'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 从 ptr 中取出节点值的编码类型，并将它保存到 encoding 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_ENTRY_ENCODING(ptr, encoding) do &#123;  \</span></span><br><span class="line">    (encoding) = (ptr[<span class="number">0</span>]); \</span><br><span class="line">    <span class="keyword">if</span> ((encoding) &lt; ZIP_STR_MASK) (encoding) &amp;= ZIP_STR_MASK; \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一字节、两字节或者五字节长，值得最高位为00、01或者10的是字节数组编码：这种编码表示节点的content属性保存着字节数组</li>
+</ul>
 
     </div>
 </article>
@@ -384,7 +424,7 @@
 <script>
 	if(!window.commentConfig) {
       window.commentConfig = {}
-      window.commentConfig.title = 'github利用hexo搭建个人博客'
+      window.commentConfig.title = 'redis源码-压缩列表'
     }
 </script>
 
@@ -601,19 +641,19 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2019/04/11/Django2-0整合markdown编辑器/">Django2.0整合markdown编辑器</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2019/04/11/Java-如何交换两个对象/">Java_如何交换两个对象</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/MybatisGenerator逆向工程/">MybatisGenerator逆向工程</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2019/04/11/Python深复制和浅复制/">Python深复制和浅复制</a>
+                    <a href="/2019/04/11/Mysql导入和导出Sql文件/">Mysql导入和导出Sql文件</a>
                 </span>
             </li>
             
@@ -637,19 +677,19 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/11/ZooKeeper详解/">ZooKeeper详解</a>
+                    <a href="/2019/04/22/redis源码-压缩列表/">redis源码-压缩列表</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/21/redis源码-整数集合/">redis源码-整数集合</a>
+                    <a href="/2019/04/16/redis源码-adlist/">redis源码-adlist</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2019/04/15/redis源码-sds/">redis源码-sds</a>
+                    <a href="/2019/04/18/redis源码-skiplist/">redis源码-skiplist</a>
                 </span>
             </li>
             
@@ -670,17 +710,17 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 
                 
                 <li>
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
+                    <a href="/2019/04/22/redis源码-压缩列表/index.html#sidebar-tags" data-toggle="tab" id="tags-tab">热门标签</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
+                    <a href="/2019/04/22/redis源码-压缩列表/index.html#sidebar-friend-links" data-toggle="tab" id="friend-links-tab">友情链接</a>
                 </li>
                 
                 
                 <li>
-                    <a href="/2019/04/09/github利用hexo搭建个人博客/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2019/04/22/redis源码-压缩列表/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
@@ -688,51 +728,51 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
                 
                 <div class="cloud-tags tab-pane nav bs-sidenav fade" id="sidebar-tags">
     
-    <a href="/tags/Markdown/" style="font-size: 9.730074020505576px;" class="tag-cloud-link">Markdown</a>
+    <a href="/tags/Markdown/" style="font-size: 10.137537090145399px;" class="tag-cloud-link">Markdown</a>
     
-    <a href="/tags/Django/" style="font-size: 13.199113167500018px;" class="tag-cloud-link">Django</a>
+    <a href="/tags/Django/" style="font-size: 14.469572558577076px;" class="tag-cloud-link">Django</a>
     
-    <a href="/tags/基础/" style="font-size: 9.607330987042406px;" class="tag-cloud-link">基础</a>
+    <a href="/tags/基础/" style="font-size: 16.412144569152712px;" class="tag-cloud-link">基础</a>
     
-    <a href="/tags/踩坑/" style="font-size: 18.660391912518318px;" class="tag-cloud-link">踩坑</a>
+    <a href="/tags/踩坑/" style="font-size: 15.212791119032358px;" class="tag-cloud-link">踩坑</a>
     
-    <a href="/tags/配置/" style="font-size: 11.002724395015191px;" class="tag-cloud-link">配置</a>
+    <a href="/tags/配置/" style="font-size: 18.792859991781285px;" class="tag-cloud-link">配置</a>
     
-    <a href="/tags/Mybatis/" style="font-size: 17.10843288454023px;" class="tag-cloud-link">Mybatis</a>
+    <a href="/tags/Mybatis/" style="font-size: 10.256507263978524px;" class="tag-cloud-link">Mybatis</a>
     
-    <a href="/tags/开发/" style="font-size: 18.258000503606024px;" class="tag-cloud-link">开发</a>
+    <a href="/tags/开发/" style="font-size: 12.401674055348376px;" class="tag-cloud-link">开发</a>
     
-    <a href="/tags/备份/" style="font-size: 10.696439931805841px;" class="tag-cloud-link">备份</a>
+    <a href="/tags/备份/" style="font-size: 18.08779757784255px;" class="tag-cloud-link">备份</a>
     
-    <a href="/tags/高可用/" style="font-size: 16.43527299352354px;" class="tag-cloud-link">高可用</a>
+    <a href="/tags/高可用/" style="font-size: 17.99634578000392px;" class="tag-cloud-link">高可用</a>
     
-    <a href="/tags/eclipse/" style="font-size: 11.37136334441777px;" class="tag-cloud-link">eclipse</a>
+    <a href="/tags/eclipse/" style="font-size: 16.88508933605487px;" class="tag-cloud-link">eclipse</a>
     
-    <a href="/tags/deepin/" style="font-size: 13.242369756354243px;" class="tag-cloud-link">deepin</a>
+    <a href="/tags/deepin/" style="font-size: 19.03217458376244px;" class="tag-cloud-link">deepin</a>
     
-    <a href="/tags/hexo/" style="font-size: 12.806692682297697px;" class="tag-cloud-link">hexo</a>
+    <a href="/tags/hexo/" style="font-size: 15.401827520775786px;" class="tag-cloud-link">hexo</a>
     
-    <a href="/tags/个人博客/" style="font-size: 19.039724744305467px;" class="tag-cloud-link">个人博客</a>
+    <a href="/tags/个人博客/" style="font-size: 11.410525912077508px;" class="tag-cloud-link">个人博客</a>
     
-    <a href="/tags/源码/" style="font-size: 19.707832941211876px;" class="tag-cloud-link">源码</a>
+    <a href="/tags/源码/" style="font-size: 9.555770519492047px;" class="tag-cloud-link">源码</a>
     
-    <a href="/tags/压缩列表/" style="font-size: 10.110032876415218px;" class="tag-cloud-link">压缩列表</a>
+    <a href="/tags/压缩列表/" style="font-size: 14.58716232826971px;" class="tag-cloud-link">压缩列表</a>
     
-    <a href="/tags/adlist/" style="font-size: 16.680883706834972px;" class="tag-cloud-link">adlist</a>
+    <a href="/tags/adlist/" style="font-size: 19.93842581923841px;" class="tag-cloud-link">adlist</a>
     
-    <a href="/tags/zookeeper/" style="font-size: 17.424488149429298px;" class="tag-cloud-link">zookeeper</a>
+    <a href="/tags/zookeeper/" style="font-size: 15.298759658798962px;" class="tag-cloud-link">zookeeper</a>
     
-    <a href="/tags/整数集合/" style="font-size: 13.516118288410789px;" class="tag-cloud-link">整数集合</a>
+    <a href="/tags/整数集合/" style="font-size: 10.413001998453446px;" class="tag-cloud-link">整数集合</a>
     
-    <a href="/tags/skiplist/" style="font-size: 17.7866252339786px;" class="tag-cloud-link">skiplist</a>
+    <a href="/tags/skiplist/" style="font-size: 17.176578522493077px;" class="tag-cloud-link">skiplist</a>
     
-    <a href="/tags/sds/" style="font-size: 10.282070377856803px;" class="tag-cloud-link">sds</a>
+    <a href="/tags/sds/" style="font-size: 14.513253213311245px;" class="tag-cloud-link">sds</a>
     
-    <a href="/tags/面试/" style="font-size: 19.716833654650543px;" class="tag-cloud-link">面试</a>
+    <a href="/tags/面试/" style="font-size: 18.134741867986936px;" class="tag-cloud-link">面试</a>
     
-    <a href="/tags/操作系统/" style="font-size: 12.621160602669514px;" class="tag-cloud-link">操作系统</a>
+    <a href="/tags/操作系统/" style="font-size: 14.132265424725235px;" class="tag-cloud-link">操作系统</a>
     
-    <a href="/tags/字典/" style="font-size: 8.203133530184209px;" class="tag-cloud-link">字典</a>
+    <a href="/tags/字典/" style="font-size: 19.82336428272831px;" class="tag-cloud-link">字典</a>
     
 </div>
                 
@@ -859,7 +899,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
 <script src="https://myau.moe/js/comment/gitment.browser.js"></script>
 <script>
     if(window.commentConfig) {
-      window.commentConfig.id = 'Tue Apr 09 2019 16:15:03 GMT+0800'
+      window.commentConfig.id = 'Mon Apr 22 2019 20:30:45 GMT+0800'
       window.commentConfig.owner = 'BirdWong'
       window.commentConfig.repo = 'RocWong'
       window.commentConfig.client_id = '2318105e2020b5f29a07'
@@ -867,7 +907,7 @@ var $sinaMiniBlogShare = function(eleShare, eleContainer) {
       window.commentConfig.redirect_uri = ''
     } else {
       window.commentConfig = {
-      	id: 'Tue Apr 09 2019 16:15:03 GMT+0800',
+      	id: 'Mon Apr 22 2019 20:30:45 GMT+0800',
         owner: 'BirdWong',
         repo: 'RocWong',
         client_id: '2318105e2020b5f29a07',
