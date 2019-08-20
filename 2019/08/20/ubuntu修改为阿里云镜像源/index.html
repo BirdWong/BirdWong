@@ -64,18 +64,18 @@
 	     });
 	</script>
 
-  <meta name="description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 |版本|代号|| :—: | :—: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.04 (LT">
+  <meta name="description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 | 版本 | 代号 || :—-: | :—-: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.">
 <meta name="keywords" content="系统配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu修改为阿里云镜像源">
 <meta property="og:url" content="https://jijiking51.cn/2019/08/20/ubuntu修改为阿里云镜像源/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 |版本|代号|| :—: | :—: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.04 (LT">
+<meta property="og:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 | 版本 | 代号 || :—-: | :—-: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-20T09:05:15.571Z">
+<meta property="og:updated_time" content="2019-08-20T09:15:17.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu修改为阿里云镜像源">
-<meta name="twitter:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 |版本|代号|| :—: | :—: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.04 (LT">
+<meta name="twitter:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 | 版本 | 代号 || :—-: | :—-: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.">
   <link rel="canonical" href="https://jijiking51.cn/2019/08/20/ubuntu修改为阿里云镜像源/">
 
 
@@ -311,7 +311,7 @@
                 
               
 
-              <time title="创建时间：2019-08-20 16:53:27 / 修改时间：17:05:15" itemprop="dateCreated datePublished" datetime="2019-08-20T16:53:27+08:00">2019-08-20</time>
+              <time title="创建时间：2019-08-20 16:53:27 / 修改时间：17:15:17" itemprop="dateCreated datePublished" datetime="2019-08-20T16:53:27+08:00">2019-08-20</time>
             </span>
           
             
@@ -373,8 +373,10 @@
 <li><p>查看目前版本信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -c</span><br></pre></td></tr></table></figure>
 <p>不同的版本的系统代号不同</p>
-<p>|版本|代号|<br>| :—: | :—: |<br>|Ubuntu 12.04 (LTS)|precise|<br>|Ubuntu 14.04 (LTS)|trusty|<br>|Ubuntu 15.04 |vivid|<br>|Ubuntu 15.10 |wily|<br>|Ubuntu 16.04 (LTS)|xenial|<br>|Ubuntu 18.04 (LTS)|bionic|</p>
+<p>| 版本 | 代号 |<br>| :—-: | :—-: |<br>|Ubuntu 12.04 (LTS)|precise|<br>|Ubuntu 14.04 (LTS)|trusty|<br>|Ubuntu 15.04 |vivid|<br>|Ubuntu 15.10 |wily|<br>|Ubuntu 16.04 (LTS)|xenial|<br>|Ubuntu 18.04 (LTS)|bionic|</p>
 </li>
+</ol><a id="more"></a>
+<ol start="3">
 <li><p>修改配置文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 </li>

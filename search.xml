@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[ubuntu修改为阿里云镜像源]]></title>
     <url>%2F2019%2F08%2F20%2Fubuntu%E4%BF%AE%E6%94%B9%E4%B8%BA%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F%E6%BA%90%2F</url>
-    <content type="text"><![CDATA[备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 |版本|代号|| :—: | :—: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.04 (LTS)|trusty||Ubuntu 15.04 |vivid||Ubuntu 15.10 |wily||Ubuntu 16.04 (LTS)|xenial||Ubuntu 18.04 (LTS)|bionic| 修改配置文件 12345678910111213141516171819deb http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse 更新列表 1apt-get update 注意update和upgrade区别：update是更新软件列表，upgrade是更新软件。]]></content>
+    <content type="text"><![CDATA[备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同 | 版本 | 代号 || :—-: | :—-: ||Ubuntu 12.04 (LTS)|precise||Ubuntu 14.04 (LTS)|trusty||Ubuntu 15.04 |vivid||Ubuntu 15.10 |wily||Ubuntu 16.04 (LTS)|xenial||Ubuntu 18.04 (LTS)|bionic| 修改配置文件 12345678910111213141516171819deb http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiversedeb-src http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse 更新列表 1apt-get update 注意update和upgrade区别：update是更新软件列表，upgrade是更新软件。]]></content>
       <categories>
         <category>Linux</category>
       </categories>
@@ -170,8 +170,8 @@
         <category>python</category>
       </categories>
       <tags>
-        <tag>Django</tag>
         <tag>Markdown</tag>
+        <tag>Django</tag>
       </tags>
   </entry>
   <entry>
