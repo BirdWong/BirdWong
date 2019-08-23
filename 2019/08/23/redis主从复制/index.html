@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+<!-- google 广告   http://www.google.com/adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({
+	          google_ad_client: "ca-pub-8966265724665848",
+	          enable_page_level_ads: true
+	     });
+	</script>
+
+  <meta name="description" content="在redis中可以通过slaveof命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。graph LR A[从服务器] --&amp;gt;|复制| B(主服务器)旧版复制的实现redis的复制分为同步/命令传播两个操作 同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态 命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis主从复制">
+<meta property="og:url" content="https://jijiking51.cn/2019/08/23/redis主从复制/index.html">
+<meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="在redis中可以通过slaveof命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。graph LR A[从服务器] --&amp;gt;|复制| B(主服务器)旧版复制的实现redis的复制分为同步/命令传播两个操作 同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态 命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-23T14:10:19.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis主从复制">
+<meta name="twitter:description" content="在redis中可以通过slaveof命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。graph LR A[从服务器] --&amp;gt;|复制| B(主服务器)旧版复制的实现redis的复制分为同步/命令传播两个操作 同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态 命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库">
+  <link rel="canonical" href="https://jijiking51.cn/2019/08/23/redis主从复制/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>redis主从复制 | RocWong</title>
+  <meta name="generator" content="Hexo 3.8.0">
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RocWong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">19</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">28</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+    <!-- 复制转载提示 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <script>
+      document.body.oncopy = function() {
+        swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+      };
+    </script>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/08/23/redis主从复制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">redis主从复制
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-23 14:13:44 / 修改时间：22:10:19" itemprop="dateCreated datePublished" datetime="2019-08-23T14:13:44+08:00">2019-08-23</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/08/23/redis主从复制/" class="post-meta-item leancloud_visitors" data-flag-title="redis主从复制" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/08/23/redis主从复制/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/23/redis主从复制/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在redis中可以通过<code>slaveof</code>命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。</p><pre class="mermaid">graph LR
+A[从服务器] -->|复制| B(主服务器)</pre><h1 id="旧版复制的实现"><a href="#旧版复制的实现" class="headerlink" title="旧版复制的实现"></a>旧版复制的实现</h1><p>redis的复制分为<strong>同步/命令传播</strong>两个操作</p><ul>
+<li>同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态</li>
+<li>命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库状态出现不一致时让主从服务器的数据库重新回到一致状态</li>
+</ul><a id="more"></a>
+
+
+
+
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>当客户端向从服务器发送<strong>slaveof</strong>命令，要求从服务器复制主服务器时，从服务器首先需要执行同步操作，也就是将从服务器的数据库状态更新至主服务器当前所处的数据库状态。</p>
+<p>同步操作需要sync命令来完成</p>
+<ol>
+<li>从服务器向主服务器发送<strong>sync</strong>命令</li>
+<li>收到sync命令的主服务器执行<strong>BGSAVE</strong>命令， 在后台生成一个RDB文件，并使用一个缓冲区记录现在开始所执行的所有命令</li>
+<li>当主服务器的<strong>BGSAVE</strong>命令执行完毕时，主服务器会将生成的RDB文件发送给从服务器，从服务器接收并载入这个RDB文件，将自己的数据库状态更新至主服务器指定<strong>BGSAVE</strong>命令时的状态。</li>
+<li>主服务器将缓冲区此期间记录的所有命令发送给从服务器，从服务器执行这些数据更新命令，将自己的数据库状态更新至主服务器数据库当前所处的状态</li>
+</ol>
+<pre class="mermaid">graph LR;  
+　　B(从服务器)-->|发送SYNC命令|A(主服务器);    
+　　A-->|发送RDB文件|B
+　　A-->|发送缓冲区保存的所有数据更改命令|B</pre>
+
+<h2 id="命令传播"><a href="#命令传播" class="headerlink" title="命令传播"></a>命令传播</h2><p>同步命令执行完毕后，主从服务器处于一致状态。 当主服务器执行数据修改命令时，一致状态将会被打破，这个时候主从的数据不可能一致，所以，主服务器需要将导致数据不一致的命令发送给从服务器，从服务器通过执行这条命令，使数据重新达到一致。</p>
+<pre class="mermaid">graph LR
+A(客户端)-->|del key|B(主服务器)
+B-->|del b|C(从服务器)</pre>
+
+<h2 id="复制功能缺陷"><a href="#复制功能缺陷" class="headerlink" title="复制功能缺陷"></a>复制功能缺陷</h2><p>复制可以分为两种情况</p>
+<ul>
+<li>初次复制： 从服务器以前没有复制过任何主服务器， 或者从服务器当前要复制的主服务器与上一次复制的主服务器不同</li>
+<li>断线后重复制：处于命令传播阶段的主从服务器因为某种原因断开复制，但从服务器通过自动重连重新连接上了主服务器，并且继续复制主服务器</li>
+</ul>
+<p>在旧版复制中， 初次复制没有问题， 但是断线后重复制有很大重复性操作</p>
+<pre class="mermaid">sequenceDiagram
+    从服务器 -> 主服务器: 同步状态
+    客户端 ->> 主服务器: 发送set n命令
+    主服务器 ->> 从服务器: 传播set n命令
+    从服务器 ->> 主服务器: 断开链接
+    客户端 ->> 主服务器: 发送set n+1命令
+    从服务器 ->> 主服务器: 尝试链接
+    客户端 ->> 主服务器: 发送set n+2命令
+    从服务器 ->> 主服务器: 重新链接成功
+    从服务器 ->> 主服务器: sync命令
+    主服务器 ->> 从服务器: 执行同步操作
+    客户端 ->> 主服务器: 发送set n+3命令
+    从服务器 ->> 主服务器: 接收同步期间的修改命令
+    主服务器 -> 从服务器: 同步状态</pre>
+
+<p>上图中可以清晰看到， 断线重连后，同步操作这一步实际上并不是非做不可。</p>
+<p>从服务器想要将自己更新至主服务器当前所处的状态，真正需要的是主从服务器链接中断期间，主服务器新添加的n+1, n+2两个键的数据。</p>
+<p>所以， 主服务器执行同步操作， 将1——n+2 都打包成RDB发送给从服务器是不必要的.</p>
+<p>一般来说，主服务器在断线期间执行修改命令会比整个数据库的数据量要少得多，在这种情况下，为了让从服务器补足一小部分缺失的数据，却要让主服务器重新执行一次SYNC命令， 这种做法是非常低效的。</p>
+<h1 id="新版复制实现"><a href="#新版复制实现" class="headerlink" title="新版复制实现"></a>新版复制实现</h1><p>为了解决旧版复制功能在处理断线重复制的低效问题，Redis使用<strong>PSYNC</strong>命令代替<strong>SYNC</strong>命令来执行复制时的同步操作</p>
+<p>PSYNC具有完整重同步和部分重同步</p>
+<ul>
+<li>完整重同步： 用于初次复制情况，执行步骤和sycn命令基本一样， 都是通过让主服务器创建并发送RDB文件，以及向从服务器发送保存在缓冲区里面的修改命令进行同步</li>
+<li>部分重同步：用于断线后重复制情况，当从服务器在断线后重新连接上主服务器时，如果条件允许，主服务器可以将主从服务器断开期间执行的数据修改命令发送给从服务器，从服务器只要接受并执行这些命令，就可以将数据库更新至主服务器当前所处的数据库状态</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
+    从服务器 -> 主服务器: 同步状态
+    客户端 ->> 主服务器: 发送set n命令
+    主服务器 ->> 从服务器: 传播set n命令
+    从服务器 ->> 主服务器: 断开链接
+    客户端 ->> 主服务器: 发送set n+1命令
+    从服务器 ->> 主服务器: 尝试链接
+    客户端 ->> 主服务器: 发送set n+2命令
+    从服务器 ->> 主服务器: 重新链接成功
+    从服务器 ->> 主服务器: 发送psync命令
+    主服务器 ->> 从服务器: 向从服务器返回+continue回复，表示执行部分重同步
+    从服务器 -> 从服务器: 接收+continue，准备执行部分重同步
+    主服务器 ->> 从服务器: 发送set n+1、n+2命令
+    从服务器 -> 从服务器: 接收并执行传过来的两个set命令
+    主服务器 -> 从服务器: 再次恢复同步</pre>
+
+<p>从上可以看出， psync相比较sync命令在断线重复制时所需资源要少得多，完成同步的速度也快得多，整个过程中， 不需要处理已经重复的数据。</p>
+<h2 id="部分重同步的实现"><a href="#部分重同步的实现" class="headerlink" title="部分重同步的实现"></a>部分重同步的实现</h2><p>部分重同步主要由三个部分构成：</p>
+<ul>
+<li>主服务器的复制偏移量、从服务器的复制偏移量</li>
+<li>主服务器的复制挤压缓冲区</li>
+<li>服务器的运行id</li>
+</ul>
+<h3 id="复制偏移量"><a href="#复制偏移量" class="headerlink" title="复制偏移量"></a>复制偏移量</h3><p>主从服务器分别会维护一个复制偏移量</p>
+<ul>
+<li>主服务器每次向从服务器传播N个字节数据时，就将自己的复制偏移量的值加N</li>
+<li>从服务器每次接收到主服务器传播来的N个字节数据时，就将自己的复制偏移量的值加N</li>
+</ul>
+<pre class="mermaid">graph LR
+A(客户端) -->|发送set命令 33字节| B(主服务器,目前10086字节)
+B ---|复制偏移量加33, 复制偏移量为10119| B
+B -->|传播33字节数据| C(从服务器1,目前10068字节)
+C ---|复制偏移量加33, 复制偏移量为10119| C
+B -->|传播33字节数据| D(从服务器2,目前10068字节)
+D ---|复制偏移量加33, 复制偏移量为10119| D
+B -->|传播33字节数据| E(从服务器3,目前10068字节)
+E ---|复制偏移量加33, 复制偏移量为10119| E</pre>
+
+<p><strong>通过确认主从的复制偏移量就可以确认是否处于一致状态</strong></p>
+<p>如果传播时从服务器1断线，那么传播就只有从服务器2，从服务器3能够接收，在此之后就只有从服务器1复制偏移量为10086， 而其他都是10119， 待从服务器1重新连接后是执行部分重同步还是完全重同步需要涉及复制积压缓冲区</p>
+<pre class="mermaid">graph LR
+A(客户端) -->|发送set命令 33字节| B(主服务器,目前10086字节)
+B ---|复制偏移量加33, 复制偏移量为10119| B
+B -.-> |断线| C(从服务器1,目前10068字节)
+B -->|传播33字节数据| D(从服务器2,目前10068字节)
+D ---|复制偏移量加33, 复制偏移量为10119| D
+B -->|传播33字节数据| E(从服务器3,目前10068字节)
+E ---|复制偏移量加33, 复制偏移量为10119| E</pre>
+
+
+
+
+
+<h3 id="复制积压缓冲区"><a href="#复制积压缓冲区" class="headerlink" title="复制积压缓冲区"></a>复制积压缓冲区</h3><p>复制积压缓冲区是由主服务器维护的一个固定长度先进先出队列，默认大小为1<br>MB， 当主服务器进行命令传播时，它不仅仅会将写命令发送给所有从服务器，还会将命令入队到复制积压缓冲区里面</p>
+<pre class="mermaid">graph TB
+    subgraph 主服务器
+    A(命令传播程序) -->|将写命令放入队列| B(复制积压缓冲区)
+    end
+    A -->|发送写命令| C(从服务器A)
+    A -->|发送写命令| D(从服务器B)</pre>
+
+<p>当从服务器重新连上主服务器后，会通过<strong>psync</strong>命令将自己的复制偏移量offset发送给主服务器，主服务器会根据这个复制偏移量来决定对从服务器执行何种同步操作</p>
+<ul>
+<li>如果offset偏移量之后的数据任然存在于复制积压缓冲区里面，那么主服务器将对从服务器执行部分重同步操作</li>
+<li>如果offset偏移量之后的数据已经不存在于复制积压缓冲区，那么主服务器将对从服务器执行完整同步操作</li>
+</ul>
+<p>回到之前的例子：</p>
+<ul>
+<li>从服务器1重新连接后，通过psync命令报告自己的复制偏移量10086</li>
+<li>主服务器将检查偏移量10086之后的数据是否存在于复制积压缓冲区里面，发现这些数据任然存在，于是主服务器向从服务器发送+continue回复， 表示数据同步将以部分重同步模式进行</li>
+<li>接着主服务器会将复制积压缓冲区10086偏移量之后的所有数据（10087-10119）都发送给从服务器1</li>
+<li>从服务器只要接收这33字节的缺失数据，就可以回到与主服务器一直状态</li>
+</ul>
+<h2 id="服务器运行id"><a href="#服务器运行id" class="headerlink" title="服务器运行id"></a>服务器运行id</h2><p>除了复制偏移量和复制积压缓冲区外，实现部分重同步还需要用到服务器运行ID</p>
+<ul>
+<li>每个redis服务器都会有自己的运行ID</li>
+<li>运行ID在服务器启动时自动生成，由60个随机的十六进制字符组成</li>
+</ul>
+<p>当从服务器对主服务器初次复制时，主服务器会将自己运行的id传送给从服务器，而从服务器则会将这个运行id保存起来， 从服务器断线重连时，从服务器将向当前连接的主服务器发送之前保存的ID</p>
+<ul>
+<li>如果保存的ID和主服务器相同，说明断线前复制的就是当前主服务器，可以尝试执行部分重同步</li>
+<li>如果ID不同， 说明从服务器断线前复制的主服务器并不是当前这台，应该进行完全同步操作</li>
+</ul>
+<h2 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h2><p>调用方法</p>
+<ol>
+<li>如果没有复制过任何主服务器，或者之前执行了slaveof no one ,那么这个从服务器在开始一次新的复制时要向主服务器发送<code>PSYNC  ? -1</code> 命令， 主动请求主服务器完全同步操作</li>
+<li>相反， 如果已经进行过复制操作，那么从服务器在开始时要发送<code>PSYNC &lt;runid&gt; &lt;offset&gt;</code>， 其中runid是上次复制的主服务器id，offset时目前复制偏移量， 接收到这个命令的主服务器会通过这两个参数来判断改对从服务器执行哪种同步操作</li>
+</ol>
+<p>三种回复：</p>
+<ol>
+<li>如果执行完整同步操作：回复<code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>,其中runid是这个主服务器的id，从服务器会将这个id保存起来，在下一次发送PSYNC时使用，offset则是当前主服务器的复制偏移量，从服务器会将这个值作为自己的初始偏移量</li>
+<li>部分重同步操作：回复<code>+CONTINUE</code>，从服务器只要等着主服务器将自己缺少的那部分数据发送过来就好了</li>
+<li>版本过低：回复-ERR，表示服务器版本低于2.8，无法识别PSYNC命令，从服务器将向主服务器发送SYNC命令，并且与主服务器完整同步操作</li>
+</ol>
+<div id="flowchart-0" class="flow-chart"></div>
+
+<h1 id="SLAVEOF执行流程"><a href="#SLAVEOF执行流程" class="headerlink" title="SLAVEOF执行流程"></a>SLAVEOF执行流程</h1><h2 id="设置主服务器地址和端口"><a href="#设置主服务器地址和端口" class="headerlink" title="设置主服务器地址和端口"></a>设置主服务器地址和端口</h2><p>例如执行命令：<code>SLAVEOF 127.0.0.1 6379</code></p>
+<p>从服务器首先要做的就是将客户端给定的主服务器IP地址<code>127.0.0.1</code>以及端口<code>6379</code>保存到服务器状态的masterhost属性和masterport属性里面：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">redisServer</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/* Replication (slave) */</span></span><br><span class="line">    <span class="keyword">char</span> *masterauth;               <span class="comment">/* AUTH with this password with master */</span></span><br><span class="line">    <span class="keyword">char</span> *masterhost;               <span class="comment">/* Hostname of master */</span></span><br><span class="line">    <span class="keyword">int</span> masterport;                 <span class="comment">/* Port of master */</span></span><br><span class="line">	...</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure>
+<p>SLAVEOF命令是一个异步命令，在完成masterhost和masterport属性设置后向客户端返回OK，表示复制指令已经被接收，而实际的复制工作将在OK返回之后才正式开始</p>
+<h2 id="建立套接字连接"><a href="#建立套接字连接" class="headerlink" title="建立套接字连接"></a>建立套接字连接</h2><p>从服务器将根据所设置的IP地址和端口创建连向主服务器的套接字</p>
+<p>如果套接字成功连接主服务器，那么从服务器将为这个套接字关联一个专门用于处理复制工作的文件事件处理器，比如接收RDB和主服务器传播回来的写命令</p>
+<p>而主服务器接受从服务器的套接字后，将该套接字创建相应的客户端状态，并将从服务器连接看做是一个连接到主服务器的客户端对待，这时从服务器将同时具有服务器和客户端两个身份。</p>
+<h2 id="发送PING命令"><a href="#发送PING命令" class="headerlink" title="发送PING命令"></a>发送PING命令</h2><p>从服务器成为主服务器客户端后第一件事就是向主服务器发送PING命令</p>
+<ol>
+<li>检查套接字的读写状态时候正常</li>
+<li>复制工作必须在主服务器可以正常处理命令请求的状态下才能进行，通过发送PING命令可以检查主服务器能否正常处理请求命令</li>
+<li>如果主服务器返回了命令回复，而从服务器不能在规定时间内读取回复的内容， 说明当前网络不佳，不能继续后面的复制操作，所以应该断开并重新创建套接字</li>
+<li>如果回复读取也正常，那么标识主从服务器连接正常，并且可以接受从服务器的请求，可以继续执行复制工作的下面步骤</li>
+</ol>
+<h2 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h2><p>如果从服务器设置了masterauth选项， 那么进行身份验证， 这时从服务器将向主服务器发送一条<code>auth</code>命令，验证时可能出现以下情况</p>
+<ol>
+<li>如果主服务器没有设置requirepass选项， 并且从服务器也没有设置masterauth选项，那么主服务器将继续执行从服务器发送的命令， 复制工作继续</li>
+<li>如果从服务器通过auth命令发送的密码和主服务器设置的requirepass选项所设置的密码相同，那么主服务器将继续执行从服务器发送的命令，复制工作继续执行。相反，如果明码不同，主服务器将返回invalid password错误</li>
+<li>如果主服务器设置了requirepass选项， 而从服务器没有设置masterauth选项，那么主服务器将返回一个NOAUTH错误。如果主服务器没有设置requirepass选项，而从服务器设置了masterauth选项，那么主服务器返回一个 no password is set错误</li>
+</ol>
+<p><strong>任何</strong>错误情况都会令从服务器<strong>停止复制工作</strong>，并从创建套接字开始重新执行复制，直到身份验证通过，或者从服务器放弃执行复制为止</p>
+<div id="flowchart-1" class="flow-chart"></div>
+
+<h2 id="发送端口信息"><a href="#发送端口信息" class="headerlink" title="发送端口信息"></a>发送端口信息</h2><p>身份验证之后，从服务器执行命令<code>REPLCONF listening-port &lt;port-number&gt;</code>向主服务器发送服务器监听端口号</p>
+<blockquote>
+<p>例如，从服务器的监听端口为12345，那么从服务器将向主服务器发送命令REPLCONF listening-port 12345</p>
+</blockquote>
+<p>主服务器在接收到这个命令后，会将端口号记录在从服务器所对应客户端状态的slave_listening_port 属性中， 这个属性唯一的作用就是在主服务器执行<code>INFO replication</code>时打印出从服务器的端口号</p>
+<h2 id="同步-1"><a href="#同步-1" class="headerlink" title="同步"></a>同步</h2><p>这一步，从服务器将向主服务器发送PSYNC命令， 执行同步操作，并将自己的数据库更新至主服务器数据库当前所处状态</p>
+<p>在同步操作之前，只有从服务器是主服务器的客户端，但是在执行同步操作之后，主服务器也会成为从服务器的客户端</p>
+<ul>
+<li>如果执行完整同步操作，那么主服务器需要成为从服务器的客户端才能将保存在缓冲区里面的写命令发送给从服务器</li>
+<li>如果是部分重同步操作，那么主服务器需要成为从服务器的客户端才能向从服务器发送保存在复制积压缓冲区里面的写命令</li>
+</ul>
+<p>因此同步操作执行之后，主从服务器双方都是对方的客户端</p>
+<h2 id="命令传播-1"><a href="#命令传播-1" class="headerlink" title="命令传播"></a>命令传播</h2><p>完成同步后，主服务器就会进入命令传播阶段，这时主服务器只要一直将自己执行的写命令发送给从服务器，而从服务器只要一直接收主服务器发来的写命令就可以保证主从一致了</p>
+<h2 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h2><p>从服务器默认会以每秒一次的频率向主服务器发送命令</p>
+<p>REPLCONF ACK &lt;replication_offset&gt;</p>
+<p>其中&lt;replicaion_offset&gt;是从服务器当前的复制偏移量</p>
+<ul>
+<li>检测主从服务器的网络连接状态<ul>
+<li>主服务器可以通过发送和接收REPLCONF ACK命令来检查两者之间的网络连接是否正常， 如果主服务器超过一秒钟没有收到从服务器发来的REPLCONF ACK命令，那么主服务器就知道主从服务器链接出现了问题</li>
+</ul>
+</li>
+<li>辅助实现min-slaves选项<ul>
+<li>redis的min-slaves-to-write和min-slaves-max-lag两个选项可以防止主服务器不在安全的情况下执行写命令， 例如<code>min-slaves-to-write 3</code> <code>min-slaves-max-lag</code>，在从服务器数量少于3个或者三个从服务器的延迟(lag)都大于或等于10秒时主服务器拒绝执行写命令</li>
+</ul>
+</li>
+<li>检测命令丢失<ul>
+<li>如果因为网络故障，主服务器传播给从服务器的写命令在半路丢失，那么当从服务器向主服务器告知replication_offset时，主服务器发觉从服务器当前的复制偏移量少于自己的复制偏移量，然后主服务器就会根据从服务器提交复制偏移量，在复制积压缓冲区找到缺少的数据重新发送给从服务器<script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">flowchat
+st=>start: 开始
+e=>end: 结束
+op1=>operation: 从服务器接到客户端发来的SLAVEOF命令
+cond1=>condition: 这是从服务器第一次执行复制？
+op2=>operation: 向主服务器发送PSYNC ? -1
+op3=>operation: 向主服务器发送PSYNC <runid> <offset>
+cond2=>condition: 主服务器返回 +CONTINUE ?
+op4=>operation: 主服务器返回 +FULLRESYNC <runid> <offset>执行完整重同步
+op5=>operation: 执行部分重同步
+
+st->op1
+op1->cond1
+cond1(yes)->op2
+cond1(no)->op3
+op3->cond2
+cond2(no)->op4
+cond2(yes)->op5
+op2->op4
+op4->e
+op5->e</offset></runid></offset></runid></textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script><textarea id="flowchart-1-code" style="display: none">st=>start: 开始
+en=>end: 结束
+op1=>operation: 进入身份验证
+op2=>operation: 执行复制工作的下一个步骤
+op3=>operation: 主从服务器设置了不同的密码
+或者
+主服务器设置了密码从服务器没有设置密码
+或者
+从服务器设置了密码主服务器没有设置密码
+op4=>operation: 重试
+cond1=>condition: 主从服务器都没有设置密码
+cond2=>condition: 主从服务器设置的密码相同
+
+st->op1
+op1->cond1
+cond1(yes)->op2
+cond1(no)->cond2
+cond2(yes)->op2
+cond2(no)->op3
+op3->op4
+op2->en</textarea><textarea id="flowchart-1-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-1-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-1", options);</script></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/20/ubuntu修改为阿里云镜像源/" rel="next" title="ubuntu修改为阿里云镜像源">
+                  <i class="fa fa-chevron-left"></i> ubuntu修改为阿里云镜像源
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+    
+    
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong">
+  <p class="site-author-name" itemprop="name">RocWong</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+          
+        </div>
+        <div>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#旧版复制的实现"><span class="nav-number">1.</span> <span class="nav-text">旧版复制的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">1.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令传播"><span class="nav-number">1.2.</span> <span class="nav-text">命令传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制功能缺陷"><span class="nav-number">1.3.</span> <span class="nav-text">复制功能缺陷</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新版复制实现"><span class="nav-number">2.</span> <span class="nav-text">新版复制实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#部分重同步的实现"><span class="nav-number">2.1.</span> <span class="nav-text">部分重同步的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#复制偏移量"><span class="nav-number">2.1.1.</span> <span class="nav-text">复制偏移量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制积压缓冲区"><span class="nav-number">2.1.2.</span> <span class="nav-text">复制积压缓冲区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器运行id"><span class="nav-number">2.2.</span> <span class="nav-text">服务器运行id</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PSYNC命令实现"><span class="nav-number">2.3.</span> <span class="nav-text">PSYNC命令实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SLAVEOF执行流程"><span class="nav-number">3.</span> <span class="nav-text">SLAVEOF执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置主服务器地址和端口"><span class="nav-number">3.1.</span> <span class="nav-text">设置主服务器地址和端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立套接字连接"><span class="nav-number">3.2.</span> <span class="nav-text">建立套接字连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送PING命令"><span class="nav-number">3.3.</span> <span class="nav-text">发送PING命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#身份验证"><span class="nav-number">3.4.</span> <span class="nav-text">身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送端口信息"><span class="nav-number">3.5.</span> <span class="nav-text">发送端口信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步-1"><span class="nav-number">3.6.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令传播-1"><span class="nav-number">3.7.</span> <span class="nav-text">命令传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#心跳检测"><span class="nav-number">3.8.</span> <span class="nav-text">心跳检测</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer">
+  </div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RocWong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        <span>0%</span>
+      </div>
+      <div class="reading-progress-bar"></div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+            
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+            'X-LC-Key': 'Nzpwf4hnsjlU9jOzMC0HmReR',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://rocwong.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://jijiking51.cn/2019/08/23/redis主从复制/";
+    this.page.identifier = "2019/08/23/redis主从复制/";
+    this.page.title = 'redis主从复制';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://rocwong.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
