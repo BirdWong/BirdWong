@@ -64,19 +64,19 @@
 	     });
 	</script>
 
-  <meta name="description" content="首先执行（每次重启服务器后都需要执行）：sudo sysctl -w vm.max_map_count=262144获取一些基本配置文件12345docker run -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; -v /home/:/root/ --name elasticsearch elasticsearchdocker">
-<meta name="keywords" content="踩坑,配置">
+  <meta name="description" content="下载安装文件123456789# 下载wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz# 解压tar -zxvf zookeeper-3.4.14.tar.gz# 删除无用文件rm -rf dist-maven/ src/ *.xml *.txt">
+<meta name="keywords" content="zookeeper">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ElasticSearch使用记录">
-<meta property="og:url" content="https://jijiking51.cn/2019/04/11/ElasticSearch使用记录/index.html">
+<meta property="og:title" content="zookeeper安装使用">
+<meta property="og:url" content="https://jijiking51.cn/2019/08/26/zookeeper安装使用/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="首先执行（每次重启服务器后都需要执行）：sudo sysctl -w vm.max_map_count=262144获取一些基本配置文件12345docker run -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; -v /home/:/root/ --name elasticsearch elasticsearchdocker">
+<meta property="og:description" content="下载安装文件123456789# 下载wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz# 解压tar -zxvf zookeeper-3.4.14.tar.gz# 删除无用文件rm -rf dist-maven/ src/ *.xml *.txt">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-23T09:28:19.542Z">
+<meta property="og:updated_time" content="2019-08-26T14:17:49.351Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ElasticSearch使用记录">
-<meta name="twitter:description" content="首先执行（每次重启服务器后都需要执行）：sudo sysctl -w vm.max_map_count=262144获取一些基本配置文件12345docker run -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; -v /home/:/root/ --name elasticsearch elasticsearchdocker">
-  <link rel="canonical" href="https://jijiking51.cn/2019/04/11/ElasticSearch使用记录/">
+<meta name="twitter:title" content="zookeeper安装使用">
+<meta name="twitter:description" content="下载安装文件123456789# 下载wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz# 解压tar -zxvf zookeeper-3.4.14.tar.gz# 删除无用文件rm -rf dist-maven/ src/ *.xml *.txt">
+  <link rel="canonical" href="https://jijiking51.cn/2019/08/26/zookeeper安装使用/">
 
 
 <script id="page-configurations">
@@ -90,7 +90,7 @@
   };
 </script>
 
-  <title>ElasticSearch使用记录 | RocWong</title>
+  <title>zookeeper安装使用 | RocWong</title>
   <meta name="generator" content="Hexo 3.8.0">
   
 
@@ -282,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/ElasticSearch使用记录/">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/08/26/zookeeper安装使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="RocWong">
@@ -294,7 +294,7 @@
       <meta itemprop="name" content="RocWong">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">ElasticSearch使用记录
+        <h2 class="post-title" itemprop="name headline">zookeeper安装使用
 
           
         </h2>
@@ -310,19 +310,11 @@
                 
               
 
-              <time title="创建时间：2019-04-11 17:22:31" itemprop="dateCreated datePublished" datetime="2019-04-11T17:22:31+08:00">2019-04-11</time>
+              <time title="创建时间：2019-08-26 20:08:04 / 修改时间：22:17:49" itemprop="dateCreated datePublished" datetime="2019-08-26T20:08:04+08:00">2019-08-26</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-07-23 17:28:19" itemprop="dateModified" datetime="2019-07-23T17:28:19+08:00">2019-07-23</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -331,7 +323,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a></span>
 
                 
                 
@@ -340,7 +332,7 @@
           
 
           
-            <span id="/2019/04/11/ElasticSearch使用记录/" class="post-meta-item leancloud_visitors" data-flag-title="ElasticSearch使用记录" title="阅读次数">
+            <span id="/2019/08/26/zookeeper安装使用/" class="post-meta-item leancloud_visitors" data-flag-title="zookeeper安装使用" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -358,7 +350,7 @@
       
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2019/04/11/ElasticSearch使用记录/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/ElasticSearch使用记录/" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/2019/08/26/zookeeper安装使用/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/26/zookeeper安装使用/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -372,16 +364,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>首先执行（每次重启服务器后都需要执行）：<code>sudo sysctl -w vm.max_map_count=262144</code></p><p>获取一些基本配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/:/root/ --name elasticsearch elasticsearch</span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="comment"># 复制/usr/share/elasticsearch/下的config、logs两个文件夹内的文件分别到自己本地/home下的两个文件夹内，并且自己创建一个data文件夹</span></span><br><span class="line"><span class="comment"># 复制完成后把三个文件夹放置到自己指定的目录下</span></span><br><span class="line"><span class="comment"># 关闭容器并且删除！</span></span><br></pre></td></tr></table></figure></p><a id="more"></a>
+        <h1 id="下载安装文件"><a href="#下载安装文件" class="headerlink" title="下载安装文件"></a>下载安装文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxvf zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除无用文件</span></span><br><span class="line">rm -rf dist-maven/ src/ *.xml *.txt</span><br></pre></td></tr></table></figure><a id="more"></a>
+<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  conf</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">vi zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件保存目录</span></span><br><span class="line">dataDir=/root/zkdata</span><br><span class="line"><span class="comment"># 添加集群信息</span></span><br><span class="line">server.1=172.17.0.2:2888:3888</span><br><span class="line">server.2=172.17.0.3:2888:3888</span><br><span class="line">server.3=172.17.0.4:2888:3888</span><br></pre></td></tr></table></figure>
+<h1 id="创建文件目录"><a href="#创建文件目录" class="headerlink" title="创建文件目录"></a>创建文件目录</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /root/zkdata</span><br><span class="line"><span class="comment"># 选举的时候通过id比较来选举， 并且id读取的是文件存放目录下的myid文件</span></span><br><span class="line"><span class="built_in">echo</span> 1 &gt; /root/zkdata/myid</span><br></pre></td></tr></table></figure>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure>
+<h1 id="选举方式"><a href="#选举方式" class="headerlink" title="选举方式"></a>选举方式</h1><pre class="mermaid">graph LR
+    subgraph 服务器1
+    A(myid1:1)---B(ip:172.17.0.2)
+    end
+    subgraph 服务器2
+    C(myid1:2)---D(ip:172.17.0.3)
+    end
+    subgraph 服务器3
+    F(myid1:3)---E(ip:172.17.0.4)
+    end</pre>
 
-<p>修改elasticsearch.yml配置文件，将<code>cluster.name</code>改成<code>school</code></p>
-<p>启动命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -v指定的文件夹路径替换成上面的文件夹路径</span></span><br><span class="line">docker run -d -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/h4795/Documents/studytmp/es/config/:/usr/share/elasticsearch/config/  -v /home/h4795/Documents/studytmp/es/logs/:/usr/share/elasticsearch/logs/  -v /home/h4795/Documents/studytmp/es/data/:/usr/share/elasticsearch/data/ --name elasticsearch elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>安装ik分词插件，ik分词器版本必须和es一致，否则一定会安装失败<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分词器开源地址：https://github.com/medcl/elasticsearch-analysis-ik</span></span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="built_in">cd</span> bin</span><br><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.2.0/elasticsearch-analysis-ik-7.2.0.zip</span><br><span class="line"><span class="comment"># 退出docker</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># 重启es</span></span><br><span class="line">docker restart elasticsearch</span><br></pre></td></tr></table></figure></p>
-<p>创建索引<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// put http://127.0.0.1:9200/school</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"number_of_shards"</span>: <span class="string">"5"</span>,</span><br><span class="line">    <span class="attr">"number_of_replicas"</span>: <span class="string">"1"</span>,</span><br><span class="line">    <span class="attr">"analysis"</span>: &#123;</span><br><span class="line">      <span class="attr">"ik"</span>: &#123;</span><br><span class="line">        <span class="attr">"tokenizer"</span>: <span class="string">"ik_max_word"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>建立字段<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// post http://127.0.0.1:9200/school/_mapping/</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"properties"</span>: &#123;</span><br><span class="line">    <span class="attr">"id"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"title"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"context"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"createtime"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"date"</span>,</span><br><span class="line">      <span class="attr">"format"</span>: <span class="string">"yyyy-MM-dd HH:mm:ss || yyyy-MM-dd"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"status"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"kind"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"cid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"uid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<hr>
-
-<h2 id="通过查询删除数据"><a href="#通过查询删除数据" class="headerlink" title="通过查询删除数据"></a>通过查询删除数据</h2><p>使用查找的方式,将查找的内容全部删除<br>请求链接: <a href="127.0.0.1:9200/noob/goods/_delete_by_query" target="_blank" rel="noopener">127.0.0.1:9200/noob/goods/_delete_by_query</a><br>请求类型: POST<br>请求数据:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"query"</span>: &#123; </span><br><span class="line">    <span class="attr">"match"</span>: &#123;</span><br><span class="line">      <span class="attr">"goodsId"</span>: <span class="string">"47959547"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>服务器1启动， 发现无leader，发起选举， 只有自己，投票自己，少于半数，选举失败</li>
+<li>服务器2启动， 发现无leader，发起选举，服务器2自己投自己，服务器1自己投自己，选举失败，均未过半</li>
+<li>服务器1服务器2发现无leader， 发起选举， 服务器2 id &gt; 服务器1 id， 服务器1选举服务器2， 服务器2选举服务器2， 超过半数。 选举成功</li>
+<li>服务器3启动， 已经有leader， 不进行选举， 自动转为follower</li>
+</ol>
+<h1 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h1><h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看帮助</span></span><br><span class="line"><span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接指定服务器</span></span><br><span class="line">connect IP:PORT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个app1的节点，并且内容为this is app1 servers parent</span></span><br><span class="line">create /app1 <span class="string">"this is app1 servers parent"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在app1下创建一个server01的节点， 内容为一个ip和权重</span></span><br><span class="line">create /app1/server01 <span class="string">"192.168.33.5,100"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1内容</span></span><br><span class="line">get /app1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1/server01</span></span><br><span class="line">get /app1/server01</span><br></pre></td></tr></table></figure>
+<h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><h3 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h3><p>通过create中的可选参数[-e]指定</p>
+<ul>
+<li>短暂节点：断开链接后自动删除，可以用于服务器注册，一旦服务器挂掉，zookeeper就会自动删除</li>
+<li>持久节点：断开不删除，除非执行删除命令</li>
+</ul>
+<p>-e说明是短暂节点， 如果不申明，说明是持久节点</p>
+<h3 id="节点形式"><a href="#节点形式" class="headerlink" title="节点形式"></a>节点形式</h3><ul>
+<li>短暂节点</li>
+<li>短暂节点带序号</li>
+<li>持久节点（默认）</li>
+<li>持戒节点带序号</li>
+</ul>
+<p>带序号说明在同一个节点下建立新的节点，在create命令后带<code>-s</code>新的节点名后面会自动增加一个递增序列id</p>
+<h1 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h1><h2 id="数据监听"><a href="#数据监听" class="headerlink" title="数据监听"></a>数据监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent节点数据内容被修改的时候会有监听提示， 并且，监听只生效一次</span></span><br></pre></td></tr></table></figure>
+<h2 id="节点监听"><a href="#节点监听" class="headerlink" title="节点监听"></a>节点监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent 子节点数量发生变化时进行监听提示， 并且监听只生效一次</span></span><br></pre></td></tr></table></figure>
+<h1 id="配置日志轮循输出"><a href="#配置日志轮循输出" class="headerlink" title="配置日志轮循输出"></a>配置日志轮循输出</h1><h2 id="第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件"><a href="#第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件" class="headerlink" title="第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件"></a>第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vi  ./conf/log4j.properties</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改，并且与$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件中的ZOO_LOG4J_PROP变量的值保持一致</span></span><br><span class="line">zookeeper.root.logger=INFO,ROLLINGFILE </span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照日期每天输出logs</span></span><br><span class="line">log4j.appender.ROLLINGFILE=org.apache.log4j.DailyRollingFileAppender</span><br></pre></td></tr></table></figure>
+<h2 id="第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件"><a href="#第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件" class="headerlink" title="第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件"></a>第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件</h2> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkEvn.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#日志输出路径 不需mkdir zookeeper启动时自动创建</span></span><br><span class="line">ZOO_LOG_DIR=<span class="string">"/opt/zookeeper/logs"</span></span><br><span class="line"></span><br><span class="line">ZOO_LOG4J_PROP=<span class="string">"INFO,ROLLINGFILE"</span></span><br></pre></td></tr></table></figure>
+<h2 id="第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件"><a href="#第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件" class="headerlink" title="第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件"></a>第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkServer.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出日志文件名</span></span><br><span class="line">_ZOO_DAEMON_OUT=<span class="variable">$ZOO_LOG_DIR</span>/zookeeper.log</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -398,9 +420,7 @@
           
           <div class="post-tags">
             
-              <a href="/tags/踩坑/" rel="tag"><i class="fa fa-tag"></i> 踩坑</a>
-            
-              <a href="/tags/配置/" rel="tag"><i class="fa fa-tag"></i> 配置</a>
+              <a href="/tags/zookeeper/" rel="tag"><i class="fa fa-tag"></i> zookeeper</a>
             
           </div>
         
@@ -410,8 +430,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/04/09/Java面试-操作系统/" rel="next" title="Java面试_操作系统">
-                  <i class="fa fa-chevron-left"></i> Java面试_操作系统
+                <a href="/2019/08/23/redis主从复制/" rel="next" title="redis主从复制">
+                  <i class="fa fa-chevron-left"></i> redis主从复制
                 </a>
               
             </div>
@@ -419,10 +439,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/" rel="prev" title="eclipse设置自动补全并取消空格代码补全">
-                  eclipse设置自动补全并取消空格代码补全 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -606,7 +622,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过查询删除数据"><span class="nav-number">1.</span> <span class="nav-text">通过查询删除数据</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#下载安装文件"><span class="nav-number">1.</span> <span class="nav-text">下载安装文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改配置文件"><span class="nav-number">2.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建文件目录"><span class="nav-number">3.</span> <span class="nav-text">创建文件目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动"><span class="nav-number">4.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选举方式"><span class="nav-number">5.</span> <span class="nav-text">选举方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作命令"><span class="nav-number">6.</span> <span class="nav-text">操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本命令"><span class="nav-number">6.1.</span> <span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点"><span class="nav-number">6.2.</span> <span class="nav-text">节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#节点类型"><span class="nav-number">6.2.1.</span> <span class="nav-text">节点类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点形式"><span class="nav-number">6.2.2.</span> <span class="nav-text">节点形式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监听"><span class="nav-number">7.</span> <span class="nav-text">监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据监听"><span class="nav-number">7.1.</span> <span class="nav-text">数据监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点监听"><span class="nav-number">7.2.</span> <span class="nav-text">节点监听</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置日志轮循输出"><span class="nav-number">8.</span> <span class="nav-text">配置日志轮循输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件"><span class="nav-number">8.1.</span> <span class="nav-text">第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件"><span class="nav-number">8.2.</span> <span class="nav-text">第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件"><span class="nav-number">8.3.</span> <span class="nav-text">第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -847,9 +863,9 @@ if (document.querySelectorAll('pre.mermaid').length) {
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "https://jijiking51.cn/2019/04/11/ElasticSearch使用记录/";
-    this.page.identifier = "2019/04/11/ElasticSearch使用记录/";
-    this.page.title = 'ElasticSearch使用记录';};
+    this.page.url = "https://jijiking51.cn/2019/08/26/zookeeper安装使用/";
+    this.page.identifier = "2019/08/26/zookeeper安装使用/";
+    this.page.title = 'zookeeper安装使用';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
