@@ -19,6 +19,8 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
 
 
 <script id="hexo-configurations">
@@ -65,14 +67,13 @@
 	</script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="404">
-<meta property="og:url" content="https://jijiking51.cn/404/index.html">
+<meta property="og:title" content="RocWong">
+<meta property="og:url" content="https://jijiking51.cn/archives/2019/page/4/index.html">
 <meta property="og:site_name" content="RocWong">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-15T09:31:31.728Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="404">
-  <link rel="canonical" href="https://jijiking51.cn/404/">
+<meta name="twitter:title" content="RocWong">
+  <link rel="canonical" href="https://jijiking51.cn/archives/2019/page/4/">
 
 
 <script id="page-configurations">
@@ -81,12 +82,12 @@
     sidebar: "",
     isHome: false,
     isPost: false,
-    isPage: true,
-    isArchive: false
+    isPage: false,
+    isArchive: true
   };
 </script>
 
-  <title>404 | RocWong</title>
+  <title>归档 | RocWong</title>
   <meta name="generator" content="Hexo 3.8.0">
   
 
@@ -212,7 +213,20 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">30</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">31</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+      
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -270,62 +284,85 @@
       
       
     
+      
+      
+    
     
 
   
 
-          <div id="content" class="content page-post-detail">
+          <div id="content" class="content page-archive">
             
 
-  <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
+      <span class="archive-page-counter">
+        
+        
+         
+        
+        还行! 目前共计 31 篇日志。 继续努力。
+      </span>
+      
 
-<h2 class="post-title" itemprop="name headline">404
+      
 
-</h2>
-
-<div class="post-meta">
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-        
-          
-        
-      </div>
-      
-      
-      
+  
+    
+    <div class="collection-title">
+      <h2 class="archive-year" id="archive-year-2019">2019</h2>
     </div>
-    
+  
+  
 
-    
-    
-    
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h3 class="post-title">
+        
+          <a class="post-title-link" href="/2019/04/09/github利用hexo搭建个人博客/" itemprop="url">
+            <span itemprop="name">github利用hexo搭建个人博客</span>
+          </a>
+        
+      </h3>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2019-04-09T16:15:03+08:00"
+              content="2019-04-09">
+          04-09
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+
+    </div>
   </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2019/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2019/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2019/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
 
 
           </div>
           
-    
-    
-  <div class="comments" id="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
-  
 
         </div>
           
@@ -355,7 +392,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -662,7 +699,7 @@
 if (document.querySelectorAll('pre.mermaid').length) {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
     mermaid.initialize({
-      theme: 'forest',
+      theme: 'neutral',
       logLevel: 3,
       flowchart: { curve: 'linear' },
       gantt: { axisFormat: '%m/%d/%Y' },
@@ -683,10 +720,6 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
 
   
-    <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
-
-  
-
 <script>
   function loadCount() {
     var d = document, s = d.createElement('script');
@@ -696,27 +729,6 @@ if (document.querySelectorAll('pre.mermaid').length) {
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  function disqus_config() {
-    this.page.url = "https://jijiking51.cn/404/index.html";
-    this.page.identifier = "404/index.html";
-    this.page.title = '404';};
-  function loadComments() {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://rocwong.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  }
-    window.addEventListener('load', loadComments, false);
-  
 </script>
 
 </body>

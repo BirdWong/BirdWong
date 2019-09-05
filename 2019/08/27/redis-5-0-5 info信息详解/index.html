@@ -19,6 +19,8 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
 
 
 <script id="hexo-configurations">
@@ -71,7 +73,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server   参数 含义     redis_version redis版本   redis_git_sha1 GIT SHA1   redis_git_dirty Git dirty flag   redis_build_id redis编译时产生的id">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-27T12:03:00.469Z">
+<meta property="og:updated_time" content="2019-08-27T12:44:53.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-5.0.5 info信息详解">
 <meta name="twitter:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server   参数 含义     redis_version redis版本   redis_git_sha1 GIT SHA1   redis_git_dirty Git dirty flag   redis_build_id redis编译时产生的id">
@@ -215,7 +217,20 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">30</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">31</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+      
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -309,7 +324,7 @@
                 
               
 
-              <time title="创建时间：2019-08-27 15:27:55 / 修改时间：20:03:00" itemprop="dateCreated datePublished" datetime="2019-08-27T15:27:55+08:00">2019-08-27</time>
+              <time title="创建时间：2019-08-27 15:27:55 / 修改时间：20:44:53" itemprop="dateCreated datePublished" datetime="2019-08-27T15:27:55+08:00">2019-08-27</time>
             </span>
           
             
@@ -1003,6 +1018,10 @@
 
             <div class="post-nav-prev post-nav-item">
               
+                <a href="/2019/09/04/redis内存优化/" rel="prev" title="redis内存优化">
+                  redis内存优化 <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
@@ -1066,7 +1085,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1390,7 +1409,7 @@
 if (document.querySelectorAll('pre.mermaid').length) {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
     mermaid.initialize({
-      theme: 'forest',
+      theme: 'neutral',
       logLevel: 3,
       flowchart: { curve: 'linear' },
       gantt: { axisFormat: '%m/%d/%Y' },

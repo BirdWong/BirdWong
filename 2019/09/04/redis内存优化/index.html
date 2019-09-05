@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+<!-- google 广告   http://www.google.com/adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({
+	          google_ad_client: "ca-pub-8966265724665848",
+	          enable_page_level_ads: true
+	     });
+	</script>
+
+  <meta name="description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis内存优化">
+<meta property="og:url" content="https://jijiking51.cn/2019/09/04/redis内存优化/index.html">
+<meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-05T06:20:08.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis内存优化">
+<meta name="twitter:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
+  <link rel="canonical" href="https://jijiking51.cn/2019/09/04/redis内存优化/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>redis内存优化 | RocWong</title>
+  <meta name="generator" content="Hexo 3.8.0">
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RocWong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">19</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">31</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-commonweal">
+      
+    
+      
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+    <!-- 复制转载提示 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <script>
+      document.body.oncopy = function() {
+        swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+      };
+    </script>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/04/redis内存优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">redis内存优化
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 19:47:24" itemprop="dateCreated datePublished" datetime="2019-09-04T19:47:24+08:00">2019-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-05 14:20:08" itemprop="dateModified" datetime="2019-09-05T14:20:08+08:00">2019-09-05</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/04/redis内存优化/" class="post-meta-item leancloud_visitors" data-flag-title="redis内存优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/09/04/redis内存优化/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/04/redis内存优化/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="内存消耗分类"><a href="#内存消耗分类" class="headerlink" title="内存消耗分类"></a>内存消耗分类</h1><p>redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片</p><pre class="mermaid">graph LR
+    subgraph used_memory
+    A(自身内存)
+    B(对象内存)
+    C(缓冲内存)
+    end
+    subgraph used_memory_rss-used_memory
+    D(内存碎片)
+    end</pre><a id="more"></a>
+
+
+<h2 id="内存对象"><a href="#内存对象" class="headerlink" title="内存对象"></a>内存对象</h2><p>内存对象是redis内存占用最大的一个部分，用户的所有数据均在内存对象中存储</p>
+<p>redis是key-value存储类型，所以每次创建键值对时，至少创建两个类型对象，key对象和value对象， key对象为字符串对象， value对象可以为字符串、列表、哈希、集合、有序集合（bitmap和HyperLogLog使用的字符串实现，GEO使用有序集合实现），所以每一个键值对占用的内存为<code>sizeof(key)+sizeof(value)</code></p>
+<h2 id="缓冲内存"><a href="#缓冲内存" class="headerlink" title="缓冲内存"></a>缓冲内存</h2><p>缓冲内存主要包括：客户端缓冲，复制积压缓冲区、AOF缓冲区</p>
+<h3 id="客户端缓冲"><a href="#客户端缓冲" class="headerlink" title="客户端缓冲"></a>客户端缓冲</h3><p>所有接入到redis服务器TCP连接的输入输出缓冲都为客户端缓冲，输入缓冲无法设置， 一旦超过1G将断开连接，输出缓冲通过<code>client-output-buffer-limit</code>控制</p>
+<h4 id="普通客户端"><a href="#普通客户端" class="headerlink" title="普通客户端"></a>普通客户端</h4><p>通过<code>client-output-buffer-limit norma l000</code>配置，对复制和订阅的客户端之外的所有连接。如果有大量慢连接客户端可以通过<code>maxclients</code>限制客户端连接的数量</p>
+<h4 id="从客户端"><a href="#从客户端" class="headerlink" title="从客户端"></a>从客户端</h4><p>从客户端是主节点为每个从节点单独建立的一条用于命令复制的客户端，通过<code>client-output-buffer-limit slave 256mb 64mb 60</code>配置，当使用内存达到256mb时断开连接，或者连续60s使用64mb也将断开连接。</p>
+<p>当主从节点之间网络延迟较高或者主节点挂载大量从节点时会消耗大量内存。</p>
+<h4 id="订阅客户端"><a href="#订阅客户端" class="headerlink" title="订阅客户端"></a>订阅客户端</h4><p>通过<code>client-output-buffer-limit pubsub 32mb 8mb 60</code>配置， 如果订阅服务使用内存超过32mb将断开连接，或者连续使用8mb内存超过60s也将断开连接， 当生产消息过快时，输出缓冲区会积压造成缓冲区空间溢出</p>
+<h3 id="复制积压缓冲区"><a href="#复制积压缓冲区" class="headerlink" title="复制积压缓冲区"></a>复制积压缓冲区</h3><p>通过<code>repl-backlog-size</code>设置，默认1MB。复制积压缓冲区整个主节点只有一个，所有从节点共享这个复制积压缓冲区，因此可以将这个值适当提高</p>
+<h3 id="AOF缓冲区"><a href="#AOF缓冲区" class="headerlink" title="AOF缓冲区"></a>AOF缓冲区</h3><p>用于redis重写期间保存最近的写入命令，AOF缓冲区的空间消耗用户无法控制，消耗的内存取决于AOF重写时间和写入命令的数量，但是这部分空间占用很小</p>
+<h2 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h2><p>redis默认使用jemalloc内存分配器，还有glibc、tcmalloc两种可选。</p>
+<p>内存分配器为了更好地管理和重复利用内存，分类内存策略一般采用固定范围的内存块进行分配。</p>
+<blockquote>
+<p>例如jemalloc在64位系统中将内存空间划</p>
+<p>分为：小、大、巨大三个范围。每个范围内又划分为多个小的内存块单位，</p>
+<p>小：[8byte]，[16byte，32byte，48byte，…，128byte]，[192byte，256byte，…，512byte]，[768byte，1024byte，…，3840byte]</p>
+<p>大：[4KB，8KB，12KB，…，4072KB]</p>
+<p>巨大：[4MB，8MB，12MB，…]</p>
+<p>比如当保存5KB对象时jemalloc可能会采用8KB的块存储，而剩下的3KB空间变为了内存碎片不能再分配给其他对象存储。</p>
+</blockquote>
+<p>正常的碎片率（mem_fragmentation_ratio=used_memory_rss/used_memory）在1.03左右。</p>
+<p>以下场景容易出现高内存碎片问题</p>
+<ul>
+<li>频繁做更新操作，对已存在的键执行append、setrange等更新操作</li>
+<li>大量过期键删除，释放的空间无法得到充分利用，导致碎片率上升</li>
+</ul>
+<p>高内存碎片时解决方法</p>
+<ul>
+<li>数据对齐：在条件允许的情况下，尽量采用数字类型或者固定长度字符串</li>
+<li>安全重启：重启节点可以做到碎片重新整理， 可以配合sentinel和cluster将碎片率过高的主节点转换为从节点进行安全重启</li>
+</ul>
+<h1 id="子进程内存消耗"><a href="#子进程内存消耗" class="headerlink" title="子进程内存消耗"></a>子进程内存消耗</h1><p>子进程内存消耗主要指执行AOF/RDB重写时Redis创建的子进程内存消耗。</p>
+<p>redis执行fork操作产生的子进程内存占用对外表现与父进程相同，理论上需要已被的物理内存来完成重写操作，但是linux具有写时复制技术，父子进程会共享相同的物理内存页，当父进程处理写请求时会对需要修改的页复制出一份副本完成写操作，而子进程依然读取fork时整个父进程的内存快照</p>
+<pre class="mermaid">graph LR
+
+
+    subgraph 重写中执行了写入命令
+    D(重写开始前数据使用的内存)
+    E(父进程)
+    F(子进程)
+    G(写入修改过的数据占用内存)
+    F-->D
+    E-->D
+    E-->G
+    end
+
+    subgraph 创建时
+    A(重写开始前数据使用的内存)
+    B(父进程)
+    C(子进程)
+    B-->A
+    C-->A
+    end</pre>
+
+<p>redis产生的子进程并不需要消耗1倍的父进程内存，实际消耗根据期间写入的写入命令量决定</p>
+<p>sysctl vm.overcommit_memory=1允许内核可以分配所有的物理内存，防止Redis进程执行fork时因系统剩余内存不足而失败</p>
+<blockquote>
+<p>Linux Kernel在2.6.38内核增加了Transparent Huge Pages（THP）机制</p>
+<p>虽然开启THP可以降低fork子进程的速度，但之后copy-on-write期间复制内存页的单位从4KB变为2MB，如果父进程有大量写命令，会加重内存拷贝量，从而造成过度内存消耗。</p>
+<p>应该关闭THP，防止copy-on-write期间内存过度消耗</p>
+</blockquote>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p>##　设置内存上限</p>
+<p>通过<code>maxmemory</code>设置内存最大可用量，　maxmemory限制的时used_memory的内存，由于内存碎片的存在，实际消耗的内存会比设置的大。redis默认可以无限使用内存，所以所有的redis进程都要配置maxmemory</p>
+<h2 id="动态调整内存上限"><a href="#动态调整内存上限" class="headerlink" title="动态调整内存上限"></a>动态调整内存上限</h2><p>如果设置的内存上限预估错误，可以通过<code>config set maxmemory</code>命令动态修改最大可用内存</p>
+<h1 id="内存回收策略"><a href="#内存回收策略" class="headerlink" title="内存回收策略"></a>内存回收策略</h1><p>回收机制主要体现在以下两个方面：</p>
+<ul>
+<li>删除过期键</li>
+<li>内存使用达到maxmemory上限时触发内存溢出控制策略</li>
+</ul>
+<h2 id="删除过期键"><a href="#删除过期键" class="headerlink" title="删除过期键"></a>删除过期键</h2><p>redis的内存对象都可以设置过期属性，保存在过期字典中。由于进程内保存大量的键，维护每个键精准的过期删除机制会导致消耗大量的CPU， 所以REDIS采用惰性删除和定时任务删除机制实现过期键的内存回收。</p>
+<ul>
+<li><p>惰性删除：当客户端读取带有超市属性的键时，如果已经超过键设置的过期时间，会执行删除操作并返回空。这样就不用维护TTL链表来处理过期键的删除。但是如果过期键一直没有访问将无法及时删除，从而导致内存不能释放。</p>
+</li>
+<li><p>定时任务删除：redis内部维护一个定时任务，默认10次/S（hz配置）。通过以下方式回收过期键</p>
+<div id="flowchart-0" class="flow-chart"></div>
+
+
+
+</li>
+</ul>
+<h2 id="内存溢出控制策略"><a href="#内存溢出控制策略" class="headerlink" title="内存溢出控制策略"></a>内存溢出控制策略</h2><p>通过<code>maxmemory-polic</code>配置</p>
+<p>控制策略共6种</p>
+<ol>
+<li>noeviction：默认策略，不会删除任何数据，拒绝所有写入操作并返回客户端错误信息（error）OOM command not allowed when used memory，此时Redis只响应读操作。</li>
+<li>volatile-lru：根据LRU算法删除设置了超时属性（expire）的键，直到腾出足够空间为止。如果没有可删除的键对象，回退到noeviction策略。</li>
+<li>allkeys-lru：根据LRU算法删除键，不管数据有没有设置超时属性，直到腾出足够空间为止。</li>
+<li>allkeys-random：随机删除任意键，直到腾出足够空间为止。</li>
+<li>volatile-random：随机删除过期键，直到腾出足够空间为止。</li>
+<li>volatile-ttl：根据键值对象的ttl属性，删除最近将要过期数据。如果没有，回退到noeviction策略。</li>
+</ol>
+<div id="flowchart-1" class="flow-chart"></div>
+
+<p><script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">  op1=>operation: 默认采用满模式运行
+  op2=>operation: 每个数据库空间随机检查20个键
+  cond1=>condition: 是否超过25%的键过期
+  op3=>operation: 退出
+  op4=>operation: 循环执行回收逻辑
+  cond2=>condition: 是否运行超时（大于25ms）
+  op5=>operation: 每次redis事件之前采用快模式运行
+  (redis触发内部事件之前再次以
+  快模式运行回收过期键任务，快模
+  式下超时时间为1毫秒，切2秒内只能
+  运行1次)
+  
+  
+  op1->op2->cond1
+  cond1(no)->op3
+  cond1(yes)->op4
+  op4->cond2
+  cond2(yes)->op5
+  cond2(no)->op3</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script><textarea id="flowchart-1-code" style="display: none">e=>end: 结束
+op1=>operation: 计算当前内存总数
+cond1=>condition: 当前使用是否小于maxmemory
+cond2=>condition: 如果策略为noeviction
+op2=>operation:  返回写错误
+in1=>inputoutput: 计算需要释放的内存
+cond3=>condition: 是否遍历完所有数据库
+cond4=>condition: 如果策略是 
+allkeys-lru/allkeys-random
+op3=>operation: 回收内存目标为所有的数据库键
+cond5=>condition: 如果策略是
+volatile-lru/volatile-random
+/volatile-ttl
+op4=>operation: 回收内存目标为带过期时间的数据
+库键
+cond6=>condition: 如果使用的是随机策略，那么从
+目标字典中随机选出键
+op5=>operation: 从选中的键类型随机返回被删除键
+cond7=>condition: 如果策略是allkeys-lru/
+volatile-lru
+op6=>operation: 循环随机采样maxmemory_samples次
+(默认5次)，返回相对空闲时间最长的键
+cond8=>condition: 如果策略是volatile-ttl
+op7=>operation: 循环随机采样maxmemory_samples次，
+返回最近将要过期的键
+op8=>operation: 删除选中键
+op9=>operation: 发送给从服务器
+
+op1->cond1
+cond1(yes,right)->e
+cond1(no)->cond2
+cond2(yes,right)->op2
+cond2(no)->in1
+in1->cond3
+cond3(yes,right)->e
+cond3(no)->cond4
+cond4(yes)->op3->cond6
+cond4(no)->cond5
+cond5(yes)->op4->cond6
+cond6(yes,right)->op5->op8
+cond6(no)->cond7
+cond7(yes,right)->op6->op8
+cond7(no)->cond8
+cond8(yes)->op7->op8
+op8->op9->cond3</textarea><textarea id="flowchart-1-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-1-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-1", options);</script></p>
+
+    </div>
+
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/27/redis-5-0-5 info信息详解/" rel="next" title="redis-5.0.5 info信息详解">
+                  <i class="fa fa-chevron-left"></i> redis-5.0.5 info信息详解
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+    
+    
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong">
+  <p class="site-author-name" itemprop="name">RocWong</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+          
+        </div>
+        <div>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存消耗分类"><span class="nav-number">1.</span> <span class="nav-text">内存消耗分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对象"><span class="nav-number">1.1.</span> <span class="nav-text">内存对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲内存"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端缓冲"><span class="nav-number">1.2.1.</span> <span class="nav-text">客户端缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通客户端"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">普通客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从客户端"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">从客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订阅客户端"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">订阅客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制积压缓冲区"><span class="nav-number">1.2.2.</span> <span class="nav-text">复制积压缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF缓冲区"><span class="nav-number">1.2.3.</span> <span class="nav-text">AOF缓冲区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存碎片"><span class="nav-number">1.3.</span> <span class="nav-text">内存碎片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子进程内存消耗"><span class="nav-number">2.</span> <span class="nav-text">子进程内存消耗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">3.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态调整内存上限"><span class="nav-number">3.1.</span> <span class="nav-text">动态调整内存上限</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存回收策略"><span class="nav-number">4.</span> <span class="nav-text">内存回收策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#删除过期键"><span class="nav-number">4.1.</span> <span class="nav-text">删除过期键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出控制策略"><span class="nav-number">4.2.</span> <span class="nav-text">内存溢出控制策略</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer">
+  </div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RocWong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        <span>0%</span>
+      </div>
+      <div class="reading-progress-bar"></div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+              leancloudSelector(url).innerText = counter.time + 1;
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.log('Failed to create', error);
+                });
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+            'X-LC-Key': 'Nzpwf4hnsjlU9jOzMC0HmReR',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'neutral',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://rocwong.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://jijiking51.cn/2019/09/04/redis内存优化/";
+    this.page.identifier = "2019/09/04/redis内存优化/";
+    this.page.title = 'redis内存优化';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://rocwong.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
