@@ -1043,9 +1043,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>python中赋值是引用传递——&gt;例子中的 c</p>
-<p>复制要使用copy<br>浅复制（浅拷贝）是复制对象本身，并不对对象内部的子对象进行复制。——&gt;例子中的b<br>深复制（深拷贝）将对象的本身以及子对象全部拷贝——&gt;例子中的d</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#初始对象</span><br><span class="line">a = [1,2,3,4,5,6,[0,0,0,0]]</span><br><span class="line"></span><br><span class="line">#b 进行浅赋值</span><br><span class="line">b = copy.copy(a)</span><br><span class="line">#c 直接引用a</span><br><span class="line">c = a</span><br><span class="line">#d进行深度复制</span><br><span class="line">d = copy.deepcopy(a)</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    a 中添加新的元素</span><br><span class="line">    受影响的有c</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">a.append(7)</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    a的子对象中添加新的元素</span><br><span class="line">    受影响的有 b ，c</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">a[6].append(1)</span><br><span class="line"></span><br><span class="line">print(a)</span><br><span class="line"></span><br><span class="line">print(b)</span><br><span class="line"></span><br><span class="line">print(c)</span><br><span class="line"></span><br><span class="line">print(d)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">[1, 2, 3, 4, 5, 6, [0, 0, 0, 0, 1], 7]</span><br><span class="line">[1, 2, 3, 4, 5, 6, [0, 0, 0, 0, 1]]</span><br><span class="line">[1, 2, 3, 4, 5, 6, [0, 0, 0, 0, 1], 7]</span><br><span class="line">[1, 2, 3, 4, 5, 6, [0, 0, 0, 0]]</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+          <p>python中赋值是引用传递——&gt;例子中的 c</p><p>复制要使用copy<br>浅复制（浅拷贝）是复制对象本身，并不对对象内部的子对象进行复制。——&gt;例子中的b<br>深复制（深拷贝）将对象的本身以及子对象全部拷贝——&gt;例子中的d</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/11/Python深复制和浅复制/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -1298,7 +1305,7 @@
       
           <ol>
 <li>准备</li>
-</ol><hr><p>首先下载安装django</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django</span><br></pre></td></tr></table></figure><p>pycharm可以直接建立django的项目，也可以执行命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure><p>这样就建立了一个mysite的django项目。</p><p>下面是新建项目的目录文件列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysite/</span><br><span class="line">    manage.py</span><br><span class="line">    mysite/</span><br><span class="line">        __init__.py</span><br><span class="line">        settings.py</span><br><span class="line">        urls.py</span><br><span class="line">        wsgi.py</span><br></pre></td></tr></table></figure></p>
+</ol><hr><p>首先下载安装django</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django</span><br></pre></td></tr></table></figure><p>pycharm可以直接建立django的项目，也可以执行命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure><p>这样就建立了一个mysite的django项目。</p>
           <!--noindex-->
           
             <div class="post-button text-center">

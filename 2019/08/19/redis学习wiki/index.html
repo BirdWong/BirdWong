@@ -66,18 +66,18 @@
 	     });
 	</script>
 
-  <meta name="description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象   类型(前缀：REDIS)编码(前缀：REDIS_ENCODING)对象结构的读写能力STRINGINT(l">
+  <meta name="description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象">
 <meta name="keywords" content="学习记录">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis学习wiki">
 <meta property="og:url" content="https://jijiking51.cn/2019/08/19/redis学习wiki/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象   类型(前缀：REDIS)编码(前缀：REDIS_ENCODING)对象结构的读写能力STRINGINT(l">
+<meta property="og:description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-08-27T12:44:58.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis学习wiki">
-<meta name="twitter:description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象   类型(前缀：REDIS)编码(前缀：REDIS_ENCODING)对象结构的读写能力STRINGINT(l">
+<meta name="twitter:description" content="第一天了解redis的数据库，了解相似的缓存数据库，redis的局限redis数据库 非关系型数据库  以键(key)和值(value)做映射(mapping) value类型：  string：字符串对象 list：列表对象 hash：哈希对象 set：集合对象 zset：有序集合对象">
   <link rel="canonical" href="https://jijiking51.cn/2019/08/19/redis学习wiki/">
 
 
@@ -387,8 +387,8 @@
 <li>zset：有序集合对象</li>
 </ul>
 </li>
-</ol><table id="jump1"><thead><th style="text-align:center">类型(前缀：REDIS)</th><th style="text-align:center">编码(前缀：REDIS_ENCODING)</th><th style="text-align:center">对象</th><th style="text-align:center">结构的读写能力</th></thead><tbody><tr><td style="text-align:center">STRING</td><td style="text-align:center">INT(long类型整数)</td><td style="text-align:center">整数值实现字符串对象</td><td rowspan="3" style="text-align:center">对整个字符串或者字符串的其一部分执行操作，对整数的浮点数执行自增或者自减操作</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">EMBSTR(embstr编码的简单字符串)</td><td style="text-align:center">embstr编码的简单动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">RAW(简单动态字符串)</td><td style="text-align:center">动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的列表对象</td><td rowspan="2" style="text-align:center">从链表的两端推入或者弹出元素，根据偏移量对链表进行修剪，读取单个或者多个元素，根据值查找或者移除元素</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">LINKEDLIST(双端链表)</td><td style="text-align:center">双端链表实现的列表对象</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的哈希对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个键值对，获取所有键值对</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的哈希对象</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">INTSET(整数集合)</td><td style="text-align:center">整数集合实现的集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，检查一个元素是否存在与集合，计算交集，并集，差集，从集合里面随机获取元素</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的集合对象</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的有序集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，根据分值范围或者成员来获取元素</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">SKIPLIST(跳跃表和字典)</td><td style="text-align:center">跳跃表和字典实现的有序集合对象</td></tr></tbody></table><a id="more"></a>
-
+</ol><a id="more"></a>
+<table id="jump1"><thead><th style="text-align:center">类型(前缀：REDIS)</th><th style="text-align:center">编码(前缀：REDIS_ENCODING)</th><th style="text-align:center">对象</th><th style="text-align:center">结构的读写能力</th></thead><tbody><tr><td style="text-align:center">STRING</td><td style="text-align:center">INT(long类型整数)</td><td style="text-align:center">整数值实现字符串对象</td><td rowspan="3" style="text-align:center">对整个字符串或者字符串的其一部分执行操作，对整数的浮点数执行自增或者自减操作</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">EMBSTR(embstr编码的简单字符串)</td><td style="text-align:center">embstr编码的简单动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">RAW(简单动态字符串)</td><td style="text-align:center">动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的列表对象</td><td rowspan="2" style="text-align:center">从链表的两端推入或者弹出元素，根据偏移量对链表进行修剪，读取单个或者多个元素，根据值查找或者移除元素</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">LINKEDLIST(双端链表)</td><td style="text-align:center">双端链表实现的列表对象</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的哈希对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个键值对，获取所有键值对</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的哈希对象</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">INTSET(整数集合)</td><td style="text-align:center">整数集合实现的集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，检查一个元素是否存在与集合，计算交集，并集，差集，从集合里面随机获取元素</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的集合对象</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的有序集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，根据分值范围或者成员来获取元素</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">SKIPLIST(跳跃表和字典)</td><td style="text-align:center">跳跃表和字典实现的有序集合对象</td></tr></tbody></table>
 
 
 

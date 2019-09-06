@@ -66,18 +66,18 @@
 	     });
 	</script>
 
-  <meta name="description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同     版本 代号     Ubuntu 12.04 (LTS) precise   Ubuntu 14.04 (LTS) tru">
+  <meta name="description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同">
 <meta name="keywords" content="系统配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu修改为阿里云镜像源">
 <meta property="og:url" content="https://jijiking51.cn/2019/08/20/ubuntu修改为阿里云镜像源/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同     版本 代号     Ubuntu 12.04 (LTS) precise   Ubuntu 14.04 (LTS) tru">
+<meta property="og:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-08-20T09:33:21.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu修改为阿里云镜像源">
-<meta name="twitter:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同     版本 代号     Ubuntu 12.04 (LTS) precise   Ubuntu 14.04 (LTS) tru">
+<meta name="twitter:description" content="备份源文件 使用cp命令备份/etc/apt/sources.list文件 1sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  查看目前版本信息 1lsb_release -c 不同的版本的系统代号不同">
   <link rel="canonical" href="https://jijiking51.cn/2019/08/20/ubuntu修改为阿里云镜像源/">
 
 
@@ -375,7 +375,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -c</span><br></pre></td></tr></table></figure>
 <p>不同的版本的系统代号不同</p>
 </li>
-</ol><table>
+</ol><a id="more"></a>
+<table>
 <thead>
 <tr>
 <th style="text-align:center">版本</th>
@@ -408,8 +409,7 @@
 <td style="text-align:center">bionic</td>
 </tr>
 </tbody>
-</table><a id="more"></a>
-
+</table>
 <ol start="3">
 <li><p>修改配置文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号] main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ [代号]-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>

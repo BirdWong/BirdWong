@@ -73,7 +73,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-05T06:20:08.116Z">
+<meta property="og:updated_time" content="2019-09-06T14:27:01.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis内存优化">
 <meta name="twitter:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
@@ -322,7 +322,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-05 14:20:08" itemprop="dateModified" datetime="2019-09-05T14:20:08+08:00">2019-09-05</time>
+                <time title="修改时间：2019-09-06 22:27:01" itemprop="dateModified" datetime="2019-09-06T22:27:01+08:00">2019-09-06</time>
               </span>
             
           
@@ -476,7 +476,95 @@
 </ol>
 <div id="flowchart-1" class="flow-chart"></div>
 
-<p><script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">  op1=>operation: 默认采用满模式运行
+
+
+<p>如果要收缩redis内存的场景， 频繁回收的内存成本很高，主要在于查找可回收键和删除键的开销同时如果有从节点，也会导致写放大的问题，所以可以通过设置maxmemory大小以及回收策略达到快速收缩内存的目的， 但是这个操作会导致数据丢失和短暂的阻塞问题，一般在缓存场景下使用。</p>
+<h1 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h1><h2 id="RedisObject对象"><a href="#RedisObject对象" class="headerlink" title="RedisObject对象"></a>RedisObject对象</h2><pre class="mermaid">graph TB
+    subgraph redisObject
+    A(type:4)
+    B(encoding:4)
+    C(lru)
+    D(int refcount)
+    E(void *ptr)
+    end
+    A(type:4)-->A1((对象类型))
+    B(encoding:4)-->B1((内部编码类型))
+    C(lru)-->C1((LRU计时时钟))
+    D(int refcount)-->D1((引用计数器))
+    E(void *ptr)-->E1((数据指针))</pre>
+
+<ol>
+<li>type：主要包括string，hash，list，set，zset五种类型，可以使用type key 命令查看</li>
+<li>encoding：标识redis的内部编码，不同的内部编码占用的内存存在明显差异</li>
+<li>lru：记录最后一次访问时间，配合回收策略volatile-lru或者allkeys-lru 使用，可以使用命令<code>object idletime key</code>在不更新lru的情况下查看当前键的空闲空间</li>
+<li>refcount：记录对象引用的次数，当refcount=0时，可以安全回收当前对象空间。使用<code>object refcount key</code>命令可以在不修改refcount的情况下获取被引用的次数</li>
+<li>*pre：如果值对象时字符串且长度&lt;=39字节的数据， 内部编码是embstr类型，pre直接存储数据， 否则表示指向数据的指针。</li>
+</ol>
+<p><strong>在高并发场景中，尽量将字符串长度控制为39字节以内，减少创建redisobject内存分配次数</strong></p>
+<h2 id="缩减键值对象"><a href="#缩减键值对象" class="headerlink" title="缩减键值对象"></a>缩减键值对象</h2><ul>
+<li>key：key的设计越短越好例如 user:1 –&gt; u:1</li>
+<li>value: 如果是序列化对象，应该去除无用属性，并且选择更加高效的序列化工具来降低字节数组大小，如果是json或者xml可以通过Snappy等压缩算法压缩后降低字节数组大小</li>
+</ul>
+<h2 id="共享对象池"><a href="#共享对象池" class="headerlink" title="共享对象池"></a>共享对象池</h2><p>共享对象池中维护了[0-9999]的整数对象，创建大量的整数类型redisObject存在内存开销，内个redisobject内部结构至少占用16字节，甚至超过整数自身的消耗，并且list、set、hash、zset也可以使用共享池对象（ziplist编码无法使用，因为ziplist使用压缩且内存连续的结构，对象共享成本过高）.可以通过<code>object refcount</code>命令查看引用次数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 返回OK</span><br><span class="line">set foo 100</span><br><span class="line"></span><br><span class="line"># 返回2</span><br><span class="line">object refcount foo</span><br><span class="line"></span><br><span class="line"># 返回Ok</span><br><span class="line">set bar 100</span><br><span class="line"></span><br><span class="line"># 返回3</span><br><span class="line">object refcount bar</span><br><span class="line"></span><br><span class="line"># 说明创建foo和bar时均使用的内存池整数对象</span><br></pre></td></tr></table></figure>
+<p><strong>LRU回收策略开启时共享池对象无效</strong>：因为LRU回收内存时需要获取对象的最后引用时间， 如果使用共享池对象会导致lru对象也共享</p>
+<blockquote>
+<p>为什么只有整数对象池？</p>
+<p>首先整数对象池复用的几率最大，其次对象共享的一个关键操作就是判断相等性，Redis之所以只有整数对象池，是因为整数比较算法时间复杂度为O（1），只保留一万个整数为了防止对象池浪费。如果是字符串判断相等性，时间复杂度变为O（n），特别是长字符串更消耗性能（浮点数在Redis内部使用字符串存储）。对于更复杂的数据结构如hash、list等，相等性判断需要O（n2）。</p>
+</blockquote>
+<h2 id="字符串优化"><a href="#字符串优化" class="headerlink" title="字符串优化"></a>字符串优化</h2><p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#SDS-动态字符串定义">redis字符串sds设计</a></p>
+<p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#常数复杂度获取字符串长度">字符串信息获取O(1)</a></p>
+<p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#杜绝缓冲区溢出">杜绝缓冲区溢出</a></p>
+<p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#减少修改字符串时带来的内存重分配次数">减少修改字符串时带来的内存重分配次数</a></p>
+<p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#空间预分配">空间预分配</a></p>
+<p><a href="https://jijiking51.cn/2019/04/15/redis%E6%BA%90%E7%A0%81-sds/#惰性空间释放">惰性空间释放</a></p>
+<p>同时可以将不必要的字符串对象转化为hash对象存储，例如json，可以通过hash结构，使用hmget，hmset命令部分读取修改，从而降低内存消耗，<strong>尽量将字符串长度压缩在 hash-max-ziplist-value设置的大小内，因为ziplist编码远远比hashtable编码节约内存</strong></p>
+<h2 id="编码优化"><a href="#编码优化" class="headerlink" title="编码优化"></a>编码优化</h2><h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p><a href="https://jijiking51.cn/2019/08/19/redis%E5%AD%A6%E4%B9%A0wiki/#redis数据库">redis类型与编码关系</a></p>
+<blockquote>
+<p>Redis为什么对一种数据结构实现多种编码方式？</p>
+<p>主要原因是Redis作者想通过不同编码实现效率和空间的平衡。比如当我们的存储只有10个元素的列表，当使用双向链表数据结构时，必然需要维护大量的内部字段如每个元素需要：前置指针，后置指针，数据指针等，造成空间浪费，如果采用连续内存结构的压缩列表（ziplist），将会节省大量内存，而由于数据长度较小，存取操作时间复杂度即使为O（n2）性能也可满足需求</p>
+</blockquote>
+<p>编码类型转换在Redis写入数据时自动完成，这个转换过程是不可逆的，转换规则只能从小内存编码向大内存编码转换</p>
+<h3 id="控制编码类型"><a href="#控制编码类型" class="headerlink" title="控制编码类型"></a>控制编码类型</h3><p>编码类型转换在Redis写入数据时自动完成，这个转换过程是不可逆的，转换规则只能从小内存编码向大内存编码转换</p>
+<blockquote>
+<p>Redis为什么不支持编码回退？</p>
+<p>主要是数据增删频繁时，数据向压缩编码转换非常消耗CPU，得不偿失。</p>
+</blockquote>
+<table width="828"><br>    <tbody><br>        <tr class="firstRow"><br>            <th style="border-color: rgb(221, 221, 221);" align="center" valign="top" width="81"><br>                类型<br>            </th><br>            <th style="border-color: rgb(221, 221, 221);" width="136"><br>                编码<br>            </th><br>            <th style="border-color: rgb(221, 221, 221);" width="610"><br>                说明<br>            </th><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" rowspan="2" colspan="1" align="center" width="81"><br>                hash<br><br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                ziplist<br>            </td><br>            <td valign="top" style="border-color: rgb(221, 221, 221);" width="610"><br>                <p style="text-align: center;"><br>                    满足<strong>所有</strong>条件：<br>value最大空间(字节)&lt;=hash-max-ziplist-value<br>                </p><br>                <p style="text-align: center;"><br>                    field个数&lt;=list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                hashtable<br>            </td><br>            <td valign="top" style="border-color: rgb(221, 221, 221);" width="610"><br>                <p style="text-align: center;"><br>                    满足<strong>任意</strong>条件：<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    value最大空间(字节)&gt;hash-max-ziplist-value<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    field个数&gt;list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" rowspan="3" colspan="1" align="center" width="81"><br>                list<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                ziplist<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    满足<strong>所有</strong>条件：<br>value最大空间(字节)&lt;=hash-max-ziplist-value<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    field个数&lt;=list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                linkedlist<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p><br>                    满足<strong>任意</strong>条件：<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    value最大空间(字节)&gt;hash-max-ziplist-value<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    field个数&gt;list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                quicklist<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p><br>                    3.2以上版本取消以上两个转换机制<br>                </p><br>                <p><br>                    新配置：<br>                </p><br>                <p><br>                    list-max-zip-size: 表示最大压缩空间或长度<br>                </p><br>                <p><br>                    最大空间[-5 —— -1]: 默认-2，表示8K<br>                </p><br>                <p><br>                    正数表示最大压缩长度<br>                </p><br>                <p><br>                    list-compress-depth: 表示最大压缩深度，默认=0 不压缩<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" rowspan="2" colspan="1" width="81"><br>                set<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                intset<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p><br>                    满足<strong>所有</strong>条件：<br>                </p><br>                <p><br>                    元素必须为正数<br>                </p><br>                <p><br>                    集合长度&lt;=set-max-intset-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                hashtable<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p><br>                    满足<strong>任意</strong>条件：<br>                </p><br>                <p><br>                    元素非正数类型<br>                </p><br>                <p><br>                    <span style="text-align: -webkit-center;">集合长度&gt;set-max-intset-entries</span><br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" rowspan="2" colspan="1" width="81"><br>                zset<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                ziplist<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    满足<strong>所有</strong>条件：<br>value最大空间(字节)&lt;=hash-max-ziplist-value<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    field个数&lt;=list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>        <tr><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="136"><br>                skiplist<br>            </td><br>            <td valign="middle" style="border-color: rgb(221, 221, 221);" align="center" width="610"><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    满足<strong>任意</strong>条件：<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    value最大空间(字节)&gt;hash-max-ziplist-value<br>                </p><br>                <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; white-space: normal; text-align: center;"><br>                    field个数&gt;list-max-ziplist-entries<br>                </p><br>            </td><br>        </tr><br>    </tbody><br></table>
+
+<p>通过上面表格， 可以使用config set 命令设置编码相关参数满足压缩编码的条件。</p>
+<h3 id="ziplist编码"><a href="#ziplist编码" class="headerlink" title="ziplist编码"></a>ziplist编码</h3><p><a href="https://jijiking51.cn/2019/04/22/redis%E6%BA%90%E7%A0%81-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8/">ziplist</a></p>
+<p>正因为ziplist的性能与长度和元素的个数密切相关，所以提供了<code>{type}-max-ziplist-value</code>、<code>{type}-max-ziplist-entries</code>相关参数来控制ziplist编码转换</p>
+<p>针对高性能的场景应该使用ziplist，但是长度不要超过1000，每个元素大小应该控制在512字节内</p>
+<h3 id="intset编码"><a href="#intset编码" class="headerlink" title="intset编码"></a>intset编码</h3><p><a href="https://jijiking51.cn/2019/04/21/redis%E6%BA%90%E7%A0%81-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/">intset</a>是集合类型编码的一种,使用时应该保持整数范围一致。防止个别大整数触发集合升级操作，产生内存浪费。</p>
+<h2 id="控制键的数量"><a href="#控制键的数量" class="headerlink" title="控制键的数量"></a>控制键的数量</h2><p>过多的键同样会消耗大量内存，不要仅仅使用get/set将redis当memcached使用，可以降低redis的数据结构外层键的数量。</p>
+<p>例如把大量键分组映射到多个hash结构中，降低键的数量。当有100W个键，可以映射到1K个hash中， 每个hash保存1K个元素</p>
+<ul>
+<li>hash的field可以用于记录原始key，方便哈希查找</li>
+<li>hash的value可以保存原始值对象，确保不要超过<code>hash-max-ziplist-value</code>限制</li>
+</ul>
+<ol>
+<li>使用hash优化内存的时候确保使用的时ziplist，如果时hashtable将会消耗更多的内存</li>
+<li>同时长度要控制在1000以内，否则存取操作时间复杂度在O(n)到O(n^2)，长列表会消耗大量CPU，得不偿失</li>
+<li>ziplist适合存储小对象，对于大对象不但内存优化效果不明显，还会增加命令操作耗时</li>
+<li>根据hash长度和长度大小，调整<code>hash-max-ziplist-entries</code>和<code>hash-max-ziplist-value</code>参数，确保hash类型使用ziplist编码。</li>
+</ol>
+<blockquote>
+<p>关于hash键和field键的设计：</p>
+<p>1）当键离散度较高时，可以按字符串位截取，把后三位作为哈希的field，之前部分作为哈希的键。如：key=1948480哈希key=group：hash：1948，哈希field=480。</p>
+<p>2）当键离散度较低时，可以使用哈希算法打散键，如：使用crc32（key）&amp;10000函数把所有的键映射到“0-9999”整数范围内，哈希field存储键的原始值。</p>
+<p>3）尽量减少hash键和field的长度，如使用部分键内容。</p>
+</blockquote>
+<p>使用hash优化带来的问题：</p>
+<ol>
+<li><p>客户端需要预估键的规模并设计hash分组，加重客户端开发成本</p>
+</li>
+<li><p>hash重构后所有的键无法在使用<code>expire</code>超时和LRU淘汰机制自动删除，需要手动维护</p>
+<blockquote>
+<p>使用ziplist+hash优化keys后，如果想使用超时删除功能，开发人员可以存储每个对象写入的时间，再通过定时任务使用hscan命令扫描数据，找出hash内超时的数据项删除即可。</p>
+</blockquote>
+</li>
+<li><p>对于大对象使用hash-ziplist结构控制键数量反而得不偿失<script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">  op1=>operation: 默认采用满模式运行
   op2=>operation: 每个数据库空间随机检查20个键
   cond1=>condition: 是否超过25%的键过期
   op3=>operation: 退出
@@ -539,6 +627,8 @@ cond7(yes,right)->op6->op8
 cond7(no)->cond8
 cond8(yes)->op7->op8
 op8->op9->cond3</textarea><textarea id="flowchart-1-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-1-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-1", options);</script></p>
+</li>
+</ol>
 
     </div>
 
@@ -748,7 +838,7 @@ op8->op9->cond3</textarea><textarea id="flowchart-1-options" style="display: non
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存消耗分类"><span class="nav-number">1.</span> <span class="nav-text">内存消耗分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对象"><span class="nav-number">1.1.</span> <span class="nav-text">内存对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲内存"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端缓冲"><span class="nav-number">1.2.1.</span> <span class="nav-text">客户端缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通客户端"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">普通客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从客户端"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">从客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订阅客户端"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">订阅客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制积压缓冲区"><span class="nav-number">1.2.2.</span> <span class="nav-text">复制积压缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF缓冲区"><span class="nav-number">1.2.3.</span> <span class="nav-text">AOF缓冲区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存碎片"><span class="nav-number">1.3.</span> <span class="nav-text">内存碎片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子进程内存消耗"><span class="nav-number">2.</span> <span class="nav-text">子进程内存消耗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">3.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态调整内存上限"><span class="nav-number">3.1.</span> <span class="nav-text">动态调整内存上限</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存回收策略"><span class="nav-number">4.</span> <span class="nav-text">内存回收策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#删除过期键"><span class="nav-number">4.1.</span> <span class="nav-text">删除过期键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出控制策略"><span class="nav-number">4.2.</span> <span class="nav-text">内存溢出控制策略</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存消耗分类"><span class="nav-number">1.</span> <span class="nav-text">内存消耗分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对象"><span class="nav-number">1.1.</span> <span class="nav-text">内存对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲内存"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端缓冲"><span class="nav-number">1.2.1.</span> <span class="nav-text">客户端缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通客户端"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">普通客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从客户端"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">从客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订阅客户端"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">订阅客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制积压缓冲区"><span class="nav-number">1.2.2.</span> <span class="nav-text">复制积压缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF缓冲区"><span class="nav-number">1.2.3.</span> <span class="nav-text">AOF缓冲区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存碎片"><span class="nav-number">1.3.</span> <span class="nav-text">内存碎片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子进程内存消耗"><span class="nav-number">2.</span> <span class="nav-text">子进程内存消耗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">3.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态调整内存上限"><span class="nav-number">3.1.</span> <span class="nav-text">动态调整内存上限</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存回收策略"><span class="nav-number">4.</span> <span class="nav-text">内存回收策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#删除过期键"><span class="nav-number">4.1.</span> <span class="nav-text">删除过期键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出控制策略"><span class="nav-number">4.2.</span> <span class="nav-text">内存溢出控制策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存优化"><span class="nav-number">5.</span> <span class="nav-text">内存优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RedisObject对象"><span class="nav-number">5.1.</span> <span class="nav-text">RedisObject对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缩减键值对象"><span class="nav-number">5.2.</span> <span class="nav-text">缩减键值对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享对象池"><span class="nav-number">5.3.</span> <span class="nav-text">共享对象池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串优化"><span class="nav-number">5.4.</span> <span class="nav-text">字符串优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码优化"><span class="nav-number">5.5.</span> <span class="nav-text">编码优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">5.5.1.</span> <span class="nav-text">编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制编码类型"><span class="nav-number">5.5.2.</span> <span class="nav-text">控制编码类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ziplist编码"><span class="nav-number">5.5.3.</span> <span class="nav-text">ziplist编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intset编码"><span class="nav-number">5.5.4.</span> <span class="nav-text">intset编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制键的数量"><span class="nav-number">5.6.</span> <span class="nav-text">控制键的数量</span></a></li></ol></li></ol></div>
             
 
           </div>
