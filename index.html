@@ -213,7 +213,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">31</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">32</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -260,6 +260,143 @@
           <div id="content" class="content page-home">
             
   <section id="posts" class="posts-expand">
+      
+
+    <!-- 复制转载提示 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <script>
+      document.body.oncopy = function() {
+        swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+      };
+    </script>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/07/redis缓存设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/07/redis缓存设计/" class="post-title-link" itemprop="url">redis缓存设计</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-07 10:58:19 / 修改时间：16:40:35" itemprop="dateCreated datePublished" datetime="2019-09-07T10:58:19+08:00">2019-09-07</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/07/redis缓存设计/" class="post-meta-item leancloud_visitors" data-flag-title="redis缓存设计" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/09/07/redis缓存设计/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/07/redis缓存设计/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用缓存的收益与成本"><a href="#使用缓存的收益与成本" class="headerlink" title="使用缓存的收益与成本"></a>使用缓存的收益与成本</h1><p><strong>收益</strong></p><ul>
+<li>读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写</li>
+<li>减低后端负载： 减少后端的复杂计算和访问次数</li>
+</ul><p><strong>成本</strong></p><ul>
+<li>数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关</li>
+<li>运维成本：增加了缓存层，运维的成本自然增加</li>
+<li>代码维护成本：代码需要处理缓存层与存储层的逻辑</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/07/redis缓存设计/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
       
 
     <!-- 复制转载提示 -->
@@ -1589,144 +1726,6 @@ A[从服务器] -->|复制| B(主服务器)</pre>
   </article>
 
     
-      
-
-    <!-- 复制转载提示 -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
-
-    <script>
-      document.body.oncopy = function() {
-        swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
-      };
-    </script>
-
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/21/redis源码-整数集合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/04/21/redis源码-整数集合/" class="post-title-link" itemprop="url">redis源码-整数集合</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-21 21:40:15" itemprop="dateCreated datePublished" datetime="2019-04-21T21:40:15+08:00">2019-04-21</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-23 14:15:15" itemprop="dateModified" datetime="2019-08-23T14:15:15+08:00">2019-08-23</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/04/21/redis源码-整数集合/" class="post-meta-item leancloud_visitors" data-flag-title="redis源码-整数集合" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/04/21/redis源码-整数集合/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/21/redis源码-整数集合/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h1><p>整数集合是集合键的底层实现之一， 当一个集合只包含整数值元素，并且这个集合的元素数量不多时，redis会使用整数集合键实现</p><h2 id="整数集合的实现"><a href="#整数集合的实现" class="headerlink" title="整数集合的实现"></a>整数集合的实现</h2><p>整数集合是用于保存整数值的集合抽象数据结构，可以保存int16_t / int32_t / int64_t的整数值<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 编码方式</span></span><br><span class="line">    <span class="keyword">uint32_t</span> encoding;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 集合包含的元素数量</span></span><br><span class="line">    <span class="keyword">uint32_t</span> length;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存元素的数组</span></span><br><span class="line">    <span class="keyword">int8_t</span> contents[];</span><br><span class="line"></span><br><span class="line">&#125; intset;</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/21/redis源码-整数集合/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1766,7 +1765,7 @@ A[从服务器] -->|复制| B(主服务器)</pre>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
