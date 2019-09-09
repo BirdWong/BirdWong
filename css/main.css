@@ -1776,7 +1776,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #f00f04;
+  background: #61c291;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2956,7 +2956,7 @@ ul.breadcrumb li+li:last-child {
   }
 }
 body {
-  background: url("/images/background.jpg");
+  background: url("http://img.jijiking51.cn/Fo80_sHak7-7DtBjKwo5bhdzNYcr");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
