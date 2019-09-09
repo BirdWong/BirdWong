@@ -345,9 +345,9 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -504,9 +504,9 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/eclipse设置自动补全并取消空格代码补全/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2019/04/11/eclipse设置自动补全并取消空格代码补全/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/eclipse设置自动补全并取消空格代码补全/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -663,9 +663,9 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/2019/04/11/ElasticSearch使用记录/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/ElasticSearch使用记录/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2019/04/11/ElasticSearch使用记录/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/ElasticSearch使用记录/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -822,9 +822,9 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/2019/04/09/Java面试-操作系统/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/09/Java面试-操作系统/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2019/04/09/Java面试-操作系统/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/09/Java面试-操作系统/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -1100,9 +1100,9 @@
       </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
+      <span class="post-meta-item-text">Valine：</span>
     
-    <a title="disqus" href="/2019/04/09/github利用hexo搭建个人博客/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/09/github利用hexo搭建个人博客/" itemprop="commentCount"></span></a>
+    <a title="valine" href="/2019/04/09/github利用hexo搭建个人博客/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/09/github利用hexo搭建个人博客/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -1541,15 +1541,29 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
 
   
+
 <script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://rocwong.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+    appKey: 'Nzpwf4hnsjlU9jOzMC0HmReR',
+    placeholder: '在此处留言,请一并在右上方留下邮箱,这样当我回复您时，您能收到邮件通知',
+    avatar: '',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
 </script>
 
 </body>
