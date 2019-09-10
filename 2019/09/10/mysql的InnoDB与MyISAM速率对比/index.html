@@ -1,0 +1,125 @@
+<!-- build time:Tue Sep 10 2019 22:11:13 GMT+0800 (CST) --><!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-Compatible" content="IE=edge"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0"><link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.3.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2"><script src="/lib/pace/pace.min.js?v=1.0.2"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.3.0",exturl:!1,sidebar:{position:"left",display:"hide",offset:12,onmobile:!0},back2top:{enable:!0,sidebar:!0,scrollpercent:!0},save_scroll:!1,copycode:{enable:!0,show_result:!0,style:"flat"},fancybox:!1,mediumzoom:!1,lazyload:!1,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"}}</script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8966265724665848",enable_page_level_ads:!0})</script><meta name="description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。"><meta property="og:type" content="article"><meta property="og:title" content="mysql的InnoDB与MyISAM速率对比"><meta property="og:url" content="https://jijiking51.cn/2019/09/10/mysql的InnoDB与MyISAM速率对比/index.html"><meta property="og:site_name" content="RocWong"><meta property="og:description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq"><meta property="og:image" content="http://img.jijiking51.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3"><meta property="og:image" content="http://img.jijiking51.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm"><meta property="og:image" content="http://img.jijiking51.cn/FnToa6YcC5712umgVwCYtRIYGeKN"><meta property="og:image" content="http://img.jijiking51.cn/FgPt_NagERlf0AA50c5v_Um1ebMF"><meta property="og:image" content="http://img.jijiking51.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27"><meta property="og:image" content="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V"><meta property="og:image" content="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL"><meta property="og:image" content="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi"><meta property="og:updated_time" content="2019-09-10T14:09:19.416Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="mysql的InnoDB与MyISAM速率对比"><meta name="twitter:description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。"><meta name="twitter:image" content="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq"><link rel="canonical" href="https://jijiking51.cn/2019/09/10/mysql的InnoDB与MyISAM速率对比/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><title>mysql的InnoDB与MyISAM速率对比 | RocWong</title><meta name="generator" content="Hexo 3.8.0"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">RocWong</span> <span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">13</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">36</span></a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-wrapper"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div></div></div></header><a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C;color:#fff;position:absolute;top:0;border:0;right:0" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content page-post-detail"><div id="posts" class="posts-expand"><link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css"><script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script><script>document.body.oncopy=function(){swal("复制成功！","若要转载请保留原文链接，谢谢合作！","success")}</script><article class="post" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/10/mysql的InnoDB与MyISAM速率对比/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="RocWong"><meta itemprop="description" content><meta itemprop="image" content="/images/avatar.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="RocWong"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">mysql的InnoDB与MyISAM速率对比</h2><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-09-10 21:45:15 / 修改时间：22:09:19" itemprop="dateCreated datePublished" datetime="2019-09-10T21:45:15+08:00">2019-09-10</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span> </span><span id="/2019/09/10/mysql的InnoDB与MyISAM速率对比/" class="post-meta-item leancloud_visitors" data-flag-title="mysql的InnoDB与MyISAM速率对比" title="阅读次数"><span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数：</span> <span class="leancloud-visitors-count"></span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><span class="post-meta-item-text">Valine：</span> <a title="valine" href="/2019/09/10/mysql的InnoDB与MyISAM速率对比/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/10/mysql的InnoDB与MyISAM速率对比/" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">本文字数：</span> <span>765</span> </span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span>1 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq" alt="表demo_dynamic设置为InnoDB存储引擎"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p><a id="more"></a><p><img src="http://img.jijiking51.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3" alt="原本的存储引擎速度"></p><p>我们在表中填充了5,000,000行。</p><p><img src="http://img.jijiking51.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm" alt="表填充了5,000行"></p><p>我选择了一个<em>demo_name</em>值来搜索行集中间的值。请注意，我们已使用随机密钥生成函数而不是实际名称的结果填充了<em>demo_name</em>列。我们还在查询中指定了SQL_NO_CACHE选项，以确保MySQL不会提取缓存结果。我们的搜索耗时高达4.32秒。不太好，但请记住，搜索列上没有索引。</p><p>现在让我们将引擎更改为MyISAM并再次运行我们的SELECT。</p><p><img src="http://img.jijiking51.cn/FnToa6YcC5712umgVwCYtRIYGeKN" alt="引擎更改为MyISAM"></p><p><img src="http://img.jijiking51.cn/FgPt_NagERlf0AA50c5v_Um1ebMF" alt="MyISAM选择"></p><p>好。可以说选择MyISAM的速度更快。但是，使用MyISAM表的一个缺点是MyISAM实现了表级锁定。这意味着运行查询所花费的时间是1.58秒，任何其他查询都被放入队列中，以便在我们发布锁定后进行处理。四个查询同时尝试访问我们的<em>demo_dynamic</em>表的点，使用InnoDB的行级锁定会更有效。假设这四个查询没有尝试访问同一行。</p><h1 id="固定表与动态表对比"><a href="#固定表与动态表对比" class="headerlink" title="固定表与动态表对比"></a>固定表与动态表对比</h1><p>幸运的是，通过使用固定（或静态）行格式，MyISAM表可以更快地选择记录。当表包含任何可变长度的列时，MyISAM默认使用动态行格式。（例如VARCHAR，TEXT，BLOB）。</p><p>您可以通过查看<code>INFORMATION_SCHEMA.TABLES</code>表来检查表的当前行格式。</p><p><img src="http://img.jijiking51.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27" alt="检查行格式"></p><p>为了测试，我们将从我们的<em>demo_dynamic</em>表创建一个新的表<em>demo_fixed</em>，并将行格式设置为fixed。</p><p><img src="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V" alt="创建表格"></p><p><img src="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL" alt="行格式"></p><p><img src="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi" alt="从固定中选择"></p><p>与Dynamic相比，固定行格式的速度提高了44％。固定行格式的缺点是存储列所需的空间。更改为固定行格式将填充任何带有空格的可变长度列。但是，只要您的性能权衡以磁盘空间为代价，性能就会获胜。</p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>RocWong</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://jijiking51.cn/2019/09/10/mysql的InnoDB与MyISAM速率对比/" title="mysql的InnoDB与MyISAM速率对比">https://jijiking51.cn/2019/09/10/mysql的InnoDB与MyISAM速率对比/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2019/09/09/redis持久化RDB和AOF/" rel="next" title="redis持久化RDB和AOF"><i class="fa fa-chevron-left"></i> redis持久化RDB和AOF</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article></div></div><div class="comments" id="comments"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong"><p class="site-author-name" itemprop="name">RocWong</p><div class="site-description motion-element" itemprop="description"></div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">36</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">13</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">18</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div><div><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="200" height="52" src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MyISAM与InnoDB速度对比"><span class="nav-number">1.</span> <span class="nav-text">MyISAM与InnoDB速度对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#固定表与动态表对比"><span class="nav-number">2.</span> <span class="nav-text">固定表与动态表对比</span></a></li></ol></div></div></div><div class="back-to-top motion-element"><i class="fa fa-arrow-up"></i> <span>0%</span></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">湘ICP备18000496 </a>&copy; <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">RocWong</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span title="站点总字数">310k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-coffee"></i> </span><span title="站点阅读时长">8:36</span></div><div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div></div></footer><div class="reading-progress-bar"></div></div><script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script><script src="/js/schemes/pisces.js?v=7.3.0"></script><script src="/js/next-boot.js?v=7.3.0"></script><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script>function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+              leancloudSelector(url).innerText = counter.time + 1;
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.log('Failed to create', error);
+                });
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+            'X-LC-Key': 'Nzpwf4hnsjlU9jOzMC0HmReR',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });</script><script src="/js/local-search.js?v=7.3.0"></script><script>if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'neutral',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}</script><script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script><script>NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+    appKey: 'Nzpwf4hnsjlU9jOzMC0HmReR',
+    placeholder: '在此处留言,请一并在右上方留下邮箱,这样当我回复您时，您能收到邮件通知',
+    avatar: 'robohash',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);</script><script type="text/javascript" src="/js/src/love.js"></script><script type="text/javascript" src="/js/src/instantclick.js"></script><script type="text/javascript" src="/js/src/dytitle.js"></script><canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:1;pointer-events:none"></canvas><script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script><script type="text/javascript" src="/js/src/fireworks.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body></html><!-- rebuild by neat -->

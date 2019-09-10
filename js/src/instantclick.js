@@ -1,3 +1,222 @@
-// build time:Tue Sep 10 2019 20:01:24 GMT+0800 (CST)
-var InstantClick=function(e,t){var n,r,a,o,s,f,d,c,u=navigator.userAgent,l=-1<u.indexOf(" CriOS/"),h={},v=!1,p=!1,b=!1,g=!1,m={},y=!1,w=!1,E=[],L={fetch:[],receive:[],wait:[],change:[]};function T(e){var t=e.indexOf("#");return t<0?e:e.substr(0,t)}function A(e){for(;e&&"A"!=e.nodeName;)e=e.parentNode;return e}function H(e){var r=t.protocol+"//"+t.host;return!(e.target||e.hasAttribute("download")||0!=e.href.indexOf(r+"/")||-1<e.href.indexOf("#")&&T(e.href)==n||(f?!function(e){do{if(!e.hasAttribute)break;if(e.hasAttribute("data-no-instant"))return!1;if(e.hasAttribute("data-instant"))return!0}while(e=e.parentNode);return!1}(e):function(e){do{if(!e.hasAttribute)break;if(e.hasAttribute("data-instant"))return!1;if(e.hasAttribute("data-no-instant"))return!0}while(e=e.parentNode);return!1}(e)))}function x(e,t,n,r){for(var i=!1,a=0;a<L[e].length;a++)if("receive"==e){var o=L[e][a](t,n,r);o&&("body"in o&&(n=o.body),"title"in o&&(r=o.title),i=o)}else L[e][a](t,n,r);return i}function D(t,r,i,a){if(e.documentElement.replaceChild(r,e.body),i){history.pushState(null,null,i);var o=i.indexOf("#"),s=-1<o&&e.getElementById(i.substr(o+1)),f=0;if(s)for(;s.offsetParent;)f+=s.offsetTop,s=s.offsetParent;scrollTo(0,f),n=T(i)}else scrollTo(0,a);l&&e.title==t?e.title=t+String.fromCharCode(160):e.title=t,B(),x("change",!1);var d=e.createEvent("HTMLEvents");d.initEvent("instantclick:newpage",!0,!0),dispatchEvent(d)}function M(){w=y=!1}function O(e){if(!(o>+new Date-500)){var t=A(e.target);t&&H(t)&&I(t.href)}}function Y(e){if(!(o>+new Date-500)){var t=A(e.target);t&&H(t)&&(t.addEventListener("mouseout",S),c?(r=t.href,a=setTimeout(I,c)):I(t.href))}}function C(e){o=+new Date;var t=A(e.target);t&&H(t)&&(d?t.removeEventListener("mousedown",O):t.removeEventListener("mouseover",Y),I(t.href))}function k(e){var t=A(e.target);t&&H(t)&&(1<e.which||e.metaKey||e.ctrlKey||(e.preventDefault(),K(t.href)))}function S(){if(a)return clearTimeout(a),void(a=!1);y&&!w&&(s.abort(),M())}function N(){if(!(s.readyState<4)&&0!=s.status){if(m.ready=+new Date-m.start,s.getResponseHeader("Content-Type").match(/\/(x|ht|xht)ml/)){var t=e.implementation.createHTMLDocument("");t.documentElement.innerHTML=s.responseText.replace(/<noscript[\s\S]+<\/noscript>/gi,""),p=t.title,g=t.body;var n=x("receive",v,g,p);n&&("body"in n&&(g=n.body),"title"in n&&(p=n.title));var r=T(v);h[r]={body:g,title:p,scrollY:r in h?h[r].scrollY:0};for(var i,a,o=t.head.children,f=0,d=o.length-1;0<=d;d--)if((i=o[d]).hasAttribute("data-instant-track")){a=i.getAttribute("href")||i.getAttribute("src")||i.innerHTML;for(var c=E.length-1;0<=c;c--)E[c]==a&&f++}f!=E.length&&(b=!0)}else b=!0;w&&(w=!1,K(v))}}function B(t){if(e.body.addEventListener("touchstart",C,!0),d?e.body.addEventListener("mousedown",O,!0):e.body.addEventListener("mouseover",Y,!0),e.body.addEventListener("click",k,!0),!t){var n,r,a,o,s=e.body.getElementsByTagName("script");for(i=0,j=s.length;i<j;i++)(n=s[i]).hasAttribute("data-no-instant")||(r=e.createElement("script"),n.src&&(r.src=n.src),n.innerHTML&&(r.innerHTML=n.innerHTML),a=n.parentNode,o=n.nextSibling,a.removeChild(n),a.insertBefore(r,o))}}function I(e){!d&&"display"in m&&+new Date-(m.start+m.display)<100||(a&&(clearTimeout(a),a=!1),e||(e=r),y&&(e==v||w)||(v=e,b=g=w=!(y=!0),m={start:+new Date},x("fetch"),s.open("GET",e),s.send()))}function K(e){if("display"in m||(m.display=+new Date-m.start),a||!y)return a&&v&&v!=e?void(t.href=e):(I(e),x("wait"),void(w=!0));if(w)t.href=e;else if(b)t.href=v;else{if(!g)return x("wait"),void(w=!0);h[n].scrollY=pageYOffset,M(),D(p,g,v)}}var P="pushState"in history&&(!u.match("Android")||u.match("Chrome/"))&&"file:"!=t.protocol;return{supported:P,init:function(){if(!n)if(P){for(var r=arguments.length-1;0<=r;r--){var i=arguments[r];!0===i?f=!0:"mousedown"==i?d=!0:"number"==typeof i&&(c=i)}n=T(t.href),h[n]={body:e.body,title:e.title,scrollY:pageYOffset};var a,o,u=e.head.children;for(r=u.length-1;0<=r;r--)(a=u[r]).hasAttribute("data-instant-track")&&(o=a.getAttribute("href")||a.getAttribute("src")||a.innerHTML,E.push(o));(s=new XMLHttpRequest).addEventListener("readystatechange",N),B(!0),x("change",!0),addEventListener("popstate",function(){var e=T(t.href);e!=n&&(e in h?(h[n].scrollY=pageYOffset,D(h[n=e].title,h[e].body,!1,h[e].scrollY)):t.href=t.href)})}else x("change",!0)},on:function(e,t){L[e].push(t)}}}(document,location);
-//rebuild by neat 
+var InstantClick = function(d, a) {
+    var f, n, r, o, c, s, u, l, e = navigator.userAgent, h = -1 < e.indexOf(" CriOS/"), v = {}, p = !1, b = !1, g = !1, m = !1, y = {}, t = !1, w = !1, E = [], L = {
+        fetch: [],
+        receive: [],
+        wait: [],
+        change: []
+    };
+    function T(e) {
+        var t = e.indexOf("#");
+        return t < 0 ? e : e.substr(0, t)
+    }
+    function A(e) {
+        for (; e && "A" != e.nodeName; )
+            e = e.parentNode;
+        return e
+    }
+    function H(e) {
+        var t = a.protocol + "//" + a.host;
+        return !(e.target || e.hasAttribute("download") || 0 != e.href.indexOf(t + "/") || -1 < e.href.indexOf("#") && T(e.href) == f || (s ? !function(e) {
+            do {
+                if (!e.hasAttribute)
+                    break;
+                if (e.hasAttribute("data-no-instant"))
+                    return !1;
+                if (e.hasAttribute("data-instant"))
+                    return !0
+            } while (e = e.parentNode);return !1
+        }(e) : function(e) {
+            do {
+                if (!e.hasAttribute)
+                    break;
+                if (e.hasAttribute("data-instant"))
+                    return !1;
+                if (e.hasAttribute("data-no-instant"))
+                    return !0
+            } while (e = e.parentNode);return !1
+        }(e)))
+    }
+    function x(e, t, n, r) {
+        for (var i = !1, a = 0; a < L[e].length; a++)
+            if ("receive" == e) {
+                var o = L[e][a](t, n, r);
+                o && ("body"in o && (n = o.body),
+                "title"in o && (r = o.title),
+                i = o)
+            } else
+                L[e][a](t, n, r);
+        return i
+    }
+    function D(e, t, n, r) {
+        if (d.documentElement.replaceChild(t, d.body),
+        n) {
+            history.pushState(null, null, n);
+            var i = n.indexOf("#")
+              , a = -1 < i && d.getElementById(n.substr(i + 1))
+              , o = 0;
+            if (a)
+                for (; a.offsetParent; )
+                    o += a.offsetTop,
+                    a = a.offsetParent;
+            scrollTo(0, o),
+            f = T(n)
+        } else
+            scrollTo(0, r);
+        h && d.title == e ? d.title = e + String.fromCharCode(160) : d.title = e,
+        B(),
+        x("change", !1);
+        var s = d.createEvent("HTMLEvents");
+        s.initEvent("instantclick:newpage", !0, !0),
+        dispatchEvent(s)
+    }
+    function M() {
+        w = t = !1
+    }
+    function O(e) {
+        if (!(o > +new Date - 500)) {
+            var t = A(e.target);
+            t && H(t) && I(t.href)
+        }
+    }
+    function Y(e) {
+        if (!(o > +new Date - 500)) {
+            var t = A(e.target);
+            t && H(t) && (t.addEventListener("mouseout", S),
+            l ? (n = t.href,
+            r = setTimeout(I, l)) : I(t.href))
+        }
+    }
+    function C(e) {
+        o = +new Date;
+        var t = A(e.target);
+        t && H(t) && (u ? t.removeEventListener("mousedown", O) : t.removeEventListener("mouseover", Y),
+        I(t.href))
+    }
+    function k(e) {
+        var t = A(e.target);
+        t && H(t) && (1 < e.which || e.metaKey || e.ctrlKey || (e.preventDefault(),
+        K(t.href)))
+    }
+    function S() {
+        if (r)
+            return clearTimeout(r),
+            void (r = !1);
+        t && !w && (c.abort(),
+        M())
+    }
+    function N() {
+        if (!(c.readyState < 4) && 0 != c.status) {
+            if (y.ready = +new Date - y.start,
+            c.getResponseHeader("Content-Type").match(/\/(x|ht|xht)ml/)) {
+                var e = d.implementation.createHTMLDocument("");
+                e.documentElement.innerHTML = c.responseText.replace(/<noscript[\s\S]+<\/noscript>/gi, ""),
+                b = e.title,
+                m = e.body;
+                var t = x("receive", p, m, b);
+                t && ("body"in t && (m = t.body),
+                "title"in t && (b = t.title));
+                var n = T(p);
+                v[n] = {
+                    body: m,
+                    title: b,
+                    scrollY: n in v ? v[n].scrollY : 0
+                };
+                for (var r, i, a = e.head.children, o = 0, s = a.length - 1; 0 <= s; s--)
+                    if ((r = a[s]).hasAttribute("data-instant-track")) {
+                        i = r.getAttribute("href") || r.getAttribute("src") || r.innerHTML;
+                        for (var f = E.length - 1; 0 <= f; f--)
+                            E[f] == i && o++
+                    }
+                o != E.length && (g = !0)
+            } else
+                g = !0;
+            w && (w = !1,
+            K(p))
+        }
+    }
+    function B(e) {
+        if (d.body.addEventListener("touchstart", C, !0),
+        u ? d.body.addEventListener("mousedown", O, !0) : d.body.addEventListener("mouseover", Y, !0),
+        d.body.addEventListener("click", k, !0),
+        !e) {
+            var t, n, r, a, o = d.body.getElementsByTagName("script");
+            for (i = 0,
+            j = o.length; i < j; i++)
+                (t = o[i]).hasAttribute("data-no-instant") || (n = d.createElement("script"),
+                t.src && (n.src = t.src),
+                t.innerHTML && (n.innerHTML = t.innerHTML),
+                r = t.parentNode,
+                a = t.nextSibling,
+                r.removeChild(t),
+                r.insertBefore(n, a))
+        }
+    }
+    function I(e) {
+        !u && "display"in y && +new Date - (y.start + y.display) < 100 || (r && (clearTimeout(r),
+        r = !1),
+        e || (e = n),
+        t && (e == p || w) || (p = e,
+        g = m = w = !(t = !0),
+        y = {
+            start: +new Date
+        },
+        x("fetch"),
+        c.open("GET", e),
+        c.send()))
+    }
+    function K(e) {
+        if ("display"in y || (y.display = +new Date - y.start),
+        r || !t)
+            return r && p && p != e ? void (a.href = e) : (I(e),
+            x("wait"),
+            void (w = !0));
+        if (w)
+            a.href = e;
+        else if (g)
+            a.href = p;
+        else {
+            if (!m)
+                return x("wait"),
+                void (w = !0);
+            v[f].scrollY = pageYOffset,
+            M(),
+            D(b, m, p)
+        }
+    }
+    var P = "pushState"in history && (!e.match("Android") || e.match("Chrome/")) && "file:" != a.protocol;
+    return {
+        supported: P,
+        init: function() {
+            if (!f)
+                if (P) {
+                    for (var e = arguments.length - 1; 0 <= e; e--) {
+                        var t = arguments[e];
+                        !0 === t ? s = !0 : "mousedown" == t ? u = !0 : "number" == typeof t && (l = t)
+                    }
+                    f = T(a.href),
+                    v[f] = {
+                        body: d.body,
+                        title: d.title,
+                        scrollY: pageYOffset
+                    };
+                    var n, r, i = d.head.children;
+                    for (e = i.length - 1; 0 <= e; e--)
+                        (n = i[e]).hasAttribute("data-instant-track") && (r = n.getAttribute("href") || n.getAttribute("src") || n.innerHTML,
+                        E.push(r));
+                    (c = new XMLHttpRequest).addEventListener("readystatechange", N),
+                    B(!0),
+                    x("change", !0),
+                    addEventListener("popstate", function() {
+                        var e = T(a.href);
+                        e != f && (e in v ? (v[f].scrollY = pageYOffset,
+                        D(v[f = e].title, v[e].body, !1, v[e].scrollY)) : a.href = a.href)
+                    })
+                } else
+                    x("change", !0)
+        },
+        on: function(e, t) {
+            L[e].push(t)
+        }
+    }
+}(document, location);
+
