@@ -1,3 +1,3 @@
-// build time:Tue Sep 10 2019 19:57:20 GMT+0800 (CST)
+// build time:Tue Sep 10 2019 20:01:24 GMT+0800 (CST)
 var OriginTitile=document.title;var titleTime;document.addEventListener("visibilitychange",function(){if(document.hidden){$('[rel="shortcut icon"]').attr("href","/TEP.png");document.title="w(ﾟДﾟ)w 出BUG啦！！！！";clearTimeout(titleTime)}else{$('[rel="shortcut icon"]').attr("href","/favicon.png");document.title="♪(^∇^*)又好了。。。 "+OriginTitile;titleTime=setTimeout(function(){document.title=OriginTitile},2e3)}});
 //rebuild by neat 
