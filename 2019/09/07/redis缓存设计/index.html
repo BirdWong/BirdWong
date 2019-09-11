@@ -1,4 +1,714 @@
-<!-- build time:Tue Sep 10 2019 22:14:47 GMT+0800 (CST) --><!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-Compatible" content="IE=edge"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0"><link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222"><link rel="stylesheet" href="/css/main.css?v=7.3.0"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"><link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2"><script src="/lib/pace/pace.min.js?v=1.0.2"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.3.0",exturl:!1,sidebar:{position:"left",display:"hide",offset:12,onmobile:!0},back2top:{enable:!0,sidebar:!0,scrollpercent:!0},save_scroll:!1,copycode:{enable:!0,show_result:!0,style:"flat"},fancybox:!1,mediumzoom:!1,lazyload:!1,pangu:!1,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"}}</script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8966265724665848",enable_page_level_ads:!0})</script><meta name="description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑"><meta property="og:type" content="article"><meta property="og:title" content="redis缓存设计"><meta property="og:url" content="https://jijiking51.cn/2019/09/07/redis缓存设计/index.html"><meta property="og:site_name" content="RocWong"><meta property="og:description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-09-07T08:40:35.710Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="redis缓存设计"><meta name="twitter:description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑"><link rel="canonical" href="https://jijiking51.cn/2019/09/07/redis缓存设计/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><title>redis缓存设计 | RocWong</title><meta name="generator" content="Hexo 3.8.0"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">RocWong</span> <span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">18</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">13</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">36</span></a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-wrapper"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div></div></div></header><a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C;color:#fff;position:absolute;top:0;border:0;right:0" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content page-post-detail"><div id="posts" class="posts-expand"><link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css"><script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script><script>document.body.oncopy=function(){swal("复制成功！","若要转载请保留原文链接，谢谢合作！","success")}</script><article class="post" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/07/redis缓存设计/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="RocWong"><meta itemprop="description" content><meta itemprop="image" content="/images/avatar.jpg"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="RocWong"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">redis缓存设计</h2><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-09-07 10:58:19 / 修改时间：16:40:35" itemprop="dateCreated datePublished" datetime="2019-09-07T10:58:19+08:00">2019-09-07</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span> </span><span id="/2019/09/07/redis缓存设计/" class="post-meta-item leancloud_visitors" data-flag-title="redis缓存设计" title="阅读次数"><span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数：</span> <span class="leancloud-visitors-count"></span> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><span class="post-meta-item-text">Valine：</span> <a title="valine" href="/2019/09/07/redis缓存设计/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/07/redis缓存设计/" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">本文字数：</span> <span>2.8k</span> </span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span>5 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="使用缓存的收益与成本"><a href="#使用缓存的收益与成本" class="headerlink" title="使用缓存的收益与成本"></a>使用缓存的收益与成本</h1><p><strong>收益</strong></p><ul><li>读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写</li><li>减低后端负载： 减少后端的复杂计算和访问次数</li></ul><p><strong>成本</strong></p><ul><li>数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关</li><li>运维成本：增加了缓存层，运维的成本自然增加</li><li>代码维护成本：代码需要处理缓存层与存储层的逻辑</li></ul><a id="more"></a><p><strong>运用场景</strong></p><ul><li>开销大的复杂计算</li><li>加速请求</li></ul><h1 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h1><ol><li><p>LRU/LFU/FIFO算法剔除</p><p><strong>使用场景</strong>：剔除算法通常用于缓存使用量超过了预设的最大值时候，如何对现有的数据进行剔除。例如Redis使用maxmemory-policy这个配置作为内存最大值后对于数据的剔除策略。</p><p><strong>一致性</strong>：要清理哪些数据是由具体算法决定，开发人员只能决定使用哪种算法，所以数据的一致性是最差的。</p><p><strong>维护成本</strong>：算法不需要开发人员自己来实现，通常只需要配置最大maxmemory和对应的策略即可。开发人员只需要知道每种算法的含义，选择适合自己的算法即可。</p></li><li><p>超时剔除</p><p><strong>使用场景</strong>：超时剔除通过给缓存数据设置过期时间，让其在过期时间后自动删除，例如Redis提供的expire命令。如果业务可以容忍一段时间内，缓存层数据和存储层数据不一致，那么可以为其设置过期时间。在数据过期后，再从真实数据源获取数据，重新放到缓存并设置过期时间。例如一个视频的描述信息，可以容忍几分钟内数据不一致，但是涉及交易方面的业务，后果可想而知。</p><p><strong>一致性：</strong>一段时间窗口内（取决于过期时间长短）存在一致性问题，即缓存数据和真实数据源的数据不一致。</p><p><strong>维护成本</strong>：维护成本不是很高，只需设置expire过期时间即可，当然前提是应用方允许这段时间可能发生的数据不一致。</p></li><li><p>主动更新</p><p><strong>使用场景</strong>：应用方对于数据的一致性要求高，需要在真实数据更新后，立即更新缓存数据。例如可以利用消息系统或者其他方式通知缓存更新。</p><p><strong>一致性</strong>：一致性最高，但如果主动更新发生了问题，那么这条数据很可能很长时间不会更新，所以建议结合超时剔除一起使用效果会更好。</p><p><strong>维护成本</strong>：维护成本会比较高，开发者需要自己来完成更新，并保证更新操作的正确性。</p></li></ol><blockquote><p>低一致性的业务使用最大内存淘汰策略</p><p>高一致性业务使用超时剔除和主动更新，这样即使主动更新出了问题也能保证数据过期时间后删除脏数据</p></blockquote><h1 id="缓存粒度"><a href="#缓存粒度" class="headerlink" title="缓存粒度"></a>缓存粒度</h1><p>redis中缓存存储层的数据是存储全部属性还是存储部分属性这就是缓存粒度问题。</p><ul><li>通用性：缓存全部数据比部分数据更加通用，但是实际上需要使用几个重要的属性</li><li>空间占用：全数据会造成数据浪费，并且由于数据量大会造成网络开销加剧，由于数据量增大序列化与反序列化CPU的消耗也会增加</li><li>代码维护：一旦代码需要新的字段，有可能需要刷新缓存数据</li></ul><h1 id="穿透优化"><a href="#穿透优化" class="headerlink" title="穿透优化"></a>穿透优化</h1><p><strong>缓存穿透</strong>：在查询一个根本不存在的数据时会发生以下步骤 缓存层不命中-&gt;存储层不命中，不将空结果写回缓存-&gt;返回空结果。这种情况每次都要到存储层去查询，失去了缓存保护后端存储的意义</p><p><strong>引发的原因</strong>：业务代码或者数据出现问题；恶意攻击、爬虫造成大量空命中</p><p><strong>解决方法</strong></p><ol><li><p>缓存空对象：将存储层的空结果保存，仅仅保存空结果的话意味着需要存储更多的键需要更多的存储空间，所以应该设置一个较短的过期时间可以自动剔除。但是设置过期时间后系统正好插入了这条记录，那么就会出现缓存层和存储层数据不一致，这个时候可以利用消息系统或者其他方式清除缓存层中的空对象</p></li><li><p>boolean过滤器拦截：可以将存储层含有的信息做成boolean过滤器，如果boolean过滤器中不存在就不会访问存储层。例如将所有含有信息的id以bitmap实现，查询的信息id先与bitmap碰撞，存在再查询（这种方法适用于数据命中不高、数据相对固定、实时性低（通常是数据集较大）的应用场景，代码维护较为复杂，但是缓存空间占用少）</p></li></ol><table><thead><tr><th>解决缓存穿透</th><th>使用场景</th><th>维护成本</th></tr></thead><tbody><tr><td>缓存空对象</td><td>数据命中不高<br>数据频繁变化实时性高</td><td>代码维护简单<br>需要过多内存空间<br>数据不一致</td></tr><tr><td>布隆过滤器</td><td>数据命中不高<br>数据相对固定实时性低</td><td>代码维护复杂<br>缓存空间占用少</td></tr></tbody></table><h1 id="无底洞优化"><a href="#无底洞优化" class="headerlink" title="无底洞优化"></a>无底洞优化</h1><p><strong>无底洞现象</strong>：添加节点却性能下降</p><p><strong>引发原因</strong>：通常使用hash函数将key映射到各个节点上，造成key的分布与业务无关，同时随着访问量增长需要添加大量节点做水平扩容，导致键值分布到更多的节点上，所以一次get操作可能要从多台服务器获取信息，这样就需要多次网络请求，而通常一次get只需要一次网络请求。所以多次网络操作会随着节点数增加次数也会增加，网络连接数过多也会影响节点性能</p><p><strong>解决方法</strong>：</p><ul><li>命令本身优化，例如优化sql语句</li><li>减少网络通信次数</li><li>减低连接成本，使用线程池或者NIO</li></ul><table><thead><tr><th>方案</th><th>优点</th><th>缺点</th><th>网络IO</th></tr></thead><tbody><tr><td>串行命令（多次get一条一条获取）</td><td>编程简单<br>如果少量keys，性能可以满足要求</td><td>大量keys请求延迟</td><td>O(keys)</td></tr><tr><td>串行IO（通过计算每个key所在节点，通过pipeline顺序执行获取）</td><td>编程简单<br>少量节点性能满足要求</td><td>大量node延迟严重</td><td>O(nodes)</td></tr><tr><td>并行IO（在串行IO基础上通过多线程执行并发执行pipeline）</td><td>利用并行特性，延迟数取决于最慢的节点</td><td>编程复杂<br>由于多线程，问题定位可能比较难</td><td>O(max_slow(nodes))</td></tr><tr><td>hash_tag（通过hash_tag强制多个key分配到一个节点上）</td><td>性能最高</td><td>业务维护成本较高<br>容易出现数据倾斜</td><td>O(1)</td></tr></tbody></table><h1 id="雪崩优化"><a href="#雪崩优化" class="headerlink" title="雪崩优化"></a>雪崩优化</h1><p><strong>缓存雪崩</strong>：缓存层因为某些原因不能提供服务，导致所有的请求打到存储层，造成存储层的调用暴增导致宕机等情况</p><p><strong>解决方法</strong>：</p><ul><li>保证缓存服务高可用性，使用哨兵或者集群</li><li>依赖隔离组件为后端限流并降级：使用<code>Hystrix</code>等将出现问题的服务进行降级，例如接口拒绝服务（能访问但是提示服务器繁忙）、页面拒绝服务（直接跳转到nginx的静态页面）、延迟持久化（页面访问照常，但是涉及记录变更会提示稍晚才能看到结果，将数据记录到异步队列或者log，服务恢复后执行）。</li><li>提前演练：为后端负载可能出现的问题提前做预案</li></ul><h1 id="热点key重建优化"><a href="#热点key重建优化" class="headerlink" title="热点key重建优化"></a>热点key重建优化</h1><p><strong>热点key</strong>：使用<code>缓存+过期时间</code>策略可以加速数据读写，又能保证数据的定期更新。但是如果同时出现以下两个情况会造成巨大问题：</p><ol><li>当前key时一个热点key，并发量非常大</li><li>重建缓存无法短时间内完成（可能是一个十分复杂的计算）</li></ol><p>在缓存失效的瞬间，继续有大量请求这个key，那么这个时候每个请求都会引发重建缓存，将造成有大量线程来重建缓存，造成后端负载加大，甚至可能会让应用崩溃</p><p><strong>解决方法</strong>：</p><ol><li><p>互斥锁：只允许一个线程重建缓存，其他线程等待重建缓存的线程执行完，重新从缓存获取数据即可，可以使用redis的<code>nx</code>参数获取锁，加锁成功的线程负责重建</p></li><li><p>永远不过期：在redis中不设置expire，但是对象中存储了一个逻辑到期时间，在服务运行时发现逻辑设定时间到期，就开始缓存重建</p></li></ol><table><thead><tr><th>解决方案</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>简单分布式锁</td><td>思路简单<br>保证一致性</td><td>代码复杂度增大<br>存在死锁风险<br>存在线程池阻塞的风险</td></tr><tr><td>永远不过期</td><td>基本杜绝热点key问题</td><td>不保证一致性<br>逻辑过期时间增加代码维护成本和内存成本</td></tr></tbody></table></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>RocWong</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://jijiking51.cn/2019/09/07/redis缓存设计/" title="redis缓存设计">https://jijiking51.cn/2019/09/07/redis缓存设计/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2019/09/04/redis内存优化/" rel="next" title="redis内存优化"><i class="fa fa-chevron-left"></i> redis内存优化</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/2019/09/07/redis运维陷阱/" rel="prev" title="redis运维陷阱">redis运维陷阱 <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="comments"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong"><p class="site-author-name" itemprop="name">RocWong</p><div class="site-description motion-element" itemprop="description"></div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">36</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">13</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">18</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div><div><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="200" height="52" src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用缓存的收益与成本"><span class="nav-number">1.</span> <span class="nav-text">使用缓存的收益与成本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存更新策略"><span class="nav-number">2.</span> <span class="nav-text">缓存更新策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存粒度"><span class="nav-number">3.</span> <span class="nav-text">缓存粒度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#穿透优化"><span class="nav-number">4.</span> <span class="nav-text">穿透优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无底洞优化"><span class="nav-number">5.</span> <span class="nav-text">无底洞优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#雪崩优化"><span class="nav-number">6.</span> <span class="nav-text">雪崩优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#热点key重建优化"><span class="nav-number">7.</span> <span class="nav-text">热点key重建优化</span></a></li></ol></div></div></div><div class="back-to-top motion-element"><i class="fa fa-arrow-up"></i> <span>0%</span></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">湘ICP备18000496 </a>&copy; <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">RocWong</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span title="站点总字数">306k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-coffee"></i> </span><span title="站点阅读时长">8:31</span></div><div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div></div></footer><div class="reading-progress-bar"></div></div><script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script><script src="/lib/jquery/index.js?v=3.4.1"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script><script src="/js/schemes/pisces.js?v=7.3.0"></script><script src="/js/next-boot.js?v=7.3.0"></script><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script>function leancloudSelector(url) {
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+<!-- google 广告   http://www.google.com/adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({
+	          google_ad_client: "ca-pub-8966265724665848",
+	          enable_page_level_ads: true
+	     });
+	</script>
+
+  <meta name="description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis缓存设计">
+<meta property="og:url" content="https://jijiking51.cn/2019/09/07/redis缓存设计/index.html">
+<meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-07T08:40:35.710Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis缓存设计">
+<meta name="twitter:description" content="使用缓存的收益与成本收益读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写减低后端负载： 减少后端的复杂计算和访问次数成本数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关运维成本：增加了缓存层，运维的成本自然增加代码维护成本：代码需要处理缓存层与存储层的逻辑">
+  <link rel="canonical" href="https://jijiking51.cn/2019/09/07/redis缓存设计/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>redis缓存设计 | RocWong</title>
+  <meta name="generator" content="Hexo 3.8.0">
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RocWong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+    <!-- 复制转载提示 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <script>
+      document.body.oncopy = function() {
+        swal("复制成功！", "若要转载请保留原文链接，谢谢合作！","success");
+      };
+    </script>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/07/redis缓存设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">redis缓存设计
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-07 10:58:19 / 修改时间：16:40:35" itemprop="dateCreated datePublished" datetime="2019-09-07T10:58:19+08:00">2019-09-07</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/07/redis缓存设计/" class="post-meta-item leancloud_visitors" data-flag-title="redis缓存设计" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/07/redis缓存设计/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/07/redis缓存设计/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2.8k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>5 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="使用缓存的收益与成本"><a href="#使用缓存的收益与成本" class="headerlink" title="使用缓存的收益与成本"></a>使用缓存的收益与成本</h1><p><strong>收益</strong></p><ul><li>读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写</li><li>减低后端负载： 减少后端的复杂计算和访问次数</li></ul><p><strong>成本</strong></p><ul><li>数据不一致：因为缓存介于客户端与存储层之间，所以存储层的数据存在一定时间窗口不一致性，时间的长度与更新策略有关</li><li>运维成本：增加了缓存层，运维的成本自然增加</li><li>代码维护成本：代码需要处理缓存层与存储层的逻辑</li></ul><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:41 GMT+0800 (CST) --><p><strong>运用场景</strong></p><ul><li>开销大的复杂计算</li><li>加速请求</li></ul><h1 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h1><ol><li><p>LRU/LFU/FIFO算法剔除</p><p><strong>使用场景</strong>：剔除算法通常用于缓存使用量超过了预设的最大值时候，如何对现有的数据进行剔除。例如Redis使用maxmemory-policy这个配置作为内存最大值后对于数据的剔除策略。</p><p><strong>一致性</strong>：要清理哪些数据是由具体算法决定，开发人员只能决定使用哪种算法，所以数据的一致性是最差的。</p><p><strong>维护成本</strong>：算法不需要开发人员自己来实现，通常只需要配置最大maxmemory和对应的策略即可。开发人员只需要知道每种算法的含义，选择适合自己的算法即可。</p></li><li><p>超时剔除</p><p><strong>使用场景</strong>：超时剔除通过给缓存数据设置过期时间，让其在过期时间后自动删除，例如Redis提供的expire命令。如果业务可以容忍一段时间内，缓存层数据和存储层数据不一致，那么可以为其设置过期时间。在数据过期后，再从真实数据源获取数据，重新放到缓存并设置过期时间。例如一个视频的描述信息，可以容忍几分钟内数据不一致，但是涉及交易方面的业务，后果可想而知。</p><p><strong>一致性：</strong>一段时间窗口内（取决于过期时间长短）存在一致性问题，即缓存数据和真实数据源的数据不一致。</p><p><strong>维护成本</strong>：维护成本不是很高，只需设置expire过期时间即可，当然前提是应用方允许这段时间可能发生的数据不一致。</p></li><li><p>主动更新</p><p><strong>使用场景</strong>：应用方对于数据的一致性要求高，需要在真实数据更新后，立即更新缓存数据。例如可以利用消息系统或者其他方式通知缓存更新。</p><p><strong>一致性</strong>：一致性最高，但如果主动更新发生了问题，那么这条数据很可能很长时间不会更新，所以建议结合超时剔除一起使用效果会更好。</p><p><strong>维护成本</strong>：维护成本会比较高，开发者需要自己来完成更新，并保证更新操作的正确性。</p></li></ol><blockquote><p>低一致性的业务使用最大内存淘汰策略</p><p>高一致性业务使用超时剔除和主动更新，这样即使主动更新出了问题也能保证数据过期时间后删除脏数据</p></blockquote><h1 id="缓存粒度"><a href="#缓存粒度" class="headerlink" title="缓存粒度"></a>缓存粒度</h1><p>redis中缓存存储层的数据是存储全部属性还是存储部分属性这就是缓存粒度问题。</p><ul><li>通用性：缓存全部数据比部分数据更加通用，但是实际上需要使用几个重要的属性</li><li>空间占用：全数据会造成数据浪费，并且由于数据量大会造成网络开销加剧，由于数据量增大序列化与反序列化CPU的消耗也会增加</li><li>代码维护：一旦代码需要新的字段，有可能需要刷新缓存数据</li></ul><h1 id="穿透优化"><a href="#穿透优化" class="headerlink" title="穿透优化"></a>穿透优化</h1><p><strong>缓存穿透</strong>：在查询一个根本不存在的数据时会发生以下步骤 缓存层不命中-&gt;存储层不命中，不将空结果写回缓存-&gt;返回空结果。这种情况每次都要到存储层去查询，失去了缓存保护后端存储的意义</p><p><strong>引发的原因</strong>：业务代码或者数据出现问题；恶意攻击、爬虫造成大量空命中</p><p><strong>解决方法</strong></p><ol><li><p>缓存空对象：将存储层的空结果保存，仅仅保存空结果的话意味着需要存储更多的键需要更多的存储空间，所以应该设置一个较短的过期时间可以自动剔除。但是设置过期时间后系统正好插入了这条记录，那么就会出现缓存层和存储层数据不一致，这个时候可以利用消息系统或者其他方式清除缓存层中的空对象</p></li><li><p>boolean过滤器拦截：可以将存储层含有的信息做成boolean过滤器，如果boolean过滤器中不存在就不会访问存储层。例如将所有含有信息的id以bitmap实现，查询的信息id先与bitmap碰撞，存在再查询（这种方法适用于数据命中不高、数据相对固定、实时性低（通常是数据集较大）的应用场景，代码维护较为复杂，但是缓存空间占用少）</p></li></ol><table><thead><tr><th>解决缓存穿透</th><th>使用场景</th><th>维护成本</th></tr></thead><tbody><tr><td>缓存空对象</td><td>数据命中不高<br>数据频繁变化实时性高</td><td>代码维护简单<br>需要过多内存空间<br>数据不一致</td></tr><tr><td>布隆过滤器</td><td>数据命中不高<br>数据相对固定实时性低</td><td>代码维护复杂<br>缓存空间占用少</td></tr></tbody></table><h1 id="无底洞优化"><a href="#无底洞优化" class="headerlink" title="无底洞优化"></a>无底洞优化</h1><p><strong>无底洞现象</strong>：添加节点却性能下降</p><p><strong>引发原因</strong>：通常使用hash函数将key映射到各个节点上，造成key的分布与业务无关，同时随着访问量增长需要添加大量节点做水平扩容，导致键值分布到更多的节点上，所以一次get操作可能要从多台服务器获取信息，这样就需要多次网络请求，而通常一次get只需要一次网络请求。所以多次网络操作会随着节点数增加次数也会增加，网络连接数过多也会影响节点性能</p><p><strong>解决方法</strong>：</p><ul><li>命令本身优化，例如优化sql语句</li><li>减少网络通信次数</li><li>减低连接成本，使用线程池或者NIO</li></ul><table><thead><tr><th>方案</th><th>优点</th><th>缺点</th><th>网络IO</th></tr></thead><tbody><tr><td>串行命令（多次get一条一条获取）</td><td>编程简单<br>如果少量keys，性能可以满足要求</td><td>大量keys请求延迟</td><td>O(keys)</td></tr><tr><td>串行IO（通过计算每个key所在节点，通过pipeline顺序执行获取）</td><td>编程简单<br>少量节点性能满足要求</td><td>大量node延迟严重</td><td>O(nodes)</td></tr><tr><td>并行IO（在串行IO基础上通过多线程执行并发执行pipeline）</td><td>利用并行特性，延迟数取决于最慢的节点</td><td>编程复杂<br>由于多线程，问题定位可能比较难</td><td>O(max_slow(nodes))</td></tr><tr><td>hash_tag（通过hash_tag强制多个key分配到一个节点上）</td><td>性能最高</td><td>业务维护成本较高<br>容易出现数据倾斜</td><td>O(1)</td></tr></tbody></table><h1 id="雪崩优化"><a href="#雪崩优化" class="headerlink" title="雪崩优化"></a>雪崩优化</h1><p><strong>缓存雪崩</strong>：缓存层因为某些原因不能提供服务，导致所有的请求打到存储层，造成存储层的调用暴增导致宕机等情况</p><p><strong>解决方法</strong>：</p><ul><li>保证缓存服务高可用性，使用哨兵或者集群</li><li>依赖隔离组件为后端限流并降级：使用<code>Hystrix</code>等将出现问题的服务进行降级，例如接口拒绝服务（能访问但是提示服务器繁忙）、页面拒绝服务（直接跳转到nginx的静态页面）、延迟持久化（页面访问照常，但是涉及记录变更会提示稍晚才能看到结果，将数据记录到异步队列或者log，服务恢复后执行）。</li><li>提前演练：为后端负载可能出现的问题提前做预案</li></ul><h1 id="热点key重建优化"><a href="#热点key重建优化" class="headerlink" title="热点key重建优化"></a>热点key重建优化</h1><p><strong>热点key</strong>：使用<code>缓存+过期时间</code>策略可以加速数据读写，又能保证数据的定期更新。但是如果同时出现以下两个情况会造成巨大问题：</p><ol><li>当前key时一个热点key，并发量非常大</li><li>重建缓存无法短时间内完成（可能是一个十分复杂的计算）</li></ol><p>在缓存失效的瞬间，继续有大量请求这个key，那么这个时候每个请求都会引发重建缓存，将造成有大量线程来重建缓存，造成后端负载加大，甚至可能会让应用崩溃</p><p><strong>解决方法</strong>：</p><ol><li><p>互斥锁：只允许一个线程重建缓存，其他线程等待重建缓存的线程执行完，重新从缓存获取数据即可，可以使用redis的<code>nx</code>参数获取锁，加锁成功的线程负责重建</p></li><li><p>永远不过期：在redis中不设置expire，但是对象中存储了一个逻辑到期时间，在服务运行时发现逻辑设定时间到期，就开始缓存重建</p></li></ol><table><thead><tr><th>解决方案</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>简单分布式锁</td><td>思路简单<br>保证一致性</td><td>代码复杂度增大<br>存在死锁风险<br>存在线程池阻塞的风险</td></tr><tr><td>永远不过期</td><td>基本杜绝热点key问题</td><td>不保证一致性<br>逻辑过期时间增加代码维护成本和内存成本</td></tr></tbody></table><!-- rebuild by neat -->
+    </div>
+
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>RocWong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://jijiking51.cn/2019/09/07/redis缓存设计/" title="redis缓存设计">https://jijiking51.cn/2019/09/07/redis缓存设计/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/04/redis内存优化/" rel="next" title="redis内存优化">
+                  <i class="fa fa-chevron-left"></i> redis内存优化
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/07/redis运维陷阱/" rel="prev" title="redis运维陷阱">
+                  redis运维陷阱 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+    
+    
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong">
+  <p class="site-author-name" itemprop="name">RocWong</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+          
+        </div>
+        <div>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用缓存的收益与成本"><span class="nav-number">1.</span> <span class="nav-text">使用缓存的收益与成本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存更新策略"><span class="nav-number">2.</span> <span class="nav-text">缓存更新策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存粒度"><span class="nav-number">3.</span> <span class="nav-text">缓存粒度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#穿透优化"><span class="nav-number">4.</span> <span class="nav-text">穿透优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无底洞优化"><span class="nav-number">5.</span> <span class="nav-text">无底洞优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#雪崩优化"><span class="nav-number">6.</span> <span class="nav-text">雪崩优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#热点key重建优化"><span class="nav-number">7.</span> <span class="nav-text">热点key重建优化</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer">
+  </div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">湘ICP备18000496 </a>&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RocWong</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">307k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:32</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="reading-progress-bar"></div>
+
+    
+
+  </div>
+
+  
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
     return document.getElementById(url).querySelector('.leancloud-visitors-count');
   }
   if (CONFIG.page.isPost) {
@@ -92,7 +802,31 @@
       } else if (document.querySelectorAll('.post-title-link').length >= 1) {
         showTime(Counter);
       }
-    });</script><script src="/js/local-search.js?v=7.3.0"></script><script>if (document.querySelectorAll('pre.mermaid').length) {
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
     mermaid.initialize({
       theme: 'neutral',
@@ -102,7 +836,26 @@
       sequence: { actorMargin: 50 }
     });
   }, window.mermaid);
-}</script><script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script><script>NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+}
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail,link';
   guest = guest.split(',').filter(item => {
@@ -122,4 +875,23 @@
     lang: 'zh-cn' || 'zh-cn',
     path: location.pathname
   });
-}, window.Valine);</script><script type="text/javascript" src="/js/src/love.js"></script><script type="text/javascript" src="/js/src/instantclick.js"></script><script type="text/javascript" src="/js/src/dytitle.js"></script><canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:1;pointer-events:none"></canvas><script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script><script type="text/javascript" src="/js/src/fireworks.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({pluginRootPath:"live2dw/",pluginJsPath:"lib/",pluginModelPath:"assets/",tagMode:!1,debug:!1,model:{jsonPath:"/live2dw/assets/koharu.model.json"},display:{position:"right",width:150,height:300},mobile:{show:!0},log:!1})</script></body></html><!-- rebuild by neat -->
+}, window.Valine);
+</script>
+
+  
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="/js/src/instantclick.js"></script>
+<!-- 页面离开效果 -->
+<script type="text/javascript" src="/js/src/dytitle.js"></script>
+
+<!-- 页面点击爆炸 -->
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
