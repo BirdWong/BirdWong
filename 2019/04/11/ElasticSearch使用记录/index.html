@@ -192,7 +192,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -218,7 +218,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -384,7 +384,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>首先执行（每次重启服务器后都需要执行）：<code>sudo sysctl -w vm.max_map_count=262144</code></p><p>获取一些基本配置文件<br></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/:/root/ --name elasticsearch elasticsearch</span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="comment"># 复制/usr/share/elasticsearch/下的config、logs两个文件夹内的文件分别到自己本地/home下的两个文件夹内，并且自己创建一个data文件夹</span></span><br><span class="line"><span class="comment"># 复制完成后把三个文件夹放置到自己指定的目录下</span></span><br><span class="line"><span class="comment"># 关闭容器并且删除！</span></span><br></pre></td></tr></table></figure><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p></p><p>修改elasticsearch.yml配置文件，将<code>cluster.name</code>改成<code>school</code></p><p>启动命令：<br></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -v指定的文件夹路径替换成上面的文件夹路径</span></span><br><span class="line">docker run -d -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/h4795/Documents/studytmp/es/config/:/usr/share/elasticsearch/config/  -v /home/h4795/Documents/studytmp/es/logs/:/usr/share/elasticsearch/logs/  -v /home/h4795/Documents/studytmp/es/data/:/usr/share/elasticsearch/data/ --name elasticsearch elasticsearch</span><br></pre></td></tr></table></figure><p></p><p>安装ik分词插件，ik分词器版本必须和es一致，否则一定会安装失败<br></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分词器开源地址：https://github.com/medcl/elasticsearch-analysis-ik</span></span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="built_in">cd</span> bin</span><br><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.2.0/elasticsearch-analysis-ik-7.2.0.zip</span><br><span class="line"><span class="comment"># 退出docker</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># 重启es</span></span><br><span class="line">docker restart elasticsearch</span><br></pre></td></tr></table></figure><p></p><p>创建索引<br></p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// put http://127.0.0.1:9200/school</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"number_of_shards"</span>: <span class="string">"5"</span>,</span><br><span class="line">    <span class="attr">"number_of_replicas"</span>: <span class="string">"1"</span>,</span><br><span class="line">    <span class="attr">"analysis"</span>: &#123;</span><br><span class="line">      <span class="attr">"ik"</span>: &#123;</span><br><span class="line">        <span class="attr">"tokenizer"</span>: <span class="string">"ik_max_word"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p><p>建立字段<br></p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// post http://127.0.0.1:9200/school/_mapping/</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"properties"</span>: &#123;</span><br><span class="line">    <span class="attr">"id"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"title"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"context"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"createtime"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"date"</span>,</span><br><span class="line">      <span class="attr">"format"</span>: <span class="string">"yyyy-MM-dd HH:mm:ss || yyyy-MM-dd"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"status"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"kind"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"cid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"uid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p><hr><h2 id="通过查询删除数据"><a href="#通过查询删除数据" class="headerlink" title="通过查询删除数据"></a>通过查询删除数据</h2><p>使用查找的方式,将查找的内容全部删除<br>请求链接: <a href="127.0.0.1:9200/noob/goods/_delete_by_query" target="_blank" rel="noopener">127.0.0.1:9200/noob/goods/_delete_by_query</a><br>请求类型: POST<br>请求数据:<br></p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"query"</span>: &#123; </span><br><span class="line">    <span class="attr">"match"</span>: &#123;</span><br><span class="line">      <span class="attr">"goodsId"</span>: <span class="string">"47959547"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p><!-- rebuild by neat -->
+        <p>首先执行（每次重启服务器后都需要执行）：<code>sudo sysctl -w vm.max_map_count=262144</code></p><p>获取一些基本配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/:/root/ --name elasticsearch elasticsearch</span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="comment"># 复制/usr/share/elasticsearch/下的config、logs两个文件夹内的文件分别到自己本地/home下的两个文件夹内，并且自己创建一个data文件夹</span></span><br><span class="line"><span class="comment"># 复制完成后把三个文件夹放置到自己指定的目录下</span></span><br><span class="line"><span class="comment"># 关闭容器并且删除！</span></span><br></pre></td></tr></table></figure></p><a id="more"></a>
+
+<p>修改elasticsearch.yml配置文件，将<code>cluster.name</code>改成<code>school</code></p>
+<p>启动命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -v指定的文件夹路径替换成上面的文件夹路径</span></span><br><span class="line">docker run -d -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -v /home/h4795/Documents/studytmp/es/config/:/usr/share/elasticsearch/config/  -v /home/h4795/Documents/studytmp/es/logs/:/usr/share/elasticsearch/logs/  -v /home/h4795/Documents/studytmp/es/data/:/usr/share/elasticsearch/data/ --name elasticsearch elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>安装ik分词插件，ik分词器版本必须和es一致，否则一定会安装失败<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分词器开源地址：https://github.com/medcl/elasticsearch-analysis-ik</span></span><br><span class="line">docker <span class="built_in">exec</span> elasticsearch /bin/bash</span><br><span class="line"><span class="built_in">cd</span> bin</span><br><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.2.0/elasticsearch-analysis-ik-7.2.0.zip</span><br><span class="line"><span class="comment"># 退出docker</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># 重启es</span></span><br><span class="line">docker restart elasticsearch</span><br></pre></td></tr></table></figure></p>
+<p>创建索引<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// put http://127.0.0.1:9200/school</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"number_of_shards"</span>: <span class="string">"5"</span>,</span><br><span class="line">    <span class="attr">"number_of_replicas"</span>: <span class="string">"1"</span>,</span><br><span class="line">    <span class="attr">"analysis"</span>: &#123;</span><br><span class="line">      <span class="attr">"ik"</span>: &#123;</span><br><span class="line">        <span class="attr">"tokenizer"</span>: <span class="string">"ik_max_word"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>建立字段<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// post http://127.0.0.1:9200/school/_mapping/</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"properties"</span>: &#123;</span><br><span class="line">    <span class="attr">"id"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"title"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"context"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"createtime"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"date"</span>,</span><br><span class="line">      <span class="attr">"format"</span>: <span class="string">"yyyy-MM-dd HH:mm:ss || yyyy-MM-dd"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"status"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"kind"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"cid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"uid"</span>: &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+
+<h2 id="通过查询删除数据"><a href="#通过查询删除数据" class="headerlink" title="通过查询删除数据"></a>通过查询删除数据</h2><p>使用查找的方式,将查找的内容全部删除<br>请求链接: <a href="127.0.0.1:9200/noob/goods/_delete_by_query" target="_blank" rel="noopener">127.0.0.1:9200/noob/goods/_delete_by_query</a><br>请求类型: POST<br>请求数据:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"query"</span>: &#123; </span><br><span class="line">    <span class="attr">"match"</span>: &#123;</span><br><span class="line">      <span class="attr">"goodsId"</span>: <span class="string">"47959547"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
     </div>
 
 
@@ -499,7 +509,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -589,9 +599,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -608,7 +616,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -654,16 +692,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

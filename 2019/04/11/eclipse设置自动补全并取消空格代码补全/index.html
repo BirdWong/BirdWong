@@ -192,7 +192,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -218,7 +218,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -384,7 +384,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在网上找了很久但是都不尽人意，发现此篇文章，成功修改，借鉴一下，<br>重要的不是修改那个文件，对于新版的eclipse关键是找到文件，如果你的没有，就去那个网址下一个吧</p><p>设置代码提示</p><p>打开 Eclipse 依次选择 Window -&gt; Perferences -&gt; Java -&gt; Editor -&gt; Content Assist，Auto activation triggers for Java：设置框中默认是”.”</p><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p>现在将它改为：</p><p>.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_</p><p>有老版本的Eclipse不支持定义这么多触发器，可以通过修改配置文件实现，网上资料很多。</p><p>然后你就会发现Eclipse可以使用更智能的代码提示了。但是现在有一个比较大的问题是，Eclipse智能过头了，它总想帮我们完成一些我们不想要的代码补完。比如按“=”和空格以后就会自动补完代码，这对很多人真的不能忍。</p><p>幸好Eclipse是开源软件，解决办法是直接修改代码提示功能的源代码，以完成我们需要的功能。</p><p>首先打开window-&gt;show view，选择Plug-ins，再找到org.eclipse.jface.text，右键单击，选择import as－&gt; Source Project，导入完成后，在你的workspace就可以看到这个project了。如果没有src这个文件夹，说明你使用的版本中没有带源代码，我正好也是这种情况。</p><p>源代码可以去这个地址下载（找了我好久好久）</p><p><a href="http://archive.eclipse.org/eclipse/downloads/" target="_blank" rel="noopener">http://archive.eclipse.org/eclipse/downloads/</a></p><p>在页面上选择你Eclipse版本的连接（我使用的是4.4.2），然后在新页面中下载eclipse-SDK-(***).zip，根据自己的需要选择合适的版本下载，大概200M左右。下载完成以后解压缩，在.\eclipse\plugins\文件夹下找到 org.eclipse.jface.text.source_3.9.2.v20141003-1326.jar （这是对应我使用的Eclipse版本的文件，实际请根据你自己的版本进行选择），将这个文件复制到你自己的Eclipse安装目录下的.\eclipse\plugins\文件夹下，然后重新启动Eclipse。重复上面的操作导入(import)org.eclipse.jface.text，此时就能够看到src文件夹了。</p><p>技术分享</p><p>在src文件夹下org.eclipse.jface.text.contentassist.CompletionProposalPopup#verifyKey()”函数中有一段代码:</p><p>if(contains(triggers, key)){<br>…<br>}</p><p>将这段代码改为</p><p>if(key!=0x20&amp;&amp; key!=‘=‘&amp;&amp; key!=‘;‘&amp;&amp; contains(triggers, key)){<br>…<br>}</p><p>还有把这段代码之上的代码</p><p>case‘\t‘:<br>e.doit=false;<br>fProposalShell.setFocus();<br>returnfalse;</p><p>修改为</p><p>case‘\t‘:<br>e.doit=false;<br>insertSelectedProposalWithMask(e.stateMask);<br>break;</p><p>经过上述操作，这个辅助输入插件已经排除了空格与“=”的选中功能，增加了TAB键的选中功能。最后就是导出修改后的插件，右键点击你的workspace里的工程，选择Export－&gt;Deployable plugins and fragments，点击Next，选择Destination选项卡，选择Directory，选择一个要保存插件的目录，然后Finish。然后就会在你所选的目录下产生一个新的plugins目录，里面有一个jar文件，用它替换掉eclipse/plugins里面的org.eclipse.jface.text，记得覆盖前对原文件进行备份。然后重新启动Eclipse</p><!-- rebuild by neat -->
+        <p>在网上找了很久但是都不尽人意，发现此篇文章，成功修改，借鉴一下，<br>重要的不是修改那个文件，对于新版的eclipse关键是找到文件，如果你的没有，就去那个网址下一个吧</p><p>设置代码提示</p><p>打开 Eclipse 依次选择 Window -&gt; Perferences -&gt; Java -&gt; Editor -&gt; Content Assist，Auto activation triggers for Java：设置框中默认是”.”</p><a id="more"></a>
+
+
+<p>现在将它改为：</p>
+<p>　　.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_</p>
+<p>有老版本的Eclipse不支持定义这么多触发器，可以通过修改配置文件实现，网上资料很多。</p>
+<p>然后你就会发现Eclipse可以使用更智能的代码提示了。但是现在有一个比较大的问题是，Eclipse智能过头了，它总想帮我们完成一些我们不想要的代码补完。比如按“=”和空格以后就会自动补完代码，这对很多人真的不能忍。</p>
+<p>幸好Eclipse是开源软件，解决办法是直接修改代码提示功能的源代码，以完成我们需要的功能。</p>
+<p>首先打开window-&gt;show view，选择Plug-ins，再找到org.eclipse.jface.text，右键单击，选择import as－&gt; Source Project，导入完成后，在你的workspace就可以看到这个project了。如果没有src这个文件夹，说明你使用的版本中没有带源代码，我正好也是这种情况。</p>
+<p>源代码可以去这个地址下载（找了我好久好久）</p>
+<p><a href="http://archive.eclipse.org/eclipse/downloads/" target="_blank" rel="noopener">http://archive.eclipse.org/eclipse/downloads/</a></p>
+<p>在页面上选择你Eclipse版本的连接（我使用的是4.4.2），然后在新页面中下载eclipse-SDK-(***).zip，根据自己的需要选择合适的版本下载，大概200M左右。下载完成以后解压缩，在.\eclipse\plugins\文件夹下找到 org.eclipse.jface.text.source_3.9.2.v20141003-1326.jar （这是对应我使用的Eclipse版本的文件，实际请根据你自己的版本进行选择），将这个文件复制到你自己的Eclipse安装目录下的.\eclipse\plugins\文件夹下，然后重新启动Eclipse。重复上面的操作导入(import)org.eclipse.jface.text，此时就能够看到src文件夹了。</p>
+<p>技术分享</p>
+<p>在src文件夹下org.eclipse.jface.text.contentassist.CompletionProposalPopup#verifyKey()”函数中有一段代码:</p>
+<p>if(contains(triggers, key)){<br>…<br>}</p>
+<p>将这段代码改为</p>
+<p>if(key!=0x20&amp;&amp; key!=‘=‘&amp;&amp; key!=‘;‘&amp;&amp; contains(triggers, key)){<br>…<br>}</p>
+<p>还有把这段代码之上的代码</p>
+<p>case‘\t‘:<br>e.doit=false;<br>fProposalShell.setFocus();<br>returnfalse;</p>
+<p>修改为</p>
+<p>case‘\t‘:<br>e.doit=false;<br>insertSelectedProposalWithMask(e.stateMask);<br>break;</p>
+<p>经过上述操作，这个辅助输入插件已经排除了空格与“=”的选中功能，增加了TAB键的选中功能。最后就是导出修改后的插件，右键点击你的workspace里的工程，选择Export－&gt;Deployable plugins and fragments，点击Next，选择Destination选项卡，选择Directory，选择一个要保存插件的目录，然后Finish。然后就会在你所选的目录下产生一个新的plugins目录，里面有一个jar文件，用它替换掉eclipse/plugins里面的org.eclipse.jface.text，记得覆盖前对原文件进行备份。然后重新启动Eclipse</p>
+
     </div>
 
 
@@ -490,7 +512,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -580,9 +602,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -599,7 +619,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
         <div class="back-to-top motion-element">
@@ -628,16 +678,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

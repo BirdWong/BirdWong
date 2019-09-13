@@ -66,13 +66,13 @@
 	     });
 	</script>
 
-  <meta name="description" content="是列表键和哈希键的底层实现之一。当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
+  <meta name="description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
 <meta name="keywords" content="源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis源码-压缩列表">
 <meta property="og:url" content="https://jijiking51.cn/2019/04/22/redis源码-压缩列表/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="是列表键和哈希键的底层实现之一。当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
+<meta property="og:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png">
 <meta property="og:image" content="http://img.jijiking51.cn/c0bae8fd18038741181489bf05040822.png">
@@ -85,7 +85,7 @@
 <meta property="og:updated_time" content="2019-09-06T13:52:43.008Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis源码-压缩列表">
-<meta name="twitter:description" content="是列表键和哈希键的底层实现之一。当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
+<meta name="twitter:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
 <meta name="twitter:image" content="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/22/redis源码-压缩列表/">
 
@@ -201,7 +201,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -227,7 +227,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -393,7 +393,185 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>是列表键和哈希键的底层实现之一。</p><ul><li>当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。</li><li>当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现</li></ul><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:41 GMT+0800 (CST) --><h1 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h1><p>压缩列表是为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的<strong>顺序性</strong>数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或一个整数值。</p><p>压缩列表的组成：<img src="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png" alt="压缩列表组成"></p><table><thead><tr><th>属性</th><th>类型</th><th>长度</th><th>用途</th></tr></thead><tbody><tr><td><code>zlbytes</code></td><td><code>uint32_t</code></td><td><code>4</code> 字节</td><td>记录整个压缩列表占用的内存字节数：在对压缩列表进行内存重分配， 或者计算 <code>zlend</code> 的位置时使用。</td></tr><tr><td><code>zltail</code></td><td><code>uint32_t</code></td><td><code>4</code> 字节</td><td>记录压缩列表表尾节点距离压缩列表的起始地址有多少字节： 通过这个偏移量，程序无须遍历整个压缩列表就可以确定表尾节点的地址。</td></tr><tr><td><code>zllen</code></td><td><code>uint16_t</code></td><td><code>2</code> 字节</td><td>记录了压缩列表包含的节点数量： 当这个属性的值小于 <code>UINT16_MAX</code> （<code>65535</code>）时， 这个属性的值就是压缩列表包含节点的数量； 当这个值等于 <code>UINT16_MAX</code> 时， 节点的真实数量需要遍历整个压缩列表才能计算得出。</td></tr><tr><td><code>entryX</code></td><td>列表节点</td><td>不定</td><td>压缩列表包含的各个节点，节点的长度由节点保存的内容决定。</td></tr><tr><td><code>zlend</code></td><td><code>uint8_t</code></td><td><code>1</code> 字节</td><td>特殊值 <code>0xFF</code> （十进制 <code>255</code> ），用于标记压缩列表的末端。</td></tr></tbody></table><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ziplist 属性宏</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 bytes 属性，该属性记录了整个 ziplist 所占用的内存字节数</span></span><br><span class="line"><span class="comment">// 用于取出 bytes 属性的现有值，或者为 bytes 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_BYTES(zl)       (*((uint32_t*)(zl)))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 offset 属性，该属性记录了到达表尾节点的偏移量</span></span><br><span class="line"><span class="comment">// 用于取出 offset 属性的现有值，或者为 offset 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_TAIL_OFFSET(zl) (*((uint32_t*)((zl)+sizeof(uint32_t))))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 length 属性，该属性记录了 ziplist 包含的节点数量</span></span><br><span class="line"><span class="comment">// 用于取出 length 属性的现有值，或者为 length 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_LENGTH(zl)      (*((uint16_t*)((zl)+sizeof(uint32_t)*2)))</span></span><br><span class="line"><span class="comment">// 返回 ziplist 表头的大小</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_HEADER_SIZE     (sizeof(uint32_t)*2+sizeof(uint16_t))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 第一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_HEAD(zl)  ((zl)+ZIPLIST_HEADER_SIZE)</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 最后一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_TAIL(zl)  ((zl)+intrev32ifbe(ZIPLIST_TAIL_OFFSET(zl)))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 末端 ZIP_END （的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_END(zl)   ((zl)+intrev32ifbe(ZIPLIST_BYTES(zl))-1)</span></span><br></pre></td></tr></table></figure><p>下图展示了一个包含三个节点的压缩列表示例：</p><ul><li>列表 zlbytes 属性的值为 0x50 （十进制 80）， 表示压缩列表的总长为 80 字节。</li><li>列表 zltail 属性的值为 0x3（十进制 60）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 60 ， 就可以计算出表尾节点 entry3 的地址。</li><li>列表 zllen 属性的值为 0x3 （十进制 3）， 表示压缩列表包含三个节点。</li></ul><p><img src="http://img.jijiking51.cn/c0bae8fd18038741181489bf05040822.png" alt="包含三个节点的压缩列表"></p><p>展示了一个包含五个节点压缩列表示例：</p><ul><li>列表 zlbytes 属性的值为 0xd2 （十进制 210）， 表示压缩列表的总长为 210 字节。</li><li>列表 zltail 属性的值为 0xb3 （十进制 179）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 179 ， 就可以计算出表尾节点 entry5 的地址。</li><li>列表 zllen 属性的值为 0x5（十进制 5）， 表示压缩列表包含五个节点。</li></ul><h1 id="压缩列表节点的构成"><a href="#压缩列表节点的构成" class="headerlink" title="压缩列表节点的构成"></a>压缩列表节点的构成</h1><p>每个压缩列表可以保存一个字节数组或者一个整数值，其中，字节数组可以是一下三种长度的其中一种：</p><ul><li>长度小于等于63（2^6-1）字节的字节数组</li><li>长度小于等于16383（2^14-1）字节的字节数组</li><li>长度小于等于4294967295（2^32-1）字节的字节数组</li></ul><p>整数值可以是一下六种长度的其中一种：</p><ul><li>4位长，介于0至12之间的无符号整数</li><li>1字节的有符号整数</li><li>3字节长的有符号整数</li><li>int16_t类型整数</li><li>int32_t类型整数</li><li>int64_t类型整数</li></ul><p>每个压缩列表都是由previous_entry_length/encoding/content三个部分组成</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 保存 ziplist 节点信息的结构</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zlentry</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// prevrawlen ：前置节点的长度</span></span><br><span class="line">    <span class="comment">// prevrawlensize ：编码 prevrawlen 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> prevrawlensize, prevrawlen;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// len ：当前节点值的长度</span></span><br><span class="line">    <span class="comment">// lensize ：编码 len 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> lensize, len;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点 header 的大小</span></span><br><span class="line">    <span class="comment">// 等于 prevrawlensize + lensize</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> headersize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点值所使用的编码类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> encoding;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向当前节点的指针</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p;</span><br><span class="line"></span><br><span class="line">&#125; zlentry;</span><br></pre></td></tr></table></figure><h2 id="previous-entry-length"><a href="#previous-entry-length" class="headerlink" title="previous_entry_length"></a>previous_entry_length</h2><p>节点的previous_entry_length属性以字节为单位，记录了压缩列表中前一个节点的长度。previous_entry_length属性的长度可以是1字节或者5字节</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Decode the number of bytes required to store the length of the previous</span></span><br><span class="line"><span class="comment"> * element, from the perspective of the entry pointed to by 'ptr'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 解码 ptr 指针，</span></span><br><span class="line"><span class="comment"> * 取出编码前置节点长度所需的字节数，并将它保存到 prevlensize 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_DECODE_PREVLENSIZE(ptr, prevlensize) do &#123;                          \</span></span><br><span class="line">    <span class="keyword">if</span> ((ptr)[<span class="number">0</span>] &lt; ZIP_BIGLEN) &#123;                                               \</span><br><span class="line">        (prevlensize) = <span class="number">1</span>;                                                     \</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                                                                   \</span><br><span class="line">        (prevlensize) = <span class="number">5</span>;                                                     \</span><br><span class="line">    &#125;                                                                          \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure><ul><li><p>如果前一个节点的长度小于254字节，那么previous_entry_length属性的长度，为1字节，前一个节点的长度就保存在这个字节里面</p></li><li><p>如果前一节点的长度大于等于254字节，那么previous_entry_length属性的长度为5字节：其中属性的第一个字节会被设置为0xFE(十进制254)，之后的四个字节则用于保存前一节点的长度</p></li></ul><p><img src="http://img.jijiking51.cn/9c117388959ff9bfc31910cc1b4aceb5.png" alt="1个字节长度的previous_entry_length"></p><p><img src="http://img.jijiking51.cn/71218b6227b0f49714aebf0a537a5fec.png" alt="5个字节长度的previous_entry_length"></p><ol><li>第一幅图表示一个属性值为0x05的previous_entry_length，表示前一个节点的长度为5字节</li><li>第二幅图表示一个属性为0xFE00002766的previous_entry_length，最高位的0xFE表示这是五个字节的属性，后面的0x00002766才是表示节点长度的值(十进制10086)</li></ol><p>因为节点的previous_entry_length属性记录了前一个节点的长度，所以程序可以通过指针运算，更具当前节点的起始地址来计算出前一个节点的起始地址。<br>例如：<br>我们有一个指向当前节点起始地址的指针C，那么我们只要用c减去当前节点的previous_entry_length属性的值，就可以得出一个指向前一个节点起始地址的指针P</p><p>压缩列表的从表尾向表头便利操作就是适用这个原理实现的，只要我们拥有了一个指向某个节点起始地址的指针，那么通过这个指针以及这个节点的previous_entry_length属性，程序就可以一直想前一个节点回溯，最终到达压缩列表的头结点。</p><ol><li>首先我们拥有指向压缩列表表尾节点entry4起始地址的指针p1（指向表尾节点的指针可以通过指向压缩列表起始地址的指针加上zltail属性的值得出）</li><li>通过p1减去entry4节点的previous_entry_length属性的值，我们得到一个指向entry4前一节点entry3起始地址的指针p2</li><li>通过用p2减去entry3节点previous_entry_length属性的值，我们得到一个指向entry3前一节点entry2起始地址的指针p3</li><li>通过用p3减去entry2节点previous_entry_length属性的值，我们得到一个指向entry2前一节点entry1起始地址的指针p4，entry1为压缩列表的表头节点</li><li>最终我们从表尾节点向表头节点遍历了整个列表</li></ol><p><img src="http://img.jijiking51.cn/6c5dd4ae5afbde41d7e483efaf168620.png" alt="1"></p><p><img src="http://img.jijiking51.cn/678a191d34e8304fb3aaee5202043ee3.png" alt="2"></p><p><img src="http://img.jijiking51.cn/c784af9861ebd06a3057819b864aaded.png" alt="3"></p><p><img src="http://img.jijiking51.cn/23bf70c1dfbf8f02e932291bbad9dabc.png" alt="4"></p><h2 id="encoding"><a href="#encoding" class="headerlink" title="encoding"></a>encoding</h2><p>节点的encoding属性记录了节点的content属性所保存数据的类型以及长度</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Extract the encoding from the byte pointed by 'ptr' and set it into</span></span><br><span class="line"><span class="comment"> * 'encoding'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 从 ptr 中取出节点值的编码类型，并将它保存到 encoding 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_ENTRY_ENCODING(ptr, encoding) do &#123;  \</span></span><br><span class="line">    (encoding) = (ptr[<span class="number">0</span>]); \</span><br><span class="line">    <span class="keyword">if</span> ((encoding) &lt; ZIP_STR_MASK) (encoding) &amp;= ZIP_STR_MASK; \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure><p>字节数组编码</p><table><thead><tr><th>字节长度</th><th>编码</th><th>content属性保存的值</th></tr></thead><tbody><tr><td>1字节</td><td>00xxxxxx</td><td>长度小于等于63字节的字节数组</td></tr><tr><td>2字节</td><td>01xxxxxx</td><td>长度小于等于16383字节的字节数组</td></tr><tr><td>5字节</td><td>10xxxxxx<br>xxxxxxxx<br>xxxxxxxx<br>xxxxxxxx<br>xxxxxxxx</td><td>长度小于等于4294967295的字节数组</td></tr></tbody></table><p>整数编码（均一字节）</p><table><thead><tr><th>编码</th><th>content属性保存的值</th></tr></thead><tbody><tr><td>11000000</td><td>int16_t类型的整数， 2 字节带符号整数</td></tr><tr><td>11010000</td><td>int32_t类型的整数，4 字节带符号整数</td></tr><tr><td>11100000</td><td>int64_t类型的整数，8 字节带符号整数</td></tr><tr><td>11110000</td><td>24位有符号整数</td></tr><tr><td>11111110</td><td>8位有符号整数</td></tr><tr><td>1111xxxx</td><td>没有content属性，因为xxxx四位已经可以保存0-12之间的值</td></tr></tbody></table><h2 id="content"><a href="#content" class="headerlink" title="content"></a>content</h2><p>content保存节点的值，可以是一个字节数组也可以是一个整数，类型和长度由encoding决定</p><h1 id="连锁更新"><a href="#连锁更新" class="headerlink" title="连锁更新"></a>连锁更新</h1><p>每个节点的 <code>previous_entry_length（保存前一个节点的字节长度）</code> 属性都记录了前一个节点的长度：</p><ul><li>如果前一节点的长度小于 <code>254</code> 字节， 那么 <code>previous_entry_length</code> 属性需要用 <code>1</code> 字节长的空间来保存这个长度值。</li><li>如果前一节点的长度大于等于 <code>254</code> 字节， 那么 <code>previous_entry_length</code> 属性需要用 <code>5</code> 字节长的空间来保存这个长度值。</li></ul><p>假如目前有以下情况，每个节点的长度介于250字节到253字节之间</p><pre class="mermaid">graph TB
+        <p>是列表键和哈希键的底层实现之一。</p><ul>
+<li>当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。</li>
+<li>当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现</li>
+</ul><a id="more"></a>
+
+<h1 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h1><p>压缩列表是为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的<strong>顺序性</strong>数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或一个整数值。</p>
+<p>压缩列表的组成：<img src="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png" alt="压缩列表组成"></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>长度</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zlbytes</code></td>
+<td><code>uint32_t</code></td>
+<td><code>4</code> 字节</td>
+<td>记录整个压缩列表占用的内存字节数：在对压缩列表进行内存重分配， 或者计算 <code>zlend</code> 的位置时使用。</td>
+</tr>
+<tr>
+<td><code>zltail</code></td>
+<td><code>uint32_t</code></td>
+<td><code>4</code> 字节</td>
+<td>记录压缩列表表尾节点距离压缩列表的起始地址有多少字节： 通过这个偏移量，程序无须遍历整个压缩列表就可以确定表尾节点的地址。</td>
+</tr>
+<tr>
+<td><code>zllen</code></td>
+<td><code>uint16_t</code></td>
+<td><code>2</code> 字节</td>
+<td>记录了压缩列表包含的节点数量： 当这个属性的值小于 <code>UINT16_MAX</code> （<code>65535</code>）时， 这个属性的值就是压缩列表包含节点的数量； 当这个值等于 <code>UINT16_MAX</code> 时， 节点的真实数量需要遍历整个压缩列表才能计算得出。</td>
+</tr>
+<tr>
+<td><code>entryX</code></td>
+<td>列表节点</td>
+<td>不定</td>
+<td>压缩列表包含的各个节点，节点的长度由节点保存的内容决定。</td>
+</tr>
+<tr>
+<td><code>zlend</code></td>
+<td><code>uint8_t</code></td>
+<td><code>1</code> 字节</td>
+<td>特殊值 <code>0xFF</code> （十进制 <code>255</code> ），用于标记压缩列表的末端。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ziplist 属性宏</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 bytes 属性，该属性记录了整个 ziplist 所占用的内存字节数</span></span><br><span class="line"><span class="comment">// 用于取出 bytes 属性的现有值，或者为 bytes 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_BYTES(zl)       (*((uint32_t*)(zl)))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 offset 属性，该属性记录了到达表尾节点的偏移量</span></span><br><span class="line"><span class="comment">// 用于取出 offset 属性的现有值，或者为 offset 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_TAIL_OFFSET(zl) (*((uint32_t*)((zl)+sizeof(uint32_t))))</span></span><br><span class="line"><span class="comment">// 定位到 ziplist 的 length 属性，该属性记录了 ziplist 包含的节点数量</span></span><br><span class="line"><span class="comment">// 用于取出 length 属性的现有值，或者为 length 属性赋予新值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_LENGTH(zl)      (*((uint16_t*)((zl)+sizeof(uint32_t)*2)))</span></span><br><span class="line"><span class="comment">// 返回 ziplist 表头的大小</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_HEADER_SIZE     (sizeof(uint32_t)*2+sizeof(uint16_t))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 第一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_HEAD(zl)  ((zl)+ZIPLIST_HEADER_SIZE)</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 最后一个节点（的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_TAIL(zl)  ((zl)+intrev32ifbe(ZIPLIST_TAIL_OFFSET(zl)))</span></span><br><span class="line"><span class="comment">// 返回指向 ziplist 末端 ZIP_END （的起始位置）的指针</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIPLIST_ENTRY_END(zl)   ((zl)+intrev32ifbe(ZIPLIST_BYTES(zl))-1)</span></span><br></pre></td></tr></table></figure>
+<p>下图展示了一个包含三个节点的压缩列表示例：</p>
+<ul>
+<li>列表 zlbytes 属性的值为 0x50 （十进制 80）， 表示压缩列表的总长为 80 字节。</li>
+<li>列表 zltail 属性的值为 0x3（十进制 60）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 60 ， 就可以计算出表尾节点 entry3 的地址。</li>
+<li>列表 zllen 属性的值为 0x3 （十进制 3）， 表示压缩列表包含三个节点。</li>
+</ul>
+<p><img src="http://img.jijiking51.cn/c0bae8fd18038741181489bf05040822.png" alt="包含三个节点的压缩列表"></p>
+<p>展示了一个包含五个节点压缩列表示例：</p>
+<ul>
+<li>列表 zlbytes 属性的值为 0xd2 （十进制 210）， 表示压缩列表的总长为 210 字节。</li>
+<li>列表 zltail 属性的值为 0xb3 （十进制 179）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 179 ， 就可以计算出表尾节点 entry5 的地址。</li>
+<li>列表 zllen 属性的值为 0x5（十进制 5）， 表示压缩列表包含五个节点。</li>
+</ul>
+<h1 id="压缩列表节点的构成"><a href="#压缩列表节点的构成" class="headerlink" title="压缩列表节点的构成"></a>压缩列表节点的构成</h1><p>每个压缩列表可以保存一个字节数组或者一个整数值，其中，字节数组可以是一下三种长度的其中一种：</p>
+<ul>
+<li>长度小于等于63（2^6-1）字节的字节数组</li>
+<li>长度小于等于16383（2^14-1）字节的字节数组</li>
+<li>长度小于等于4294967295（2^32-1）字节的字节数组</li>
+</ul>
+<p>整数值可以是一下六种长度的其中一种：</p>
+<ul>
+<li>4位长，介于0至12之间的无符号整数</li>
+<li>1字节的有符号整数</li>
+<li>3字节长的有符号整数</li>
+<li>int16_t类型整数</li>
+<li>int32_t类型整数</li>
+<li>int64_t类型整数</li>
+</ul>
+<p>每个压缩列表都是由previous_entry_length/encoding/content三个部分组成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 保存 ziplist 节点信息的结构</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zlentry</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// prevrawlen ：前置节点的长度</span></span><br><span class="line">    <span class="comment">// prevrawlensize ：编码 prevrawlen 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> prevrawlensize, prevrawlen;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// len ：当前节点值的长度</span></span><br><span class="line">    <span class="comment">// lensize ：编码 len 所需的字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> lensize, len;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点 header 的大小</span></span><br><span class="line">    <span class="comment">// 等于 prevrawlensize + lensize</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> headersize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前节点值所使用的编码类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> encoding;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向当前节点的指针</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p;</span><br><span class="line"></span><br><span class="line">&#125; zlentry;</span><br></pre></td></tr></table></figure>
+<h2 id="previous-entry-length"><a href="#previous-entry-length" class="headerlink" title="previous_entry_length"></a>previous_entry_length</h2><p>节点的previous_entry_length属性以字节为单位，记录了压缩列表中前一个节点的长度。previous_entry_length属性的长度可以是1字节或者5字节</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Decode the number of bytes required to store the length of the previous</span></span><br><span class="line"><span class="comment"> * element, from the perspective of the entry pointed to by 'ptr'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 解码 ptr 指针，</span></span><br><span class="line"><span class="comment"> * 取出编码前置节点长度所需的字节数，并将它保存到 prevlensize 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_DECODE_PREVLENSIZE(ptr, prevlensize) do &#123;                          \</span></span><br><span class="line">    <span class="keyword">if</span> ((ptr)[<span class="number">0</span>] &lt; ZIP_BIGLEN) &#123;                                               \</span><br><span class="line">        (prevlensize) = <span class="number">1</span>;                                                     \</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                                                                   \</span><br><span class="line">        (prevlensize) = <span class="number">5</span>;                                                     \</span><br><span class="line">    &#125;                                                                          \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>如果前一个节点的长度小于254字节，那么previous_entry_length属性的长度，为1字节，前一个节点的长度就保存在这个字节里面</p>
+</li>
+<li><p>如果前一节点的长度大于等于254字节，那么previous_entry_length属性的长度为5字节：其中属性的第一个字节会被设置为0xFE(十进制254)，之后的四个字节则用于保存前一节点的长度</p>
+</li>
+</ul>
+<p><img src="http://img.jijiking51.cn/9c117388959ff9bfc31910cc1b4aceb5.png" alt="1个字节长度的previous_entry_length"></p>
+<p><img src="http://img.jijiking51.cn/71218b6227b0f49714aebf0a537a5fec.png" alt="5个字节长度的previous_entry_length"></p>
+<ol>
+<li>第一幅图表示一个属性值为0x05的previous_entry_length，表示前一个节点的长度为5字节</li>
+<li>第二幅图表示一个属性为0xFE00002766的previous_entry_length，最高位的0xFE表示这是五个字节的属性，后面的0x00002766才是表示节点长度的值(十进制10086)</li>
+</ol>
+<p>因为节点的previous_entry_length属性记录了前一个节点的长度，所以程序可以通过指针运算，更具当前节点的起始地址来计算出前一个节点的起始地址。<br>例如：<br>    我们有一个指向当前节点起始地址的指针C，那么我们只要用c减去当前节点的previous_entry_length属性的值，就可以得出一个指向前一个节点起始地址的指针P</p>
+<p>压缩列表的从表尾向表头便利操作就是适用这个原理实现的，只要我们拥有了一个指向某个节点起始地址的指针，那么通过这个指针以及这个节点的previous_entry_length属性，程序就可以一直想前一个节点回溯，最终到达压缩列表的头结点。</p>
+<ol>
+<li>首先我们拥有指向压缩列表表尾节点entry4起始地址的指针p1（指向表尾节点的指针可以通过指向压缩列表起始地址的指针加上zltail属性的值得出）</li>
+<li>通过p1减去entry4节点的previous_entry_length属性的值，我们得到一个指向entry4前一节点entry3起始地址的指针p2</li>
+<li>通过用p2减去entry3节点previous_entry_length属性的值，我们得到一个指向entry3前一节点entry2起始地址的指针p3</li>
+<li>通过用p3减去entry2节点previous_entry_length属性的值，我们得到一个指向entry2前一节点entry1起始地址的指针p4，entry1为压缩列表的表头节点</li>
+<li>最终我们从表尾节点向表头节点遍历了整个列表</li>
+</ol>
+<p><img src="http://img.jijiking51.cn/6c5dd4ae5afbde41d7e483efaf168620.png" alt="1"></p>
+<p><img src="http://img.jijiking51.cn/678a191d34e8304fb3aaee5202043ee3.png" alt="2"></p>
+<p><img src="http://img.jijiking51.cn/c784af9861ebd06a3057819b864aaded.png" alt="3"></p>
+<p><img src="http://img.jijiking51.cn/23bf70c1dfbf8f02e932291bbad9dabc.png" alt="4"></p>
+<h2 id="encoding"><a href="#encoding" class="headerlink" title="encoding"></a>encoding</h2><p>节点的encoding属性记录了节点的content属性所保存数据的类型以及长度</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Extract the encoding from the byte pointed by 'ptr' and set it into</span></span><br><span class="line"><span class="comment"> * 'encoding'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 从 ptr 中取出节点值的编码类型，并将它保存到 encoding 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_ENTRY_ENCODING(ptr, encoding) do &#123;  \</span></span><br><span class="line">    (encoding) = (ptr[<span class="number">0</span>]); \</span><br><span class="line">    <span class="keyword">if</span> ((encoding) &lt; ZIP_STR_MASK) (encoding) &amp;= ZIP_STR_MASK; \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>字节数组编码</p>
+<table>
+<thead>
+<tr>
+<th>字节长度</th>
+<th>编码</th>
+<th>content属性保存的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1字节</td>
+<td>00xxxxxx</td>
+<td>长度小于等于63字节的字节数组</td>
+</tr>
+<tr>
+<td>2字节</td>
+<td>01xxxxxx</td>
+<td>长度小于等于16383字节的字节数组</td>
+</tr>
+<tr>
+<td>5字节</td>
+<td>10xxxxxx <br>xxxxxxxx <br>xxxxxxxx<br>xxxxxxxx<br>xxxxxxxx</td>
+<td>长度小于等于4294967295的字节数组</td>
+</tr>
+</tbody>
+</table>
+<p>整数编码（均一字节）</p>
+<table>
+<thead>
+<tr>
+<th>编码</th>
+<th>content属性保存的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11000000</td>
+<td>int16_t类型的整数， 2 字节带符号整数</td>
+</tr>
+<tr>
+<td>11010000</td>
+<td>int32_t类型的整数，4 字节带符号整数</td>
+</tr>
+<tr>
+<td>11100000</td>
+<td>int64_t类型的整数，8 字节带符号整数</td>
+</tr>
+<tr>
+<td>11110000</td>
+<td>24位有符号整数</td>
+</tr>
+<tr>
+<td>11111110</td>
+<td>8位有符号整数</td>
+</tr>
+<tr>
+<td>1111xxxx</td>
+<td>没有content属性，因为xxxx四位已经可以保存0-12之间的值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="content"><a href="#content" class="headerlink" title="content"></a>content</h2><p>content保存节点的值，可以是一个字节数组也可以是一个整数，类型和长度由encoding决定</p>
+<h1 id="连锁更新"><a href="#连锁更新" class="headerlink" title="连锁更新"></a>连锁更新</h1><p>每个节点的 <code>previous_entry_length（保存前一个节点的字节长度）</code> 属性都记录了前一个节点的长度：</p>
+<ul>
+<li>如果前一节点的长度小于 <code>254</code> 字节， 那么 <code>previous_entry_length</code> 属性需要用 <code>1</code> 字节长的空间来保存这个长度值。</li>
+<li>如果前一节点的长度大于等于 <code>254</code> 字节， 那么 <code>previous_entry_length</code> 属性需要用 <code>5</code> 字节长的空间来保存这个长度值。</li>
+</ul>
+<p>假如目前有以下情况，每个节点的长度介于250字节到253字节之间</p>
+<pre class="mermaid">graph TB
     subgraph now,节点长度
     a(zlbytes)
     b(zltail)
@@ -404,7 +582,11 @@
     g(...)
     h(eN)
     j(zlend)
-    end</pre><p>因为节点长度都小于254字节， 所以<code>previous_entry_length</code>只需要1个字节保存。</p><p>如果这个时候讲一个长度大于等于254字节的新节点new设置为压缩列表节点，那么new成为压缩列表e1的前置节点</p><pre class="mermaid">graph TB
+    end</pre>
+
+<p>因为节点长度都小于254字节， 所以<code>previous_entry_length</code>只需要1个字节保存。</p>
+<p>如果这个时候讲一个长度大于等于254字节的新节点new设置为压缩列表节点，那么new成为压缩列表e1的前置节点</p>
+<pre class="mermaid">graph TB
     subgraph now,节点长度
     a(zlbytes)
     b(zltail)
@@ -416,7 +598,20 @@
     g(...)
     h(eN)
     j(zlend)
-    end</pre><p>因为e1的<code>previous_entry_length</code>仅1字节长， 他没办法保存新的节点new的长度，所以将需要从1字节扩充到5字节。</p><p>但是e1本身就介意250-253字节之间， 如果<code>previous_entry_length</code>增加四个字节，那么e1就会扩大到254-257字节，这种长度e2时没法保存的，以此类推后面一直到eN都需要一个接一个的扩充4个字节，这种情况称之为连锁更新。同时删除也有可能导致连锁更新。</p><p>因为连锁更新最坏的情况就如同上面的例子，需要进行N次(从e1——eN)空间分配，而每次空间重分配的最坏复杂度为O(N) (重分配节点后面的内存位置都需要后移一次)，所以连锁更新最坏的复杂度为O(N^2).</p><blockquote><p>真正造成性能问题的几率是很低的：</p><ul><li>首先， 压缩列表里要恰好有多个连续的、长度介于 <code>250</code> 字节至 <code>253</code> 字节之间的节点， 连锁更新才有可能被引发， 在实际中， 这种情况并不多见；</li><li>其次， 即使出现连锁更新， 但只要被更新的节点数量不多， 就不会对性能造成任何影响： 比如说， 对三五个节点进行连锁更新是绝对不会影响性能的；</li></ul></blockquote><p>因为以上原因， <code>ziplistPush</code> 等命令的平均复杂度仅为 O(N) ， 在实际中， 我们可以放心地使用这些函数， 而不必担心连锁更新会影响压缩列表的性能。</p><!-- rebuild by neat -->
+    end</pre>
+
+<p>因为e1的<code>previous_entry_length</code>仅1字节长， 他没办法保存新的节点new的长度，所以将需要从1字节扩充到5字节。</p>
+<p>但是e1本身就介意250-253字节之间， 如果<code>previous_entry_length</code>增加四个字节，那么e1就会扩大到254-257字节，这种长度e2时没法保存的，以此类推后面一直到eN都需要一个接一个的扩充4个字节，这种情况称之为连锁更新。同时删除也有可能导致连锁更新。</p>
+<p>因为连锁更新最坏的情况就如同上面的例子，需要进行N次(从e1——eN)空间分配，而每次空间重分配的最坏复杂度为O(N) (重分配节点后面的内存位置都需要后移一次)，所以连锁更新最坏的复杂度为O(N^2).</p>
+<blockquote>
+<p>真正造成性能问题的几率是很低的：</p>
+<ul>
+<li>首先， 压缩列表里要恰好有多个连续的、长度介于 <code>250</code> 字节至 <code>253</code> 字节之间的节点， 连锁更新才有可能被引发， 在实际中， 这种情况并不多见；</li>
+<li>其次， 即使出现连锁更新， 但只要被更新的节点数量不多， 就不会对性能造成任何影响： 比如说， 对三五个节点进行连锁更新是绝对不会影响性能的；</li>
+</ul>
+</blockquote>
+<p>因为以上原因， <code>ziplistPush</code> 等命令的平均复杂度仅为 O(N) ， 在实际中， 我们可以放心地使用这些函数， 而不必担心连锁更新会影响压缩列表的性能。</p>
+
     </div>
 
 
@@ -529,7 +724,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -619,9 +814,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -638,7 +831,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -684,16 +907,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

@@ -66,17 +66,17 @@
 	     });
 	</script>
 
-  <meta name="description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server参数含义redis_versionredis版本redis_git_sha1GIT SHA1redis_git_dirtyGit dirty flagredis_build_idredis编译时产生的idredis_mode运行模式(standal">
+  <meta name="description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server   参数 含义     redis_version redis版本   redis_git_sha1 GIT SHA1   redis_git_dirty Git dirty flag   redis_build_id redis编译时产生的id">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-5.0.5 info信息详解">
 <meta property="og:url" content="https://jijiking51.cn/2019/08/27/redis-5-0-5 info信息详解/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server参数含义redis_versionredis版本redis_git_sha1GIT SHA1redis_git_dirtyGit dirty flagredis_build_idredis编译时产生的idredis_mode运行模式(standal">
+<meta property="og:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server   参数 含义     redis_version redis版本   redis_git_sha1 GIT SHA1   redis_git_dirty Git dirty flag   redis_build_id redis编译时产生的id">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-08-27T12:44:53.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-5.0.5 info信息详解">
-<meta name="twitter:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server参数含义redis_versionredis版本redis_git_sha1GIT SHA1redis_git_dirtyGit dirty flagredis_build_idredis编译时产生的idredis_mode运行模式(standal">
+<meta name="twitter:description" content="info [section]：[section]可以是all、default或者以下选项，不带参数直接调用info时默认使用default。Server   参数 含义     redis_version redis版本   redis_git_sha1 GIT SHA1   redis_git_dirty Git dirty flag   redis_build_id redis编译时产生的id">
   <link rel="canonical" href="https://jijiking51.cn/2019/08/27/redis-5-0-5 info信息详解/">
 
 
@@ -191,7 +191,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -217,7 +217,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -375,7 +375,620 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>info [section]：[section]可以是<code>all</code>、<code>default</code>或者以下选项，不带参数直接调用<code>info</code>时默认使用<code>default</code>。</p><h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">redis_version</td><td style="text-align:center">redis版本</td></tr><tr><td style="text-align:center">redis_git_sha1</td><td style="text-align:center">GIT SHA1</td></tr><tr><td style="text-align:center">redis_git_dirty</td><td style="text-align:center">Git dirty flag</td></tr><tr><td style="text-align:center">redis_build_id</td><td style="text-align:center">redis编译时产生的id</td></tr><tr><td style="text-align:center">redis_mode</td><td style="text-align:center">运行模式(standalone,cluster)</td></tr><tr><td style="text-align:center">os</td><td style="text-align:center">redis服务器宿主操作系统</td></tr><tr><td style="text-align:center">arch_bits</td><td style="text-align:center">架构（32或64位）</td></tr><tr><td style="text-align:center">multiplexing_api</td><td style="text-align:center">redis所使用的事件处理机制</td></tr><tr><td style="text-align:center">atomicvar_api</td><td style="text-align:center">原子处理API</td></tr><tr><td style="text-align:center">gcc_version</td><td style="text-align:center">编译redis时使用的GCC版本</td></tr><tr><td style="text-align:center">process_id</td><td style="text-align:center">redis进程id</td></tr><tr><td style="text-align:center">run_id</td><td style="text-align:center">redis服务器随机标识（用于sentinel和集群）</td></tr><tr><td style="text-align:center">tcp_port</td><td style="text-align:center">redis监听端口</td></tr><tr><td style="text-align:center">uptime_in_seconds</td><td style="text-align:center">已经运行的秒数</td></tr><tr><td style="text-align:center">uptime_in_days</td><td style="text-align:center">已经运行的天数</td></tr><tr><td style="text-align:center">hz</td><td style="text-align:center">执行后台任务函数被调用的频率</td></tr><tr><td style="text-align:center">configured_hz</td><td style="text-align:center">设置的调用频率</td></tr><tr><td style="text-align:center">lru_clock</td><td style="text-align:center">以分钟为单位进行自增的时钟，用于 LRU 管理</td></tr><tr><td style="text-align:center">executable</td><td style="text-align:center">执行文件位置</td></tr><tr><td style="text-align:center">config_file</td><td style="text-align:center">配置文件位置</td></tr></tbody></table><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><h1 id="Clients"><a href="#Clients" class="headerlink" title="Clients"></a>Clients</h1><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">connected_clients</td><td style="text-align:center">已经连接的客户端数量（不包括从属服务器链接的客户端）</td></tr><tr><td style="text-align:center">client_recent_max_input_buffer</td><td style="text-align:center">当前连接的客户端当中，最长的输出列表</td></tr><tr><td style="text-align:center">client_recent_max_output_buffer</td><td style="text-align:center">当前连接的客户端当中，最大输入缓存</td></tr><tr><td style="text-align:center">blocked_clients</td><td style="text-align:center">正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量</td></tr></tbody></table><h1 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h1><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">used_memory</td><td style="text-align:center">由 Redis 分配器分配的内存总量，以字节（byte）为单位</td></tr><tr><td style="text-align:center">used_memory_human</td><td style="text-align:center">以人类可读的格式返回 Redis 分配的内存总量</td></tr><tr><td style="text-align:center">used_memory_rss</td><td style="text-align:center">从操作系统的角度，返回 Redis 已分配的内存总量（俗称常驻集大小）。这个值和 top 、 ps 等命令的输出一致</td></tr><tr><td style="text-align:center">used_memory_rss_human</td><td style="text-align:center">从操作系统的角度，人类可读的格式返回 Redis 分配的内存总量</td></tr><tr><td style="text-align:center">used_memory_peak</td><td style="text-align:center">Redis 的内存消耗峰值（以字节为单位）</td></tr><tr><td style="text-align:center">used_memory_peak_human</td><td style="text-align:center">以人类可读的格式返回 Redis 的内存消耗峰值</td></tr><tr><td style="text-align:center">used_memory_peak_perc</td><td style="text-align:center">(used_memory/ used_memory_peak) *100%</td></tr><tr><td style="text-align:center">used_memory_overhead</td><td style="text-align:center">Redis为了维护数据集的内部机制所需的内存开销，包括所有客户端输出缓冲区、查询缓冲区、AOF重写缓冲区和主从复制的backlog</td></tr><tr><td style="text-align:center">used_memory_startup</td><td style="text-align:center">Redis服务器启动时消耗的内存</td></tr><tr><td style="text-align:center">used_memory_dataset</td><td style="text-align:center">used_memory—used_memory_overhead（redis使用的内存-redis内部维护所需内存 = 用户数据内存大小）</td></tr><tr><td style="text-align:center">used_memory_dataset_perc</td><td style="text-align:center">100%*(used_memory_dataset/(used_memory—used_memory_startup)) （（用户数据内存大小/（使用的内存大小-redis启动的内存大小）= 用户数据大小占redis运行时使用内存比例）</td></tr><tr><td style="text-align:center">total_system_memory</td><td style="text-align:center">整个系统内存</td></tr><tr><td style="text-align:center">total_system_memory_human</td><td style="text-align:center">以人类可读的格式显示整个系统内存</td></tr><tr><td style="text-align:center">used_memory_lua</td><td style="text-align:center">Lua脚本存储占用的内存</td></tr><tr><td style="text-align:center">used_memory_lua_human</td><td style="text-align:center">以人类可读的格式显示Lua脚本存储占用的内存</td></tr><tr><td style="text-align:center">maxmemory</td><td style="text-align:center">Redis实例的最大内存配置</td></tr><tr><td style="text-align:center">maxmemory_human</td><td style="text-align:center">以人类可读的格式显示Redis实例的最大内存配置</td></tr><tr><td style="text-align:center">maxmemory_policy</td><td style="text-align:center">当达到maxmemory时的淘汰策略</td></tr><tr><td style="text-align:center">mem_fragmentation_ratio</td><td style="text-align:center">内存碎片率（=used_memory_rss/used_memory）</td></tr><tr><td style="text-align:center">mem_allocator</td><td style="text-align:center">内存分配器（ 在编译时指定的， Redis 所使用的内存分配器。可以是 libc 、 jemalloc 或者 tcmalloc ）</td></tr><tr><td style="text-align:center">active_defrag_running</td><td style="text-align:center">表示没有活动的defrag任务正在运行，1表示有活动的defrag任务正在运行（defrag:表示内存碎片整理）</td></tr><tr><td style="text-align:center">lazyfree_pending_objects</td><td style="text-align:center">0表示不存在延迟释放（也有资料翻译未惰性删除）的挂起对象</td></tr></tbody></table><blockquote><p>在理想情况下， <code>used_memory_rss</code> 的值应该只比 <code>used_memory</code> 稍微高一点儿。</p><p>当 <code>rss &gt; used</code> ，且两者的值相差较大时，表示存在（内部或外部的）内存碎片。</p><p>内存碎片的比率可以通过 <code>mem_fragmentation_ratio</code> 的值看出。</p><p>当 <code>used &gt; rss</code> 时，表示 Redis 的部分内存被操作系统换出到交换空间了，在这种情况下，操作可能会产生明显的延迟。</p><p>由于Redis无法控制其分配如何映射到内存页，因此高<code>used_memory_rss</code>通常是内存使用激增的结果。</p><p>当 Redis 释放内存时，分配器可能会，也可能不会，将内存返还给操作系统。</p><p>如果 Redis 释放了内存，却没有将内存返还给操作系统，那么 <code>used_memory</code> 的值可能和操作系统显示的 Redis 内存占用并不一致。</p><p>查看 <code>used_memory_peak</code> 的值可以验证这种情况是否发生。</p></blockquote><h1 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h1><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody><tr><td>loading</td><td>服务器是否正在载入持久化文件</td></tr><tr><td>rdb_changes_since_last_save</td><td>离最近一次成功生成rdb文件，写入命令的个数，即有多少个写入命令没有持久化</td></tr><tr><td>rdb_bgsave_in_progress</td><td>服务器是否正在创建rdb文件</td></tr><tr><td>rdb_last_save_time</td><td>离最近一次成功创建rdb文件的时间戳。当前时间戳 - rdb_last_save_time=多少秒未成功生成rdb文件</td></tr><tr><td>rdb_last_bgsave_status</td><td>最近一次rdb持久化是否成功</td></tr><tr><td>rdb_last_bgsave_time_sec</td><td>最近一次成功生成rdb文件耗时秒数</td></tr><tr><td>rdb_current_bgsave_time_sec</td><td>如果服务器正在创建rdb文件，那么这个域记录的就是当前的创建操作已经耗费的秒数</td></tr><tr><td>rdb_last_cow_size</td><td>RDB过程中父进程与子进程相比执行了多少修改(包括读缓冲区，写缓冲区，数据修改等)。</td></tr><tr><td>aof_enabled</td><td>是否开启了aof</td></tr><tr><td>aof_rewrite_in_progress</td><td>标识aof的rewrite操作是否在进行中</td></tr><tr><td>aof_rewrite_scheduled</td><td>rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite</td></tr><tr><td>aof_last_rewrite_time_sec</td><td>最近一次aof rewrite耗费的时长</td></tr><tr><td>aof_current_rewrite_time_sec</td><td>如果rewrite操作正在进行，则记录所使用的时间，单位秒</td></tr><tr><td>aof_last_bgrewrite_status</td><td>上次bgrewriteaof操作的状态</td></tr><tr><td>aof_last_write_status</td><td>上次aof写入状态</td></tr><tr><td>aof_last_cow_size</td><td>AOF过程中父进程与子进程相比执行了多少修改(包括读缓冲区，写缓冲区，数据修改等)。</td></tr></tbody></table><p>如果AOF持久化开启会加上以下状态</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">aof_current_size</td><td style="text-align:center">AOF 文件目前的大小</td></tr><tr><td style="text-align:center">aof_base_size</td><td style="text-align:center">服务器启动时或者 AOF 重写最近一次执行之后，AOF 文件的大小</td></tr><tr><td style="text-align:center">aof_pending_rewrite</td><td style="text-align:center">一个标志值，记录了是否有 AOF 重写操作在等待 RDB 文件创建完毕之后执行</td></tr><tr><td style="text-align:center">aof_buffer_length</td><td style="text-align:center">AOF 缓冲区的大小</td></tr><tr><td style="text-align:center">aof_rewrite_buffer_length</td><td style="text-align:center">AOF 重写缓冲区的大小</td></tr><tr><td style="text-align:center">aof_pending_bio_fsync</td><td style="text-align:center">后台 I/O 队列里面，等待执行的 <code>fsync</code> 调用数量</td></tr><tr><td style="text-align:center">aof_delayed_fsync</td><td style="text-align:center">被延迟的 <code>fsync</code> 调用数量</td></tr></tbody></table><h1 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h1><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody><tr><td>total_connections_received</td><td>新创建连接个数,如果新创建连接过多，过度地创建和销毁连接对性能有影响，说明短连接严重或连接池使用有问题，需调研代码的连接设置</td></tr><tr><td>total_commands_processed</td><td>redis处理的命令数</td></tr><tr><td>instantaneous_ops_per_sec</td><td>redis当前的qps，redis内部较实时的每秒执行的命令数</td></tr><tr><td>total_net_input_bytes</td><td>redis网络入口流量字节数</td></tr><tr><td>total_net_output_bytes</td><td>redis网络出口流量字节数</td></tr><tr><td>instantaneous_input_kbps</td><td>redis网络入口kps</td></tr><tr><td>instantaneous_output_kbps</td><td>redis网络出口kps</td></tr><tr><td>rejected_connections</td><td>拒绝的连接个数，redis连接个数达到maxclients限制，拒绝新连接的个数</td></tr><tr><td>sync_full</td><td>主从完全同步成功次数</td></tr><tr><td>sync_partial_ok</td><td>主从部分同步成功次数</td></tr><tr><td>sync_partial_err</td><td>主从部分同步失败次数</td></tr><tr><td>expired_keys</td><td>运行以来过期的key的数量</td></tr><tr><td>expired_stale_perc</td><td>过期的比率</td></tr><tr><td>expired_time_cap_reached_count</td><td>过期计数</td></tr><tr><td>evicted_keys</td><td>运行以来剔除(超过了maxmemory后)的key的数量</td></tr><tr><td>keyspace_hits</td><td>命中次数</td></tr><tr><td>keyspace_misses</td><td>没命中次数</td></tr><tr><td>pubsub_channels</td><td>当前使用中的频道数量</td></tr><tr><td>pubsub_patterns</td><td>当前使用的模式的数量</td></tr><tr><td>latest_fork_usec</td><td>最近一次fork操作阻塞redis进程的耗时数，单位微秒</td></tr><tr><td>migrate_cached_sockets</td><td>是否已经缓存了到该地址的连接</td></tr><tr><td>slave_expires_tracked_keys</td><td>从实例到期key数量</td></tr><tr><td>active_defrag_hits</td><td>主动碎片整理命中次数</td></tr><tr><td>active_defrag_misses</td><td>主动碎片整理未命中次数</td></tr><tr><td>active_defrag_key_hits</td><td>主动碎片整理key命中次数</td></tr><tr><td>active_defrag_key_misses</td><td>主动碎片整理key未命中次数</td></tr></tbody></table><h1 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h1><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">role</td><td style="text-align:center">实例的角色，是master or slave</td></tr><tr><td style="text-align:center">connected_slaves</td><td style="text-align:center">连接的slave实例个数</td></tr><tr><td style="text-align:center">master_replid</td><td style="text-align:center">主实例启动随机字符串</td></tr><tr><td style="text-align:center">master_replid2</td><td style="text-align:center">主实例启动随机字符串2</td></tr><tr><td style="text-align:center">master_repl_offset</td><td style="text-align:center">主从同步偏移量,与master_replid可被用来标识主实例复制流中的位置。</td></tr><tr><td style="text-align:center">second_repl_offset</td><td style="text-align:center">主从同步偏移量2,此值如果和上面的offset相同说明主从一致没延迟</td></tr><tr><td style="text-align:center">repl_backlog_active</td><td style="text-align:center">复制积压缓冲区是否开启</td></tr><tr><td style="text-align:center">repl_backlog_size</td><td style="text-align:center">复制积压缓冲大小</td></tr><tr><td style="text-align:center">repl_backlog_first_byte_offset</td><td style="text-align:center">复制缓冲区里偏移量的大小</td></tr><tr><td style="text-align:center">repl_backlog_histlen</td><td style="text-align:center">此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小</td></tr></tbody></table><p>如果当前服务器是一个从服务器的话，那么会加上以下域</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">master_host</td><td style="text-align:center">主服务器的 IP 地址</td></tr><tr><td style="text-align:center">master_port</td><td style="text-align:center">主服务器的 TCP 监听端口号</td></tr><tr><td style="text-align:center">master_link_status</td><td style="text-align:center">复制连接当前的状态， <code>up</code> 表示连接正常， <code>down</code> 表示连接断开</td></tr><tr><td style="text-align:center">master_last_io_seconds_ago</td><td style="text-align:center">距离最近一次与主服务器进行通信已经过去了多少秒钟</td></tr><tr><td style="text-align:center">master_sync_in_progress</td><td style="text-align:center">一个标志值，记录了主服务器是否正在与这个从服务器进行同步</td></tr></tbody></table><p>如果同步操作正在进行，那么会加上以下域</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">master_sync_left_bytes</td><td style="text-align:center">距离同步完成还缺少多少字节数据</td></tr><tr><td style="text-align:center">master_sync_last_io_seconds_ago</td><td style="text-align:center">距离最近一次因为 SYNC 操作而进行 I/O 已经过去了多少秒</td></tr></tbody></table><p>如果主从服务器之间的连接处于断线状态，那么这个部分还会加上以下域</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">master_link_down_since_seconds</td><td style="text-align:center">主从服务器连接断开了多少秒</td></tr></tbody></table><p>对于每个从服务器，会添加以下信息</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">含义</th></tr></thead><tbody><tr><td style="text-align:center">slaveXXX</td><td style="text-align:center">ID、IP 地址、端口号、连接状态</td></tr></tbody></table><h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody><tr><td>used_cpu_sys</td><td>将所有redis主进程在核心态所占用的CPU时求和累计起来</td></tr><tr><td>used_cpu_user</td><td>将所有redis主进程在用户态所占用的CPU时求和累计起来</td></tr><tr><td>used_cpu_sys_children</td><td>将后台进程在核心态所占用的CPU时求和累计起来</td></tr><tr><td>used_cpu_user_children</td><td>将后台进程在用户态所占用的CPU时求和累计起来</td></tr></tbody></table><h1 id="Commandstats"><a href="#Commandstats" class="headerlink" title="Commandstats"></a>Commandstats</h1><p>记录了各种不同类型的命令的执行统计信息，比如命令执行的次数、命令耗费的 CPU 时间、执行每个命令耗费的平均 CPU 时间等等。对于每种类型的命令，这个部分都会添加一行以下格式的信</p><p><code>cmdstat_XXX:calls=XXX,usec=XXX,usecpercall=XXX</code></p><h1 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h1><p><code>cluster_enabled</code> : 一个标志值，记录集群功能是否已经开启</p><h1 id="Keyspace"><a href="#Keyspace" class="headerlink" title="Keyspace"></a>Keyspace</h1><p>记录了数据库相关的统计信息，比如数据库的键数量、数据库已经被删除的过期键数量等。对于每个数据库，这个部分都会添加一行以下格式的信息</p><p><code>dbXXX:keys=XXX,expires=XXX</code></p><!-- rebuild by neat -->
+        <p>info [section]：[section]可以是<code>all</code>、<code>default</code>或者以下选项，不带参数直接调用<code>info</code>时默认使用<code>default</code>。</p><h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">redis_version</td>
+<td style="text-align:center">redis版本</td>
+</tr>
+<tr>
+<td style="text-align:center">redis_git_sha1</td>
+<td style="text-align:center">GIT SHA1</td>
+</tr>
+<tr>
+<td style="text-align:center">redis_git_dirty</td>
+<td style="text-align:center">Git dirty flag</td>
+</tr>
+<tr>
+<td style="text-align:center">redis_build_id</td>
+<td style="text-align:center">redis编译时产生的id</td>
+</tr>
+<tr>
+<td style="text-align:center">redis_mode</td>
+<td style="text-align:center">运行模式(standalone,cluster)</td>
+</tr>
+<tr>
+<td style="text-align:center">os</td>
+<td style="text-align:center">redis服务器宿主操作系统</td>
+</tr>
+<tr>
+<td style="text-align:center">arch_bits</td>
+<td style="text-align:center">架构（32或64位）</td>
+</tr>
+<tr>
+<td style="text-align:center">multiplexing_api</td>
+<td style="text-align:center">redis所使用的事件处理机制</td>
+</tr>
+<tr>
+<td style="text-align:center">atomicvar_api</td>
+<td style="text-align:center">原子处理API</td>
+</tr>
+<tr>
+<td style="text-align:center">gcc_version</td>
+<td style="text-align:center">编译redis时使用的GCC版本</td>
+</tr>
+<tr>
+<td style="text-align:center">process_id</td>
+<td style="text-align:center">redis进程id</td>
+</tr>
+<tr>
+<td style="text-align:center">run_id</td>
+<td style="text-align:center">redis服务器随机标识（用于sentinel和集群）</td>
+</tr>
+<tr>
+<td style="text-align:center">tcp_port</td>
+<td style="text-align:center">redis监听端口</td>
+</tr>
+<tr>
+<td style="text-align:center">uptime_in_seconds</td>
+<td style="text-align:center">已经运行的秒数</td>
+</tr>
+<tr>
+<td style="text-align:center">uptime_in_days</td>
+<td style="text-align:center">已经运行的天数</td>
+</tr>
+<tr>
+<td style="text-align:center">hz</td>
+<td style="text-align:center">执行后台任务函数被调用的频率</td>
+</tr>
+<tr>
+<td style="text-align:center">configured_hz</td>
+<td style="text-align:center">设置的调用频率</td>
+</tr>
+<tr>
+<td style="text-align:center">lru_clock</td>
+<td style="text-align:center">以分钟为单位进行自增的时钟，用于 LRU 管理</td>
+</tr>
+<tr>
+<td style="text-align:center">executable</td>
+<td style="text-align:center">执行文件位置</td>
+</tr>
+<tr>
+<td style="text-align:center">config_file</td>
+<td style="text-align:center">配置文件位置</td>
+</tr>
+</tbody>
+</table><a id="more"></a>
+
+<h1 id="Clients"><a href="#Clients" class="headerlink" title="Clients"></a>Clients</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">connected_clients</td>
+<td style="text-align:center">已经连接的客户端数量（不包括从属服务器链接的客户端）</td>
+</tr>
+<tr>
+<td style="text-align:center">client_recent_max_input_buffer</td>
+<td style="text-align:center">当前连接的客户端当中，最长的输出列表</td>
+</tr>
+<tr>
+<td style="text-align:center">client_recent_max_output_buffer</td>
+<td style="text-align:center">当前连接的客户端当中，最大输入缓存</td>
+</tr>
+<tr>
+<td style="text-align:center">blocked_clients</td>
+<td style="text-align:center">正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">used_memory</td>
+<td style="text-align:center">由 Redis 分配器分配的内存总量，以字节（byte）为单位</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_human</td>
+<td style="text-align:center">以人类可读的格式返回 Redis 分配的内存总量</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_rss</td>
+<td style="text-align:center">从操作系统的角度，返回 Redis 已分配的内存总量（俗称常驻集大小）。这个值和 top 、 ps 等命令的输出一致</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_rss_human</td>
+<td style="text-align:center">从操作系统的角度，人类可读的格式返回 Redis 分配的内存总量</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_peak</td>
+<td style="text-align:center">Redis 的内存消耗峰值（以字节为单位）</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_peak_human</td>
+<td style="text-align:center">以人类可读的格式返回 Redis 的内存消耗峰值</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_peak_perc</td>
+<td style="text-align:center">(used_memory/ used_memory_peak) *100%</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_overhead</td>
+<td style="text-align:center">Redis为了维护数据集的内部机制所需的内存开销，包括所有客户端输出缓冲区、查询缓冲区、AOF重写缓冲区和主从复制的backlog</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_startup</td>
+<td style="text-align:center">Redis服务器启动时消耗的内存</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_dataset</td>
+<td style="text-align:center">used_memory—used_memory_overhead（redis使用的内存-redis内部维护所需内存 = 用户数据内存大小）</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_dataset_perc</td>
+<td style="text-align:center">100%*(used_memory_dataset/(used_memory—used_memory_startup))  （（用户数据内存大小/（使用的内存大小-redis启动的内存大小）= 用户数据大小占redis运行时使用内存比例）</td>
+</tr>
+<tr>
+<td style="text-align:center">total_system_memory</td>
+<td style="text-align:center">整个系统内存</td>
+</tr>
+<tr>
+<td style="text-align:center">total_system_memory_human</td>
+<td style="text-align:center">以人类可读的格式显示整个系统内存</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_lua</td>
+<td style="text-align:center">Lua脚本存储占用的内存</td>
+</tr>
+<tr>
+<td style="text-align:center">used_memory_lua_human</td>
+<td style="text-align:center">以人类可读的格式显示Lua脚本存储占用的内存</td>
+</tr>
+<tr>
+<td style="text-align:center">maxmemory</td>
+<td style="text-align:center">Redis实例的最大内存配置</td>
+</tr>
+<tr>
+<td style="text-align:center">maxmemory_human</td>
+<td style="text-align:center">以人类可读的格式显示Redis实例的最大内存配置</td>
+</tr>
+<tr>
+<td style="text-align:center">maxmemory_policy</td>
+<td style="text-align:center">当达到maxmemory时的淘汰策略</td>
+</tr>
+<tr>
+<td style="text-align:center">mem_fragmentation_ratio</td>
+<td style="text-align:center">内存碎片率（=used_memory_rss/used_memory）</td>
+</tr>
+<tr>
+<td style="text-align:center">mem_allocator</td>
+<td style="text-align:center">内存分配器（ 在编译时指定的， Redis 所使用的内存分配器。可以是 libc 、 jemalloc 或者 tcmalloc ）</td>
+</tr>
+<tr>
+<td style="text-align:center">active_defrag_running</td>
+<td style="text-align:center">表示没有活动的defrag任务正在运行，1表示有活动的defrag任务正在运行（defrag:表示内存碎片整理）</td>
+</tr>
+<tr>
+<td style="text-align:center">lazyfree_pending_objects</td>
+<td style="text-align:center">0表示不存在延迟释放（也有资料翻译未惰性删除）的挂起对象</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>在理想情况下， <code>used_memory_rss</code> 的值应该只比 <code>used_memory</code> 稍微高一点儿。</p>
+<p>当 <code>rss &gt; used</code> ，且两者的值相差较大时，表示存在（内部或外部的）内存碎片。</p>
+<p>内存碎片的比率可以通过 <code>mem_fragmentation_ratio</code> 的值看出。</p>
+<p>当 <code>used &gt; rss</code> 时，表示 Redis 的部分内存被操作系统换出到交换空间了，在这种情况下，操作可能会产生明显的延迟。</p>
+<p>由于Redis无法控制其分配如何映射到内存页，因此高<code>used_memory_rss</code>通常是内存使用激增的结果。</p>
+<p>当 Redis 释放内存时，分配器可能会，也可能不会，将内存返还给操作系统。</p>
+<p>如果 Redis 释放了内存，却没有将内存返还给操作系统，那么 <code>used_memory</code> 的值可能和操作系统显示的 Redis 内存占用并不一致。</p>
+<p>查看 <code>used_memory_peak</code> 的值可以验证这种情况是否发生。</p>
+</blockquote>
+<h1 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loading</td>
+<td>服务器是否正在载入持久化文件</td>
+</tr>
+<tr>
+<td>rdb_changes_since_last_save</td>
+<td>离最近一次成功生成rdb文件，写入命令的个数，即有多少个写入命令没有持久化</td>
+</tr>
+<tr>
+<td>rdb_bgsave_in_progress</td>
+<td>服务器是否正在创建rdb文件</td>
+</tr>
+<tr>
+<td>rdb_last_save_time</td>
+<td>离最近一次成功创建rdb文件的时间戳。当前时间戳 - rdb_last_save_time=多少秒未成功生成rdb文件</td>
+</tr>
+<tr>
+<td>rdb_last_bgsave_status</td>
+<td>最近一次rdb持久化是否成功</td>
+</tr>
+<tr>
+<td>rdb_last_bgsave_time_sec</td>
+<td>最近一次成功生成rdb文件耗时秒数</td>
+</tr>
+<tr>
+<td>rdb_current_bgsave_time_sec</td>
+<td>如果服务器正在创建rdb文件，那么这个域记录的就是当前的创建操作已经耗费的秒数</td>
+</tr>
+<tr>
+<td>rdb_last_cow_size</td>
+<td>RDB过程中父进程与子进程相比执行了多少修改(包括读缓冲区，写缓冲区，数据修改等)。</td>
+</tr>
+<tr>
+<td>aof_enabled</td>
+<td>是否开启了aof</td>
+</tr>
+<tr>
+<td>aof_rewrite_in_progress</td>
+<td>标识aof的rewrite操作是否在进行中</td>
+</tr>
+<tr>
+<td>aof_rewrite_scheduled</td>
+<td>rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite</td>
+</tr>
+<tr>
+<td>aof_last_rewrite_time_sec</td>
+<td>最近一次aof rewrite耗费的时长</td>
+</tr>
+<tr>
+<td>aof_current_rewrite_time_sec</td>
+<td>如果rewrite操作正在进行，则记录所使用的时间，单位秒</td>
+</tr>
+<tr>
+<td>aof_last_bgrewrite_status</td>
+<td>上次bgrewriteaof操作的状态</td>
+</tr>
+<tr>
+<td>aof_last_write_status</td>
+<td>上次aof写入状态</td>
+</tr>
+<tr>
+<td>aof_last_cow_size</td>
+<td>AOF过程中父进程与子进程相比执行了多少修改(包括读缓冲区，写缓冲区，数据修改等)。</td>
+</tr>
+</tbody>
+</table>
+<p>如果AOF持久化开启会加上以下状态</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">aof_current_size</td>
+<td style="text-align:center">AOF 文件目前的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_base_size</td>
+<td style="text-align:center">服务器启动时或者 AOF 重写最近一次执行之后，AOF 文件的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_pending_rewrite</td>
+<td style="text-align:center">一个标志值，记录了是否有 AOF 重写操作在等待 RDB 文件创建完毕之后执行</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_buffer_length</td>
+<td style="text-align:center">AOF 缓冲区的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_rewrite_buffer_length</td>
+<td style="text-align:center">AOF 重写缓冲区的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_pending_bio_fsync</td>
+<td style="text-align:center">后台 I/O 队列里面，等待执行的 <code>fsync</code> 调用数量</td>
+</tr>
+<tr>
+<td style="text-align:center">aof_delayed_fsync</td>
+<td style="text-align:center">被延迟的 <code>fsync</code> 调用数量</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>total_connections_received</td>
+<td>新创建连接个数,如果新创建连接过多，过度地创建和销毁连接对性能有影响，说明短连接严重或连接池使用有问题，需调研代码的连接设置</td>
+</tr>
+<tr>
+<td>total_commands_processed</td>
+<td>redis处理的命令数</td>
+</tr>
+<tr>
+<td>instantaneous_ops_per_sec</td>
+<td>redis当前的qps，redis内部较实时的每秒执行的命令数</td>
+</tr>
+<tr>
+<td>total_net_input_bytes</td>
+<td>redis网络入口流量字节数</td>
+</tr>
+<tr>
+<td>total_net_output_bytes</td>
+<td>redis网络出口流量字节数</td>
+</tr>
+<tr>
+<td>instantaneous_input_kbps</td>
+<td>redis网络入口kps</td>
+</tr>
+<tr>
+<td>instantaneous_output_kbps</td>
+<td>redis网络出口kps</td>
+</tr>
+<tr>
+<td>rejected_connections</td>
+<td>拒绝的连接个数，redis连接个数达到maxclients限制，拒绝新连接的个数</td>
+</tr>
+<tr>
+<td>sync_full</td>
+<td>主从完全同步成功次数</td>
+</tr>
+<tr>
+<td>sync_partial_ok</td>
+<td>主从部分同步成功次数</td>
+</tr>
+<tr>
+<td>sync_partial_err</td>
+<td>主从部分同步失败次数</td>
+</tr>
+<tr>
+<td>expired_keys</td>
+<td>运行以来过期的key的数量</td>
+</tr>
+<tr>
+<td>expired_stale_perc</td>
+<td>过期的比率</td>
+</tr>
+<tr>
+<td>expired_time_cap_reached_count</td>
+<td>过期计数</td>
+</tr>
+<tr>
+<td>evicted_keys</td>
+<td>运行以来剔除(超过了maxmemory后)的key的数量</td>
+</tr>
+<tr>
+<td>keyspace_hits</td>
+<td>命中次数</td>
+</tr>
+<tr>
+<td>keyspace_misses</td>
+<td>没命中次数</td>
+</tr>
+<tr>
+<td>pubsub_channels</td>
+<td>当前使用中的频道数量</td>
+</tr>
+<tr>
+<td>pubsub_patterns</td>
+<td>当前使用的模式的数量</td>
+</tr>
+<tr>
+<td>latest_fork_usec</td>
+<td>最近一次fork操作阻塞redis进程的耗时数，单位微秒</td>
+</tr>
+<tr>
+<td>migrate_cached_sockets</td>
+<td>是否已经缓存了到该地址的连接</td>
+</tr>
+<tr>
+<td>slave_expires_tracked_keys</td>
+<td>从实例到期key数量</td>
+</tr>
+<tr>
+<td>active_defrag_hits</td>
+<td>主动碎片整理命中次数</td>
+</tr>
+<tr>
+<td>active_defrag_misses</td>
+<td>主动碎片整理未命中次数</td>
+</tr>
+<tr>
+<td>active_defrag_key_hits</td>
+<td>主动碎片整理key命中次数</td>
+</tr>
+<tr>
+<td>active_defrag_key_misses</td>
+<td>主动碎片整理key未命中次数</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">role</td>
+<td style="text-align:center">实例的角色，是master or slave</td>
+</tr>
+<tr>
+<td style="text-align:center">connected_slaves</td>
+<td style="text-align:center">连接的slave实例个数</td>
+</tr>
+<tr>
+<td style="text-align:center">master_replid</td>
+<td style="text-align:center">主实例启动随机字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">master_replid2</td>
+<td style="text-align:center">主实例启动随机字符串2</td>
+</tr>
+<tr>
+<td style="text-align:center">master_repl_offset</td>
+<td style="text-align:center">主从同步偏移量,与master_replid可被用来标识主实例复制流中的位置。</td>
+</tr>
+<tr>
+<td style="text-align:center">second_repl_offset</td>
+<td style="text-align:center">主从同步偏移量2,此值如果和上面的offset相同说明主从一致没延迟</td>
+</tr>
+<tr>
+<td style="text-align:center">repl_backlog_active</td>
+<td style="text-align:center">复制积压缓冲区是否开启</td>
+</tr>
+<tr>
+<td style="text-align:center">repl_backlog_size</td>
+<td style="text-align:center">复制积压缓冲大小</td>
+</tr>
+<tr>
+<td style="text-align:center">repl_backlog_first_byte_offset</td>
+<td style="text-align:center">复制缓冲区里偏移量的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">repl_backlog_histlen</td>
+<td style="text-align:center">此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小</td>
+</tr>
+</tbody>
+</table>
+<p>如果当前服务器是一个从服务器的话，那么会加上以下域</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">master_host</td>
+<td style="text-align:center">主服务器的 IP 地址</td>
+</tr>
+<tr>
+<td style="text-align:center">master_port</td>
+<td style="text-align:center">主服务器的 TCP 监听端口号</td>
+</tr>
+<tr>
+<td style="text-align:center">master_link_status</td>
+<td style="text-align:center">复制连接当前的状态， <code>up</code> 表示连接正常， <code>down</code> 表示连接断开</td>
+</tr>
+<tr>
+<td style="text-align:center">master_last_io_seconds_ago</td>
+<td style="text-align:center">距离最近一次与主服务器进行通信已经过去了多少秒钟</td>
+</tr>
+<tr>
+<td style="text-align:center">master_sync_in_progress</td>
+<td style="text-align:center">一个标志值，记录了主服务器是否正在与这个从服务器进行同步</td>
+</tr>
+</tbody>
+</table>
+<p>如果同步操作正在进行，那么会加上以下域</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">master_sync_left_bytes</td>
+<td style="text-align:center">距离同步完成还缺少多少字节数据</td>
+</tr>
+<tr>
+<td style="text-align:center">master_sync_last_io_seconds_ago</td>
+<td style="text-align:center">距离最近一次因为 SYNC 操作而进行 I/O 已经过去了多少秒</td>
+</tr>
+</tbody>
+</table>
+<p>如果主从服务器之间的连接处于断线状态，那么这个部分还会加上以下域</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">master_link_down_since_seconds</td>
+<td style="text-align:center">主从服务器连接断开了多少秒</td>
+</tr>
+</tbody>
+</table>
+<p>对于每个从服务器，会添加以下信息</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">slaveXXX</td>
+<td style="text-align:center">ID、IP 地址、端口号、连接状态</td>
+</tr>
+</tbody>
+</table>
+<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>used_cpu_sys</td>
+<td>将所有redis主进程在核心态所占用的CPU时求和累计起来</td>
+</tr>
+<tr>
+<td>used_cpu_user</td>
+<td>将所有redis主进程在用户态所占用的CPU时求和累计起来</td>
+</tr>
+<tr>
+<td>used_cpu_sys_children</td>
+<td>将后台进程在核心态所占用的CPU时求和累计起来</td>
+</tr>
+<tr>
+<td>used_cpu_user_children</td>
+<td>将后台进程在用户态所占用的CPU时求和累计起来</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Commandstats"><a href="#Commandstats" class="headerlink" title="Commandstats"></a>Commandstats</h1><p>记录了各种不同类型的命令的执行统计信息，比如命令执行的次数、命令耗费的 CPU 时间、执行每个命令耗费的平均 CPU 时间等等。对于每种类型的命令，这个部分都会添加一行以下格式的信</p>
+<p><code>cmdstat_XXX:calls=XXX,usec=XXX,usecpercall=XXX</code></p>
+<h1 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h1><p><code>cluster_enabled</code> : 一个标志值，记录集群功能是否已经开启</p>
+<h1 id="Keyspace"><a href="#Keyspace" class="headerlink" title="Keyspace"></a>Keyspace</h1><p>记录了数据库相关的统计信息，比如数据库的键数量、数据库已经被删除的过期键数量等。对于每个数据库，这个部分都会添加一行以下格式的信息</p>
+<p><code>dbXXX:keys=XXX,expires=XXX</code></p>
+
     </div>
 
 
@@ -479,7 +1092,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -569,9 +1182,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -588,7 +1199,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -634,16 +1275,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

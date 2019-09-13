@@ -191,7 +191,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -217,7 +217,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>8.3k</span>
+              <span>8.4k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -376,12 +376,39 @@
 
       
         <p>在redis中可以通过<code>slaveof</code>命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。</p><pre class="mermaid">graph LR
-A[从服务器] -->|复制| B(主服务器)</pre><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><h1 id="旧版复制的实现"><a href="#旧版复制的实现" class="headerlink" title="旧版复制的实现"></a>旧版复制的实现</h1><p>redis的复制分为<strong>同步/命令传播</strong>两个操作</p><ul><li>同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态</li><li>命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库状态出现不一致时让主从服务器的数据库重新回到一致状态</li></ul><h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>当客户端向从服务器发送<strong>slaveof</strong>命令，要求从服务器复制主服务器时，从服务器首先需要执行同步操作，也就是将从服务器的数据库状态更新至主服务器当前所处的数据库状态。</p><p>同步操作需要sync命令来完成</p><ol><li>从服务器向主服务器发送<strong>sync</strong>命令</li><li>收到sync命令的主服务器执行<strong>BGSAVE</strong>命令， 在后台生成一个RDB文件，并使用一个缓冲区记录现在开始所执行的所有命令</li><li>当主服务器的<strong>BGSAVE</strong>命令执行完毕时，主服务器会将生成的RDB文件发送给从服务器，从服务器接收并载入这个RDB文件，将自己的数据库状态更新至主服务器指定<strong>BGSAVE</strong>命令时的状态。</li><li>主服务器将缓冲区此期间记录的所有命令发送给从服务器，从服务器执行这些数据更新命令，将自己的数据库状态更新至主服务器数据库当前所处的状态</li></ol><pre class="mermaid">graph LR;  
+A[从服务器] -->|复制| B(主服务器)</pre><a id="more"></a>
+
+
+<h1 id="旧版复制的实现"><a href="#旧版复制的实现" class="headerlink" title="旧版复制的实现"></a>旧版复制的实现</h1><p>redis的复制分为<strong>同步/命令传播</strong>两个操作</p>
+<ul>
+<li>同步操作用于将从服务器的数据库状态更新至主服务器当前所处的数据库状态</li>
+<li>命令传播操作则用于在主服务器的数据库状态被修改，导致主从服务器的数据库状态出现不一致时让主从服务器的数据库重新回到一致状态</li>
+</ul>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>当客户端向从服务器发送<strong>slaveof</strong>命令，要求从服务器复制主服务器时，从服务器首先需要执行同步操作，也就是将从服务器的数据库状态更新至主服务器当前所处的数据库状态。</p>
+<p>同步操作需要sync命令来完成</p>
+<ol>
+<li>从服务器向主服务器发送<strong>sync</strong>命令</li>
+<li>收到sync命令的主服务器执行<strong>BGSAVE</strong>命令， 在后台生成一个RDB文件，并使用一个缓冲区记录现在开始所执行的所有命令</li>
+<li>当主服务器的<strong>BGSAVE</strong>命令执行完毕时，主服务器会将生成的RDB文件发送给从服务器，从服务器接收并载入这个RDB文件，将自己的数据库状态更新至主服务器指定<strong>BGSAVE</strong>命令时的状态。</li>
+<li>主服务器将缓冲区此期间记录的所有命令发送给从服务器，从服务器执行这些数据更新命令，将自己的数据库状态更新至主服务器数据库当前所处的状态</li>
+</ol>
+<pre class="mermaid">graph LR;  
 　　B(从服务器)-->|发送SYNC命令|A(主服务器);    
 　　A-->|发送RDB文件|B
-　　A-->|发送缓冲区保存的所有数据更改命令|B</pre><h2 id="命令传播"><a href="#命令传播" class="headerlink" title="命令传播"></a>命令传播</h2><p>同步命令执行完毕后，主从服务器处于一致状态。 当主服务器执行数据修改命令时，一致状态将会被打破，这个时候主从的数据不可能一致，所以，主服务器需要将导致数据不一致的命令发送给从服务器，从服务器通过执行这条命令，使数据重新达到一致。</p><pre class="mermaid">graph LR
+　　A-->|发送缓冲区保存的所有数据更改命令|B</pre>
+
+<h2 id="命令传播"><a href="#命令传播" class="headerlink" title="命令传播"></a>命令传播</h2><p>同步命令执行完毕后，主从服务器处于一致状态。 当主服务器执行数据修改命令时，一致状态将会被打破，这个时候主从的数据不可能一致，所以，主服务器需要将导致数据不一致的命令发送给从服务器，从服务器通过执行这条命令，使数据重新达到一致。</p>
+<pre class="mermaid">graph LR
 A(客户端)-->|del key|B(主服务器)
-B-->|del b|C(从服务器)</pre><h2 id="复制功能缺陷"><a href="#复制功能缺陷" class="headerlink" title="复制功能缺陷"></a>复制功能缺陷</h2><p>复制可以分为两种情况</p><ul><li>初次复制： 从服务器以前没有复制过任何主服务器， 或者从服务器当前要复制的主服务器与上一次复制的主服务器不同</li><li>断线后重复制：处于命令传播阶段的主从服务器因为某种原因断开复制，但从服务器通过自动重连重新连接上了主服务器，并且继续复制主服务器</li></ul><p>在旧版复制中， 初次复制没有问题， 但是断线后重复制有很大重复性操作</p><pre class="mermaid">sequenceDiagram
+B-->|del b|C(从服务器)</pre>
+
+<h2 id="复制功能缺陷"><a href="#复制功能缺陷" class="headerlink" title="复制功能缺陷"></a>复制功能缺陷</h2><p>复制可以分为两种情况</p>
+<ul>
+<li>初次复制： 从服务器以前没有复制过任何主服务器， 或者从服务器当前要复制的主服务器与上一次复制的主服务器不同</li>
+<li>断线后重复制：处于命令传播阶段的主从服务器因为某种原因断开复制，但从服务器通过自动重连重新连接上了主服务器，并且继续复制主服务器</li>
+</ul>
+<p>在旧版复制中， 初次复制没有问题， 但是断线后重复制有很大重复性操作</p>
+<pre class="mermaid">sequenceDiagram
     从服务器 -> 主服务器: 同步状态
     客户端 ->> 主服务器: 发送set n命令
     主服务器 ->> 从服务器: 传播set n命令
@@ -394,7 +421,19 @@ B-->|del b|C(从服务器)</pre><h2 id="复制功能缺陷"><a href="#复制功�
     主服务器 ->> 从服务器: 执行同步操作
     客户端 ->> 主服务器: 发送set n+3命令
     从服务器 ->> 主服务器: 接收同步期间的修改命令
-    主服务器 -> 从服务器: 同步状态</pre><p>上图中可以清晰看到， 断线重连后，同步操作这一步实际上并不是非做不可。</p><p>从服务器想要将自己更新至主服务器当前所处的状态，真正需要的是主从服务器链接中断期间，主服务器新添加的n+1, n+2两个键的数据。</p><p>所以， 主服务器执行同步操作， 将1——n+2 都打包成RDB发送给从服务器是不必要的.</p><p>一般来说，主服务器在断线期间执行修改命令会比整个数据库的数据量要少得多，在这种情况下，为了让从服务器补足一小部分缺失的数据，却要让主服务器重新执行一次SYNC命令， 这种做法是非常低效的。</p><h1 id="新版复制实现"><a href="#新版复制实现" class="headerlink" title="新版复制实现"></a>新版复制实现</h1><p>为了解决旧版复制功能在处理断线重复制的低效问题，Redis使用<strong>PSYNC</strong>命令代替<strong>SYNC</strong>命令来执行复制时的同步操作</p><p>PSYNC具有完整重同步和部分重同步</p><ul><li>完整重同步： 用于初次复制情况，执行步骤和sycn命令基本一样， 都是通过让主服务器创建并发送RDB文件，以及向从服务器发送保存在缓冲区里面的修改命令进行同步</li><li>部分重同步：用于断线后重复制情况，当从服务器在断线后重新连接上主服务器时，如果条件允许，主服务器可以将主从服务器断开期间执行的数据修改命令发送给从服务器，从服务器只要接受并执行这些命令，就可以将数据库更新至主服务器当前所处的数据库状态</li></ul><pre class="mermaid">sequenceDiagram
+    主服务器 -> 从服务器: 同步状态</pre>
+
+<p>上图中可以清晰看到， 断线重连后，同步操作这一步实际上并不是非做不可。</p>
+<p>从服务器想要将自己更新至主服务器当前所处的状态，真正需要的是主从服务器链接中断期间，主服务器新添加的n+1, n+2两个键的数据。</p>
+<p>所以， 主服务器执行同步操作， 将1——n+2 都打包成RDB发送给从服务器是不必要的.</p>
+<p>一般来说，主服务器在断线期间执行修改命令会比整个数据库的数据量要少得多，在这种情况下，为了让从服务器补足一小部分缺失的数据，却要让主服务器重新执行一次SYNC命令， 这种做法是非常低效的。</p>
+<h1 id="新版复制实现"><a href="#新版复制实现" class="headerlink" title="新版复制实现"></a>新版复制实现</h1><p>为了解决旧版复制功能在处理断线重复制的低效问题，Redis使用<strong>PSYNC</strong>命令代替<strong>SYNC</strong>命令来执行复制时的同步操作</p>
+<p>PSYNC具有完整重同步和部分重同步</p>
+<ul>
+<li>完整重同步： 用于初次复制情况，执行步骤和sycn命令基本一样， 都是通过让主服务器创建并发送RDB文件，以及向从服务器发送保存在缓冲区里面的修改命令进行同步</li>
+<li>部分重同步：用于断线后重复制情况，当从服务器在断线后重新连接上主服务器时，如果条件允许，主服务器可以将主从服务器断开期间执行的数据修改命令发送给从服务器，从服务器只要接受并执行这些命令，就可以将数据库更新至主服务器当前所处的数据库状态</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
     从服务器 -> 主服务器: 同步状态
     客户端 ->> 主服务器: 发送set n命令
     主服务器 ->> 从服务器: 传播set n命令
@@ -408,7 +447,21 @@ B-->|del b|C(从服务器)</pre><h2 id="复制功能缺陷"><a href="#复制功�
     从服务器 -> 从服务器: 接收+continue，准备执行部分重同步
     主服务器 ->> 从服务器: 发送set n+1、n+2命令
     从服务器 -> 从服务器: 接收并执行传过来的两个set命令
-    主服务器 -> 从服务器: 再次恢复同步</pre><p>从上可以看出， psync相比较sync命令在断线重复制时所需资源要少得多，完成同步的速度也快得多，整个过程中， 不需要处理已经重复的数据。</p><h2 id="部分重同步的实现"><a href="#部分重同步的实现" class="headerlink" title="部分重同步的实现"></a>部分重同步的实现</h2><p>部分重同步主要由三个部分构成：</p><ul><li>主服务器的复制偏移量、从服务器的复制偏移量</li><li>主服务器的复制挤压缓冲区</li><li>服务器的运行id</li></ul><h3 id="复制偏移量"><a href="#复制偏移量" class="headerlink" title="复制偏移量"></a>复制偏移量</h3><p>主从服务器分别会维护一个复制偏移量</p><ul><li>主服务器每次向从服务器传播N个字节数据时，就将自己的复制偏移量的值加N</li><li>从服务器每次接收到主服务器传播来的N个字节数据时，就将自己的复制偏移量的值加N</li></ul><pre class="mermaid">graph LR
+    主服务器 -> 从服务器: 再次恢复同步</pre>
+
+<p>从上可以看出， psync相比较sync命令在断线重复制时所需资源要少得多，完成同步的速度也快得多，整个过程中， 不需要处理已经重复的数据。</p>
+<h2 id="部分重同步的实现"><a href="#部分重同步的实现" class="headerlink" title="部分重同步的实现"></a>部分重同步的实现</h2><p>部分重同步主要由三个部分构成：</p>
+<ul>
+<li>主服务器的复制偏移量、从服务器的复制偏移量</li>
+<li>主服务器的复制挤压缓冲区</li>
+<li>服务器的运行id</li>
+</ul>
+<h3 id="复制偏移量"><a href="#复制偏移量" class="headerlink" title="复制偏移量"></a>复制偏移量</h3><p>主从服务器分别会维护一个复制偏移量</p>
+<ul>
+<li>主服务器每次向从服务器传播N个字节数据时，就将自己的复制偏移量的值加N</li>
+<li>从服务器每次接收到主服务器传播来的N个字节数据时，就将自己的复制偏移量的值加N</li>
+</ul>
+<pre class="mermaid">graph LR
 A(客户端) -->|发送set命令 33字节| B(主服务器,目前10086字节)
 B ---|复制偏移量加33, 复制偏移量为10119| B
 B -->|传播33字节数据| C(从服务器1,目前10068字节)
@@ -416,19 +469,116 @@ C ---|复制偏移量加33, 复制偏移量为10119| C
 B -->|传播33字节数据| D(从服务器2,目前10068字节)
 D ---|复制偏移量加33, 复制偏移量为10119| D
 B -->|传播33字节数据| E(从服务器3,目前10068字节)
-E ---|复制偏移量加33, 复制偏移量为10119| E</pre><p><strong>通过确认主从的复制偏移量就可以确认是否处于一致状态</strong></p><p>如果传播时从服务器1断线，那么传播就只有从服务器2，从服务器3能够接收，在此之后就只有从服务器1复制偏移量为10086， 而其他都是10119， 待从服务器1重新连接后是执行部分重同步还是完全重同步需要涉及复制积压缓冲区</p><pre class="mermaid">graph LR
+E ---|复制偏移量加33, 复制偏移量为10119| E</pre>
+
+<p><strong>通过确认主从的复制偏移量就可以确认是否处于一致状态</strong></p>
+<p>如果传播时从服务器1断线，那么传播就只有从服务器2，从服务器3能够接收，在此之后就只有从服务器1复制偏移量为10086， 而其他都是10119， 待从服务器1重新连接后是执行部分重同步还是完全重同步需要涉及复制积压缓冲区</p>
+<pre class="mermaid">graph LR
 A(客户端) -->|发送set命令 33字节| B(主服务器,目前10086字节)
 B ---|复制偏移量加33, 复制偏移量为10119| B
 B -.-> |断线| C(从服务器1,目前10068字节)
 B -->|传播33字节数据| D(从服务器2,目前10068字节)
 D ---|复制偏移量加33, 复制偏移量为10119| D
 B -->|传播33字节数据| E(从服务器3,目前10068字节)
-E ---|复制偏移量加33, 复制偏移量为10119| E</pre><h3 id="复制积压缓冲区"><a href="#复制积压缓冲区" class="headerlink" title="复制积压缓冲区"></a>复制积压缓冲区</h3><p>复制积压缓冲区是由主服务器维护的一个固定长度先进先出队列，默认大小为1<br>MB， 当主服务器进行命令传播时，它不仅仅会将写命令发送给所有从服务器，还会将命令入队到复制积压缓冲区里面</p><pre class="mermaid">graph TB
+E ---|复制偏移量加33, 复制偏移量为10119| E</pre>
+
+
+
+
+
+<h3 id="复制积压缓冲区"><a href="#复制积压缓冲区" class="headerlink" title="复制积压缓冲区"></a>复制积压缓冲区</h3><p>复制积压缓冲区是由主服务器维护的一个固定长度先进先出队列，默认大小为1<br>MB， 当主服务器进行命令传播时，它不仅仅会将写命令发送给所有从服务器，还会将命令入队到复制积压缓冲区里面</p>
+<pre class="mermaid">graph TB
     subgraph 主服务器
     A(命令传播程序) -->|将写命令放入队列| B(复制积压缓冲区)
     end
     A -->|发送写命令| C(从服务器A)
-    A -->|发送写命令| D(从服务器B)</pre><p>当从服务器重新连上主服务器后，会通过<strong>psync</strong>命令将自己的复制偏移量offset发送给主服务器，主服务器会根据这个复制偏移量来决定对从服务器执行何种同步操作</p><ul><li>如果offset偏移量之后的数据任然存在于复制积压缓冲区里面，那么主服务器将对从服务器执行部分重同步操作</li><li>如果offset偏移量之后的数据已经不存在于复制积压缓冲区，那么主服务器将对从服务器执行完整同步操作</li></ul><p>回到之前的例子：</p><ul><li>从服务器1重新连接后，通过psync命令报告自己的复制偏移量10086</li><li>主服务器将检查偏移量10086之后的数据是否存在于复制积压缓冲区里面，发现这些数据任然存在，于是主服务器向从服务器发送+continue回复， 表示数据同步将以部分重同步模式进行</li><li>接着主服务器会将复制积压缓冲区10086偏移量之后的所有数据（10087-10119）都发送给从服务器1</li><li>从服务器只要接收这33字节的缺失数据，就可以回到与主服务器一直状态</li></ul><h2 id="服务器运行id"><a href="#服务器运行id" class="headerlink" title="服务器运行id"></a>服务器运行id</h2><p>除了复制偏移量和复制积压缓冲区外，实现部分重同步还需要用到服务器运行ID</p><ul><li>每个redis服务器都会有自己的运行ID</li><li>运行ID在服务器启动时自动生成，由60个随机的十六进制字符组成</li></ul><p>当从服务器对主服务器初次复制时，主服务器会将自己运行的id传送给从服务器，而从服务器则会将这个运行id保存起来， 从服务器断线重连时，从服务器将向当前连接的主服务器发送之前保存的ID</p><ul><li>如果保存的ID和主服务器相同，说明断线前复制的就是当前主服务器，可以尝试执行部分重同步</li><li>如果ID不同， 说明从服务器断线前复制的主服务器并不是当前这台，应该进行完全同步操作</li></ul><h2 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h2><p>调用方法</p><ol><li>如果没有复制过任何主服务器，或者之前执行了slaveof no one ,那么这个从服务器在开始一次新的复制时要向主服务器发送<code>PSYNC ? -1</code> 命令， 主动请求主服务器完全同步操作</li><li>相反， 如果已经进行过复制操作，那么从服务器在开始时要发送<code>PSYNC &lt;runid&gt; &lt;offset&gt;</code>， 其中runid是上次复制的主服务器id，offset时目前复制偏移量， 接收到这个命令的主服务器会通过这两个参数来判断改对从服务器执行哪种同步操作</li></ol><p>三种回复：</p><ol><li>如果执行完整同步操作：回复<code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>,其中runid是这个主服务器的id，从服务器会将这个id保存起来，在下一次发送PSYNC时使用，offset则是当前主服务器的复制偏移量，从服务器会将这个值作为自己的初始偏移量</li><li>部分重同步操作：回复<code>+CONTINUE</code>，从服务器只要等着主服务器将自己缺少的那部分数据发送过来就好了</li><li>版本过低：回复-ERR，表示服务器版本低于2.8，无法识别PSYNC命令，从服务器将向主服务器发送SYNC命令，并且与主服务器完整同步操作</li></ol><div id="flowchart-0" class="flow-chart"></div><h1 id="SLAVEOF执行流程"><a href="#SLAVEOF执行流程" class="headerlink" title="SLAVEOF执行流程"></a>SLAVEOF执行流程</h1><h2 id="设置主服务器地址和端口"><a href="#设置主服务器地址和端口" class="headerlink" title="设置主服务器地址和端口"></a>设置主服务器地址和端口</h2><p>例如执行命令：<code>SLAVEOF 127.0.0.1 6379</code></p><p>从服务器首先要做的就是将客户端给定的主服务器IP地址<code>127.0.0.1</code>以及端口<code>6379</code>保存到服务器状态的masterhost属性和masterport属性里面：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">redisServer</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/* Replication (slave) */</span></span><br><span class="line">    <span class="keyword">char</span> *masterauth;               <span class="comment">/* AUTH with this password with master */</span></span><br><span class="line">    <span class="keyword">char</span> *masterhost;               <span class="comment">/* Hostname of master */</span></span><br><span class="line">    <span class="keyword">int</span> masterport;                 <span class="comment">/* Port of master */</span></span><br><span class="line">	...</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure><p>SLAVEOF命令是一个异步命令，在完成masterhost和masterport属性设置后向客户端返回OK，表示复制指令已经被接收，而实际的复制工作将在OK返回之后才正式开始</p><h2 id="建立套接字连接"><a href="#建立套接字连接" class="headerlink" title="建立套接字连接"></a>建立套接字连接</h2><p>从服务器将根据所设置的IP地址和端口创建连向主服务器的套接字</p><p>如果套接字成功连接主服务器，那么从服务器将为这个套接字关联一个专门用于处理复制工作的文件事件处理器，比如接收RDB和主服务器传播回来的写命令</p><p>而主服务器接受从服务器的套接字后，将该套接字创建相应的客户端状态，并将从服务器连接看做是一个连接到主服务器的客户端对待，这时从服务器将同时具有服务器和客户端两个身份。</p><h2 id="发送PING命令"><a href="#发送PING命令" class="headerlink" title="发送PING命令"></a>发送PING命令</h2><p>从服务器成为主服务器客户端后第一件事就是向主服务器发送PING命令</p><ol><li>检查套接字的读写状态时候正常</li><li>复制工作必须在主服务器可以正常处理命令请求的状态下才能进行，通过发送PING命令可以检查主服务器能否正常处理请求命令</li><li>如果主服务器返回了命令回复，而从服务器不能在规定时间内读取回复的内容， 说明当前网络不佳，不能继续后面的复制操作，所以应该断开并重新创建套接字</li><li>如果回复读取也正常，那么标识主从服务器连接正常，并且可以接受从服务器的请求，可以继续执行复制工作的下面步骤</li></ol><h2 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h2><p>如果从服务器设置了masterauth选项， 那么进行身份验证， 这时从服务器将向主服务器发送一条<code>auth</code>命令，验证时可能出现以下情况</p><ol><li>如果主服务器没有设置requirepass选项， 并且从服务器也没有设置masterauth选项，那么主服务器将继续执行从服务器发送的命令， 复制工作继续</li><li>如果从服务器通过auth命令发送的密码和主服务器设置的requirepass选项所设置的密码相同，那么主服务器将继续执行从服务器发送的命令，复制工作继续执行。相反，如果明码不同，主服务器将返回invalid password错误</li><li>如果主服务器设置了requirepass选项， 而从服务器没有设置masterauth选项，那么主服务器将返回一个NOAUTH错误。如果主服务器没有设置requirepass选项，而从服务器设置了masterauth选项，那么主服务器返回一个 no password is set错误</li></ol><p><strong>任何</strong>错误情况都会令从服务器<strong>停止复制工作</strong>，并从创建套接字开始重新执行复制，直到身份验证通过，或者从服务器放弃执行复制为止</p><div id="flowchart-1" class="flow-chart"></div><h2 id="发送端口信息"><a href="#发送端口信息" class="headerlink" title="发送端口信息"></a>发送端口信息</h2><p>身份验证之后，从服务器执行命令<code>REPLCONF listening-port &lt;port-number&gt;</code>向主服务器发送服务器监听端口号</p><blockquote><p>例如，从服务器的监听端口为12345，那么从服务器将向主服务器发送命令REPLCONF listening-port 12345</p></blockquote><p>主服务器在接收到这个命令后，会将端口号记录在从服务器所对应客户端状态的slave_listening_port 属性中， 这个属性唯一的作用就是在主服务器执行<code>INFO replication</code>时打印出从服务器的端口号</p><h2 id="同步-1"><a href="#同步-1" class="headerlink" title="同步"></a>同步</h2><p>这一步，从服务器将向主服务器发送PSYNC命令， 执行同步操作，并将自己的数据库更新至主服务器数据库当前所处状态</p><p>在同步操作之前，只有从服务器是主服务器的客户端，但是在执行同步操作之后，主服务器也会成为从服务器的客户端</p><ul><li>如果执行完整同步操作，那么主服务器需要成为从服务器的客户端才能将保存在缓冲区里面的写命令发送给从服务器</li><li>如果是部分重同步操作，那么主服务器需要成为从服务器的客户端才能向从服务器发送保存在复制积压缓冲区里面的写命令</li></ul><p>因此同步操作执行之后，主从服务器双方都是对方的客户端</p><h2 id="命令传播-1"><a href="#命令传播-1" class="headerlink" title="命令传播"></a>命令传播</h2><p>完成同步后，主服务器就会进入命令传播阶段，这时主服务器只要一直将自己执行的写命令发送给从服务器，而从服务器只要一直接收主服务器发来的写命令就可以保证主从一致了</p><h2 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h2><p>从服务器默认会以每秒一次的频率向主服务器发送命令</p><p>REPLCONF ACK &lt;replication_offset&gt;</p><p>其中&lt;replicaion_offset&gt;是从服务器当前的复制偏移量</p><ul><li>检测主从服务器的网络连接状态<ul><li>主服务器可以通过发送和接收REPLCONF ACK命令来检查两者之间的网络连接是否正常， 如果主服务器超过一秒钟没有收到从服务器发来的REPLCONF ACK命令，那么主服务器就知道主从服务器链接出现了问题</li></ul></li><li>辅助实现min-slaves选项<ul><li>redis的min-slaves-to-write和min-slaves-max-lag两个选项可以防止主服务器不在安全的情况下执行写命令， 例如<code>min-slaves-to-write 3</code> <code>min-slaves-max-lag 10</code>，在从服务器数量少于3个或者三个从服务器的延迟(lag)都大于或等于10秒时主服务器拒绝执行写命令</li></ul></li><li>检测命令丢失<ul><li>如果因为网络故障，主服务器传播给从服务器的写命令在半路丢失，那么当从服务器向主服务器告知replication_offset时，主服务器发觉从服务器当前的复制偏移量少于自己的复制偏移量，然后主服务器就会根据从服务器提交复制偏移量，在复制积压缓冲区找到缺少的数据重新发送给从服务器<script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display:none">flowchat
+    A -->|发送写命令| D(从服务器B)</pre>
+
+<p>当从服务器重新连上主服务器后，会通过<strong>psync</strong>命令将自己的复制偏移量offset发送给主服务器，主服务器会根据这个复制偏移量来决定对从服务器执行何种同步操作</p>
+<ul>
+<li>如果offset偏移量之后的数据任然存在于复制积压缓冲区里面，那么主服务器将对从服务器执行部分重同步操作</li>
+<li>如果offset偏移量之后的数据已经不存在于复制积压缓冲区，那么主服务器将对从服务器执行完整同步操作</li>
+</ul>
+<p>回到之前的例子：</p>
+<ul>
+<li>从服务器1重新连接后，通过psync命令报告自己的复制偏移量10086</li>
+<li>主服务器将检查偏移量10086之后的数据是否存在于复制积压缓冲区里面，发现这些数据任然存在，于是主服务器向从服务器发送+continue回复， 表示数据同步将以部分重同步模式进行</li>
+<li>接着主服务器会将复制积压缓冲区10086偏移量之后的所有数据（10087-10119）都发送给从服务器1</li>
+<li>从服务器只要接收这33字节的缺失数据，就可以回到与主服务器一直状态</li>
+</ul>
+<h2 id="服务器运行id"><a href="#服务器运行id" class="headerlink" title="服务器运行id"></a>服务器运行id</h2><p>除了复制偏移量和复制积压缓冲区外，实现部分重同步还需要用到服务器运行ID</p>
+<ul>
+<li>每个redis服务器都会有自己的运行ID</li>
+<li>运行ID在服务器启动时自动生成，由60个随机的十六进制字符组成</li>
+</ul>
+<p>当从服务器对主服务器初次复制时，主服务器会将自己运行的id传送给从服务器，而从服务器则会将这个运行id保存起来， 从服务器断线重连时，从服务器将向当前连接的主服务器发送之前保存的ID</p>
+<ul>
+<li>如果保存的ID和主服务器相同，说明断线前复制的就是当前主服务器，可以尝试执行部分重同步</li>
+<li>如果ID不同， 说明从服务器断线前复制的主服务器并不是当前这台，应该进行完全同步操作</li>
+</ul>
+<h2 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h2><p>调用方法</p>
+<ol>
+<li>如果没有复制过任何主服务器，或者之前执行了slaveof no one ,那么这个从服务器在开始一次新的复制时要向主服务器发送<code>PSYNC  ? -1</code> 命令， 主动请求主服务器完全同步操作</li>
+<li>相反， 如果已经进行过复制操作，那么从服务器在开始时要发送<code>PSYNC &lt;runid&gt; &lt;offset&gt;</code>， 其中runid是上次复制的主服务器id，offset时目前复制偏移量， 接收到这个命令的主服务器会通过这两个参数来判断改对从服务器执行哪种同步操作</li>
+</ol>
+<p>三种回复：</p>
+<ol>
+<li>如果执行完整同步操作：回复<code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>,其中runid是这个主服务器的id，从服务器会将这个id保存起来，在下一次发送PSYNC时使用，offset则是当前主服务器的复制偏移量，从服务器会将这个值作为自己的初始偏移量</li>
+<li>部分重同步操作：回复<code>+CONTINUE</code>，从服务器只要等着主服务器将自己缺少的那部分数据发送过来就好了</li>
+<li>版本过低：回复-ERR，表示服务器版本低于2.8，无法识别PSYNC命令，从服务器将向主服务器发送SYNC命令，并且与主服务器完整同步操作</li>
+</ol>
+<div id="flowchart-0" class="flow-chart"></div>
+
+<h1 id="SLAVEOF执行流程"><a href="#SLAVEOF执行流程" class="headerlink" title="SLAVEOF执行流程"></a>SLAVEOF执行流程</h1><h2 id="设置主服务器地址和端口"><a href="#设置主服务器地址和端口" class="headerlink" title="设置主服务器地址和端口"></a>设置主服务器地址和端口</h2><p>例如执行命令：<code>SLAVEOF 127.0.0.1 6379</code></p>
+<p>从服务器首先要做的就是将客户端给定的主服务器IP地址<code>127.0.0.1</code>以及端口<code>6379</code>保存到服务器状态的masterhost属性和masterport属性里面：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">redisServer</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/* Replication (slave) */</span></span><br><span class="line">    <span class="keyword">char</span> *masterauth;               <span class="comment">/* AUTH with this password with master */</span></span><br><span class="line">    <span class="keyword">char</span> *masterhost;               <span class="comment">/* Hostname of master */</span></span><br><span class="line">    <span class="keyword">int</span> masterport;                 <span class="comment">/* Port of master */</span></span><br><span class="line">	...</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure>
+<p>SLAVEOF命令是一个异步命令，在完成masterhost和masterport属性设置后向客户端返回OK，表示复制指令已经被接收，而实际的复制工作将在OK返回之后才正式开始</p>
+<h2 id="建立套接字连接"><a href="#建立套接字连接" class="headerlink" title="建立套接字连接"></a>建立套接字连接</h2><p>从服务器将根据所设置的IP地址和端口创建连向主服务器的套接字</p>
+<p>如果套接字成功连接主服务器，那么从服务器将为这个套接字关联一个专门用于处理复制工作的文件事件处理器，比如接收RDB和主服务器传播回来的写命令</p>
+<p>而主服务器接受从服务器的套接字后，将该套接字创建相应的客户端状态，并将从服务器连接看做是一个连接到主服务器的客户端对待，这时从服务器将同时具有服务器和客户端两个身份。</p>
+<h2 id="发送PING命令"><a href="#发送PING命令" class="headerlink" title="发送PING命令"></a>发送PING命令</h2><p>从服务器成为主服务器客户端后第一件事就是向主服务器发送PING命令</p>
+<ol>
+<li>检查套接字的读写状态时候正常</li>
+<li>复制工作必须在主服务器可以正常处理命令请求的状态下才能进行，通过发送PING命令可以检查主服务器能否正常处理请求命令</li>
+<li>如果主服务器返回了命令回复，而从服务器不能在规定时间内读取回复的内容， 说明当前网络不佳，不能继续后面的复制操作，所以应该断开并重新创建套接字</li>
+<li>如果回复读取也正常，那么标识主从服务器连接正常，并且可以接受从服务器的请求，可以继续执行复制工作的下面步骤</li>
+</ol>
+<h2 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h2><p>如果从服务器设置了masterauth选项， 那么进行身份验证， 这时从服务器将向主服务器发送一条<code>auth</code>命令，验证时可能出现以下情况</p>
+<ol>
+<li>如果主服务器没有设置requirepass选项， 并且从服务器也没有设置masterauth选项，那么主服务器将继续执行从服务器发送的命令， 复制工作继续</li>
+<li>如果从服务器通过auth命令发送的密码和主服务器设置的requirepass选项所设置的密码相同，那么主服务器将继续执行从服务器发送的命令，复制工作继续执行。相反，如果明码不同，主服务器将返回invalid password错误</li>
+<li>如果主服务器设置了requirepass选项， 而从服务器没有设置masterauth选项，那么主服务器将返回一个NOAUTH错误。如果主服务器没有设置requirepass选项，而从服务器设置了masterauth选项，那么主服务器返回一个 no password is set错误</li>
+</ol>
+<p><strong>任何</strong>错误情况都会令从服务器<strong>停止复制工作</strong>，并从创建套接字开始重新执行复制，直到身份验证通过，或者从服务器放弃执行复制为止</p>
+<div id="flowchart-1" class="flow-chart"></div>
+
+<h2 id="发送端口信息"><a href="#发送端口信息" class="headerlink" title="发送端口信息"></a>发送端口信息</h2><p>身份验证之后，从服务器执行命令<code>REPLCONF listening-port &lt;port-number&gt;</code>向主服务器发送服务器监听端口号</p>
+<blockquote>
+<p>例如，从服务器的监听端口为12345，那么从服务器将向主服务器发送命令REPLCONF listening-port 12345</p>
+</blockquote>
+<p>主服务器在接收到这个命令后，会将端口号记录在从服务器所对应客户端状态的slave_listening_port 属性中， 这个属性唯一的作用就是在主服务器执行<code>INFO replication</code>时打印出从服务器的端口号</p>
+<h2 id="同步-1"><a href="#同步-1" class="headerlink" title="同步"></a>同步</h2><p>这一步，从服务器将向主服务器发送PSYNC命令， 执行同步操作，并将自己的数据库更新至主服务器数据库当前所处状态</p>
+<p>在同步操作之前，只有从服务器是主服务器的客户端，但是在执行同步操作之后，主服务器也会成为从服务器的客户端</p>
+<ul>
+<li>如果执行完整同步操作，那么主服务器需要成为从服务器的客户端才能将保存在缓冲区里面的写命令发送给从服务器</li>
+<li>如果是部分重同步操作，那么主服务器需要成为从服务器的客户端才能向从服务器发送保存在复制积压缓冲区里面的写命令</li>
+</ul>
+<p>因此同步操作执行之后，主从服务器双方都是对方的客户端</p>
+<h2 id="命令传播-1"><a href="#命令传播-1" class="headerlink" title="命令传播"></a>命令传播</h2><p>完成同步后，主服务器就会进入命令传播阶段，这时主服务器只要一直将自己执行的写命令发送给从服务器，而从服务器只要一直接收主服务器发来的写命令就可以保证主从一致了</p>
+<h2 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h2><p>从服务器默认会以每秒一次的频率向主服务器发送命令</p>
+<p>REPLCONF ACK &lt;replication_offset&gt;</p>
+<p>其中&lt;replicaion_offset&gt;是从服务器当前的复制偏移量</p>
+<ul>
+<li>检测主从服务器的网络连接状态<ul>
+<li>主服务器可以通过发送和接收REPLCONF ACK命令来检查两者之间的网络连接是否正常， 如果主服务器超过一秒钟没有收到从服务器发来的REPLCONF ACK命令，那么主服务器就知道主从服务器链接出现了问题</li>
+</ul>
+</li>
+<li>辅助实现min-slaves选项<ul>
+<li>redis的min-slaves-to-write和min-slaves-max-lag两个选项可以防止主服务器不在安全的情况下执行写命令， 例如<code>min-slaves-to-write 3</code> <code>min-slaves-max-lag 10</code>，在从服务器数量少于3个或者三个从服务器的延迟(lag)都大于或等于10秒时主服务器拒绝执行写命令</li>
+</ul>
+</li>
+<li>检测命令丢失<ul>
+<li>如果因为网络故障，主服务器传播给从服务器的写命令在半路丢失，那么当从服务器向主服务器告知replication_offset时，主服务器发觉从服务器当前的复制偏移量少于自己的复制偏移量，然后主服务器就会根据从服务器提交复制偏移量，在复制积压缓冲区找到缺少的数据重新发送给从服务器<script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script><script src="https://cdn.bootcss.com/flowchart/1.7.0/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">flowchat
 st=>start: 开始
 e=>end: 结束
 op1=>operation: 从服务器接到客户端发来的SLAVEOF命令
@@ -448,7 +598,7 @@ cond2(no)->op4
 cond2(yes)->op5
 op2->op4
 op4->e
-op5->e</offset></runid></offset></runid></textarea><textarea id="flowchart-0-options" style="display:none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>var code=document.getElementById("flowchart-0-code").value,options=JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value)),diagram=flowchart.parse(code);diagram.drawSVG("flowchart-0",options)</script><textarea id="flowchart-1-code" style="display:none">st=>start: 开始
+op5->e</offset></runid></offset></runid></textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script><textarea id="flowchart-1-code" style="display: none">st=>start: 开始
 en=>end: 结束
 op1=>operation: 进入身份验证
 op2=>operation: 执行复制工作的下一个步骤
@@ -468,7 +618,11 @@ cond1(no)->cond2
 cond2(yes)->op2
 cond2(no)->op3
 op3->op4
-op2->en</textarea><textarea id="flowchart-1-options" style="display:none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>var code=document.getElementById("flowchart-1-code").value,options=JSON.parse(decodeURIComponent(document.getElementById("flowchart-1-options").value)),diagram=flowchart.parse(code);diagram.drawSVG("flowchart-1",options)</script></li></ul></li></ul><!-- rebuild by neat -->
+op2->en</textarea><textarea id="flowchart-1-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-1-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-1", options);</script></li>
+</ul>
+</li>
+</ul>
+
     </div>
 
 
@@ -572,7 +726,7 @@ op2->en</textarea><textarea id="flowchart-1-options" style="display:none">{"scal
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -662,9 +816,7 @@ op2->en</textarea><textarea id="flowchart-1-options" style="display:none">{"scal
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -681,7 +833,37 @@ op2->en</textarea><textarea id="flowchart-1-options" style="display:none">{"scal
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -727,16 +909,35 @@ op2->en</textarea><textarea id="flowchart-1-options" style="display:none">{"scal
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

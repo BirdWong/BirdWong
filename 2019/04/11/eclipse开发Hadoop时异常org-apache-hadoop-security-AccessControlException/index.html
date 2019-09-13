@@ -195,7 +195,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -221,7 +221,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -379,9 +379,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.hadoop.security.AccessControlException: Permission denied: user=min, access=WRITE, inode=&quot;/access_log_copy&quot;:mini:supergroup:-rw-r--r--</span><br></pre></td></tr></table></figure><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p>我们可以看到user=min，这是我们当前运行系统的用户名，而这里期望值是Hadoop上面的用户名</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>所以有一下几种解决方法：</p><ol><li><p>在JVM变量里面添加HADOOP_USER_NAME，例：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-DHADOOP_USER_NAME=xxx</span><br></pre></td></tr></table></figure><p>这里的xxx是Hadoop上面的用户名<br>eclipse配置如下：<br><img src="http://img.jijiking51.cn/20190311212209571.jpg" alt="在这里插入图片描述"></p></li></ol><p><img src="http://img.jijiking51.cn/20190311212329622.jpg" alt="在这里插入图片描述"></p><pre><code>2. 将当前系统的帐号修改为Hadoop上运行的用户名
+        <h1 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.hadoop.security.AccessControlException: Permission denied: user=min, access=WRITE, inode=&quot;/access_log_copy&quot;:mini:supergroup:-rw-r--r--</span><br></pre></td></tr></table></figure><a id="more"></a>
+<p>我们可以看到user=min，这是我们当前运行系统的用户名，而这里期望值是Hadoop上面的用户名</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>所以有一下几种解决方法：</p>
+<ol>
+<li><p>在JVM变量里面添加HADOOP_USER_NAME，例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-DHADOOP_USER_NAME=xxx</span><br></pre></td></tr></table></figure>
+<p>这里的xxx是Hadoop上面的用户名<br>eclipse配置如下：<br><img src="http://img.jijiking51.cn/20190311212209571.jpg" alt="在这里插入图片描述"></p>
+</li>
+</ol>
+<p><img src="http://img.jijiking51.cn/20190311212329622.jpg" alt="在这里插入图片描述"></p>
+<pre><code>2. 将当前系统的帐号修改为Hadoop上运行的用户名
 3. 在构造客户端fs对象时，通过对象传递进去
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 依赖的包名</span></span><br><span class="line"><span class="comment"> * import java.net.URI;</span></span><br><span class="line"><span class="comment"> * import java.net.URISyntaxException;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.conf.Configuration;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.fs.FileSystem;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">   conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://192.168.88.137:9000"</span>);</span><br><span class="line">   fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://192.168.88.137:9000"</span>),conf,<span class="string">"mini"</span>);</span><br></pre></td></tr></table></figure><p><code>推荐第一、三种</code></p><!-- rebuild by neat -->
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 依赖的包名</span></span><br><span class="line"><span class="comment"> * import java.net.URI;</span></span><br><span class="line"><span class="comment"> * import java.net.URISyntaxException;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.conf.Configuration;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.fs.FileSystem;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">   conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://192.168.88.137:9000"</span>);</span><br><span class="line">   fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://192.168.88.137:9000"</span>),conf,<span class="string">"mini"</span>);</span><br></pre></td></tr></table></figure>
+<p><code>推荐第一、三种</code></p>
+
     </div>
 
 
@@ -496,7 +508,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -586,9 +598,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -605,7 +615,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -651,16 +691,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

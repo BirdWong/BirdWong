@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.jpg?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.jpg?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    save_scroll: false,
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+
+<!-- google 广告   http://www.google.com/adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({
+	          google_ad_client: "ca-pub-8966265724665848",
+	          enable_page_level_ads: true
+	     });
+	</script>
+
+  <meta name="description" content="SQL分类 DDL(Date Definition Languages)： 数据定义语句，这些语句定义了不同的数据段、数据库、表、列、索性等数据库对象，常用的语句关键字主要包括create、drop、alter DML(Date Manipulation Language)：数据操纵语句, 用于添加、删除、更新和查询数据库记录，并检查数据完整新。常用关键字包括 insert、delete、 upd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-SQL基础">
+<meta property="og:url" content="https://jijiking51.cn/2019/09/13/MySQL-SQL基础/index.html">
+<meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="SQL分类 DDL(Date Definition Languages)： 数据定义语句，这些语句定义了不同的数据段、数据库、表、列、索性等数据库对象，常用的语句关键字主要包括create、drop、alter DML(Date Manipulation Language)：数据操纵语句, 用于添加、删除、更新和查询数据库记录，并检查数据完整新。常用关键字包括 insert、delete、 upd">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-13T12:11:06.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL-SQL基础">
+<meta name="twitter:description" content="SQL分类 DDL(Date Definition Languages)： 数据定义语句，这些语句定义了不同的数据段、数据库、表、列、索性等数据库对象，常用的语句关键字主要包括create、drop、alter DML(Date Manipulation Language)：数据操纵语句, 用于添加、删除、更新和查询数据库记录，并检查数据完整新。常用关键字包括 insert、delete、 upd">
+  <link rel="canonical" href="https://jijiking51.cn/2019/09/13/MySQL-SQL基础/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>MySQL-SQL基础 | RocWong</title>
+  <meta name="generator" content="Hexo 3.8.0">
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e30f4d88f73cfa8c61f49d129ee6ced8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RocWong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">13</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/BirdWong" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><a href="https://github.com/birdwong/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/13/MySQL-SQL基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">MySQL-SQL基础
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-13 20:07:59 / 修改时间：20:11:06" itemprop="dateCreated datePublished" datetime="2019-09-13T20:07:59+08:00">2019-09-13</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/13/MySQL-SQL基础/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-SQL基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/13/MySQL-SQL基础/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/13/MySQL-SQL基础/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>4.4k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>7 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h1><ol>
+<li>DDL(Date Definition Languages)： 数据定义语句，这些语句定义了不同的数据段、数据库、表、列、索性等数据库对象，常用的语句关键字主要包括create、drop、alter</li>
+<li>DML(Date Manipulation Language)：数据操纵语句, 用于添加、删除、更新和查询数据库记录，并检查数据完整新。常用关键字包括 insert、delete、 update、select。</li>
+<li>DCL(Date Control Language): 数据控制语句， 用于控制不同数据段直接的许可和访问级别的语句，这些语句定义了数据库、表、字段、用户的访问权限和安全级别。主要关键字包括grant、 revoke等。</li>
+</ol><a id="more"></a>
+<h1 id="DDL语句"><a href="#DDL语句" class="headerlink" title="DDL语句"></a>DDL语句</h1><p>常用DDL语句的使用方法</p>
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create datebase test1;</span><br></pre></td></tr></table></figure>
+<h2 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database test1;</span><br></pre></td></tr></table></figure>
+<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 创建语句</span><br><span class="line">create table emp(</span><br><span class="line">    ename varchar(10),</span><br><span class="line">	hiredate date,</span><br><span class="line">    sal decimal(10, 2),</span><br><span class="line">    deptno int(2)</span><br><span class="line">);</span><br><span class="line"># 查看定义</span><br><span class="line">desc [tablename]</span><br><span class="line"># 查看创建语句</span><br><span class="line">show create table [tablename] \G;</span><br></pre></td></tr></table></figure>
+<h2 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table [tablename]</span><br></pre></td></tr></table></figure>
+<h2 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h2><h3 id="修改表类型"><a href="#修改表类型" class="headerlink" title="修改表类型"></a>修改表类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 修改语法， column可以省略， first | after也可以省略</span><br><span class="line">alter table [tablename] modify `column` [column_name] &#123; first | after     col_name&#125;;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">alter table emp modify ename varchar(20);</span><br></pre></td></tr></table></figure>
+<h3 id="增加表字段"><a href="#增加表字段" class="headerlink" title="增加表字段"></a>增加表字段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 增加字段语法</span><br><span class="line">alter table [tablename] add `column` [column_definition] &#123; first | after col_name &#125;;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">alter table emp add column age int(3);</span><br></pre></td></tr></table></figure>
+<h3 id="删除表字段"><a href="#删除表字段" class="headerlink" title="删除表字段"></a>删除表字段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 删除字段语法</span><br><span class="line">alter table [tablename] drop `column` col_name;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">alter table emp drop column age;</span><br></pre></td></tr></table></figure>
+<h3 id="字段改名"><a href="#字段改名" class="headerlink" title="字段改名"></a>字段改名</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 字段改名语法</span><br><span class="line">alter table [tablename] change [column] old_col_name column_definition &#123; first | after col_name &#125;;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">alter table emp change age age1 int(4);</span><br></pre></td></tr></table></figure>
+<p><code>change 和 modify都可以修改表的定义， 不同的是change后面需要写两次列名， 不方便， 但是change的优点是可以修改列名称，modify则不能</code></p>
+<h3 id="修改字段排序"><a href="#修改字段排序" class="headerlink" title="修改字段排序"></a>修改字段排序</h3><p>字段增加和修改语法中都有一个可选项{first | after col_name}, 这个选项可以用来修改字段在表中的位置， add增加的新字段默认是加载表最后，change、modify默认都会不改变字段的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 将新增的字段birth date 加在ename之后</span><br><span class="line">alter table emp add birth date after ename;</span><br><span class="line"></span><br><span class="line"># 修改age字段， 将他放在最前面</span><br><span class="line">alter table emp modify age int(3) first;</span><br></pre></td></tr></table></figure>
+<p><code>change/ first | after column</code> 属于mysql 在标准sql上扩展， 其他数据库不一定适用</p>
+<h3 id="更改表名"><a href="#更改表名" class="headerlink" title="更改表名"></a>更改表名</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 修改表名语法</span><br><span class="line">alter table [tablename] rename `to` new_tablename;</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">alter table emp rename emp1;</span><br></pre></td></tr></table></figure>
+<h1 id="DML语句"><a href="#DML语句" class="headerlink" title="DML语句"></a>DML语句</h1><p>主要包括inset, update, delete, select </p>
+<h2 id="插入记录"><a href="#插入记录" class="headerlink" title="插入记录"></a>插入记录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 插入记录语法</span><br><span class="line">insert into [tablename](field1, field2 ... fieldn) values(value1, value2 ... valuen);</span><br><span class="line"></span><br><span class="line"># 多条记录插入语法</span><br><span class="line">insert into [tablename](field1, field2 ... fieldn) values </span><br><span class="line">(value1, value2 ... valuen),</span><br><span class="line">(value1, value2 ... valuen),</span><br><span class="line">(value1, value2 ... valuen)</span><br><span class="line">...</span><br><span class="line">(value1, value2 ... valuen);</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">insert into emp(ename, hiredate, sal, deptno) values(&apos;zzx1&apos;, &apos;2019-08-08&apos;, &apos;2000&apos;, 1);</span><br></pre></td></tr></table></figure>
+<p>插入语句可以不用指定字段名称，但是values后面的顺序应该和字段的排列顺序一致</p>
+<p>含可空字段，非空但是含有默认值的字段、自增字段，可以不用在insert后的字段列表里出现，，没写的字段可以自动设置NULL。</p>
+<h2 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 更新记录语法</span><br><span class="line">update [tablename] set field1=value1, field2=value2,...fieldn=valuen [where condition];</span><br><span class="line"></span><br><span class="line"># 更新多表数据</span><br><span class="line">update t1,t2,...tn set t1,field1=expr1, ... tn.fieldn=exprn [where condition];</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">update emp a, dept b set a.sal=a.sal*b.deptno, b.deptname=a.ename where a.deptno=b.deptno;</span><br></pre></td></tr></table></figure>
+<h2 id="删除记录"><a href="#删除记录" class="headerlink" title="删除记录"></a>删除记录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 删除语法</span><br><span class="line">delete from [tablename] [where condition]</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">delete from emp where ename=&apos;dony&apos;;</span><br><span class="line"></span><br><span class="line"># 删除多个数据表数据</span><br><span class="line">delete t1, t2, ... tn from t1, t2, ... tn [where condition];</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">delete a, b from emp a,dept b where a.deptno=b.deptno and a.deptno = 3;</span><br></pre></td></tr></table></figure>
+<p><strong>不加where会删除整表</strong></p>
+<h2 id="查询记录"><a href="#查询记录" class="headerlink" title="查询记录"></a>查询记录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># 基本查询语法</span><br><span class="line">select * from [tablename] [where condition];</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">select * from emp;</span><br><span class="line"></span><br><span class="line"># 查询不重复记录语法</span><br><span class="line">select distinct field from [tablename];</span><br><span class="line"></span><br><span class="line"># 查询值排序, 如果排序字段的值一样， 则值相同的字段按照第二个排序字段进行排序，以此类推</span><br><span class="line">select * from [tablename] [where condition] [order by field1 desc | asc ], [order by field1 desc | asc ], ... [order by field1 desc | asc ];</span><br><span class="line"></span><br><span class="line"># limit截取部分内容</span><br><span class="line">select ... [limit offset_start, row_count];</span><br><span class="line"></span><br><span class="line"># 聚合语法</span><br><span class="line">select [field1, field2, ... fieldn] fun_name from tablename [where where_condition] [group by field1, field2, ... fieldn] [with rollup] [having where_condition];</span><br><span class="line">* fun_name 聚合函数（sum， count， max， min）</span><br><span class="line">* group by 需要聚合的字段</span><br><span class="line">* with rollup 可选， 表明是否分类后的结果进行再汇总</span><br><span class="line">* having 关键字表示对分类后的结果在进行条件过滤</span><br><span class="line">- having 和 where 的区别在于， having是对聚合后的结果进行条件的过滤， 而where是在聚合前就对记录进行过滤， 如果逻辑允许， 尽可能用where先过滤记录， 这样因为结果集减小， 将对聚合的效率大大提高，最后根据逻辑看是否用having进行过滤</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">select deotno, count(1) from emp group by deptno having count(1) &gt; 1;</span><br><span class="line"></span><br><span class="line"># 表连接  表连接分两种，外链接和内连接，内连接仅选出两张表中互相匹配的记录，外链接选出其他不匹配的记录</span><br><span class="line">select ename, deptname from emp, dept where emp.deptno = dept.deptno;</span><br><span class="line">* 左连接： 包含所有的左边表中的记录甚至是右边表中没有和他匹配的记录</span><br><span class="line">* 右连接：包含所有的右边表中的记录甚至是左边表中没有和他匹配的记录</span><br><span class="line"></span><br><span class="line"># 子查询</span><br><span class="line">select * from emp where deptno in(select deptno from dept);</span><br><span class="line"></span><br><span class="line"># 记录联合</span><br><span class="line">* union all 把结果集直接合并在一起</span><br><span class="line">* union 将union all 后的结果进行一次distinct，去除重复记录后的结果</span><br><span class="line">select deptno from emp union all selet deptno from dept;</span><br></pre></td></tr></table></figure>
+<h1 id="DCL语句"><a href="#DCL语句" class="headerlink" title="DCL语句"></a>DCL语句</h1><p>DBA系统中的对象权限时使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 创建zl具有对sakila数据库中所有表的select、insert权限</span><br><span class="line">grant select, insert on sakila.* to &apos;z1&apos;@&apos;localhost&apos; identified by &apos;123&apos;;</span><br><span class="line"></span><br><span class="line"># 去除插入权限</span><br><span class="line">revoke insert on sakila.* from &apos;z1&apos;@&apos;localhost&apos;;</span><br></pre></td></tr></table></figure>
+<p># </p>
+
+    </div>
+
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>RocWong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://jijiking51.cn/2019/09/13/MySQL-SQL基础/" title="MySQL-SQL基础">https://jijiking51.cn/2019/09/13/MySQL-SQL基础/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/10/mysql的InnoDB与MyISAM速率对比/" rel="next" title="mysql的InnoDB与MyISAM速率对比">
+                  <i class="fa fa-chevron-left"></i> mysql的InnoDB与MyISAM速率对比
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/13/MySQL-数据类型/" rel="prev" title="MySQL-数据类型">
+                  MySQL-数据类型 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+    
+    
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="RocWong">
+  <p class="site-author-name" itemprop="name">RocWong</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+          
+        </div>
+        <div>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL分类"><span class="nav-number">1.</span> <span class="nav-text">SQL分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DDL语句"><span class="nav-number">2.</span> <span class="nav-text">DDL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">2.1.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据库"><span class="nav-number">2.2.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建表"><span class="nav-number">2.3.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除表"><span class="nav-number">2.4.</span> <span class="nav-text">删除表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改表"><span class="nav-number">2.5.</span> <span class="nav-text">修改表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改表类型"><span class="nav-number">2.5.1.</span> <span class="nav-text">修改表类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加表字段"><span class="nav-number">2.5.2.</span> <span class="nav-text">增加表字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除表字段"><span class="nav-number">2.5.3.</span> <span class="nav-text">删除表字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字段改名"><span class="nav-number">2.5.4.</span> <span class="nav-text">字段改名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改字段排序"><span class="nav-number">2.5.5.</span> <span class="nav-text">修改字段排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改表名"><span class="nav-number">2.5.6.</span> <span class="nav-text">更改表名</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DML语句"><span class="nav-number">3.</span> <span class="nav-text">DML语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#插入记录"><span class="nav-number">3.1.</span> <span class="nav-text">插入记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新记录"><span class="nav-number">3.2.</span> <span class="nav-text">更新记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除记录"><span class="nav-number">3.3.</span> <span class="nav-text">删除记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询记录"><span class="nav-number">3.4.</span> <span class="nav-text">查询记录</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DCL语句"><span class="nav-number">4.</span> <span class="nav-text">DCL语句</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer">
+  </div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">湘ICP备18000496 </a>&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RocWong</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">319k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:51</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="reading-progress-bar"></div>
+
+    
+
+  </div>
+
+  
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+  
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+              leancloudSelector(url).innerText = counter.time + 1;
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.log('Failed to create', error);
+                });
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+            'X-LC-Key': 'Nzpwf4hnsjlU9jOzMC0HmReR',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'neutral',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: true,
+    appId: 'akQ7J933kSkT6bS8EGY4mz1S-gzGzoHsz',
+    appKey: 'Nzpwf4hnsjlU9jOzMC0HmReR',
+    placeholder: '在此处留言,请一并在右上方留下邮箱,这样当我回复您时，您能收到邮件通知',
+    avatar: 'robohash',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+  
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<script type="text/javascript" src="/js/src/instantclick.js"></script>
+<!-- 页面离开效果 -->
+<script type="text/javascript" src="/js/src/dytitle.js"></script>
+
+<!-- 页面点击爆炸 -->
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+<!-- 复制转载提示 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" />
+<script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script type="text/javascript" src="/js/src/copyinfo.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

@@ -66,19 +66,19 @@
 	     });
 	</script>
 
-  <meta name="description" content="所用安装包也可以从此处下载下载nginx官网：https://nginx.org/（我的是1.8.1）上传并解压nginxtar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src编译nginx#进入到nginx源码目录cd /usr/local/src/nginx-1.8.1#检查安装环境,并指定将来要安装的路径./configure –prefix=/usr/">
+  <meta name="description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
 <meta name="keywords" content="踩坑,配置,高可用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx安装配置并使用keepalived实现高可用双机热备">
 <meta property="og:url" content="https://jijiking51.cn/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="所用安装包也可以从此处下载下载nginx官网：https://nginx.org/（我的是1.8.1）上传并解压nginxtar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src编译nginx#进入到nginx源码目录cd /usr/local/src/nginx-1.8.1#检查安装环境,并指定将来要安装的路径./configure –prefix=/usr/">
+<meta property="og:description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:updated_time" content="2019-04-11T10:26:18.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx安装配置并使用keepalived实现高可用双机热备">
-<meta name="twitter:description" content="所用安装包也可以从此处下载下载nginx官网：https://nginx.org/（我的是1.8.1）上传并解压nginxtar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src编译nginx#进入到nginx源码目录cd /usr/local/src/nginx-1.8.1#检查安装环境,并指定将来要安装的路径./configure –prefix=/usr/">
+<meta name="twitter:description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">
 
@@ -194,7 +194,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -220,7 +220,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -378,8 +378,76 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a href="https://pan.baidu.com/s/1ulNk8cTuKZJinFavFwG01Q" target="_blank" rel="noopener">所用安装包也可以从此处下载</a></p><hr><ol><li>下载nginx<br>官网：<a href="https://nginx.org/（我的是1.8.1）" target="_blank" rel="noopener">https://nginx.org/（我的是1.8.1）</a></li><li>上传并解压nginx<br>tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src</li><li>编译nginx<br>#进入到nginx源码目录<br>cd /usr/local/src/nginx-1.8.1<br>#检查安装环境,并指定将来要安装的路径<br>./configure –prefix=/usr/local/nginx<br>#缺包报错 ./configure: error: C compiler cc is not found<br>#使用YUM安装缺少的包<br>yum -y install gcc pcre-devel openssl openssl-devel（<strong>centos命令，如果是其他系统请自行更改</strong>）</li></ol><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><ol start="4"><li><p>编译安装<br>make &amp;&amp; make install</p></li><li><p>安装完后测试是否正常：<br>/usr/loca/nginx/sbin/nginx<br>查看端口是否有ngnix进程监听<br>netstat -ntlp | grep 80<br>如果启动nginx报错：<br>nginx: [emerg] open() “/etc/nginx.conf” failed (2: no such file or directory)</p><ol><li>find / -name nginx.conf</li><li>cp 查找到的nginx.conf位置 启动缺少nginx.conf位置</li></ol></li><li><p>配置nginx<br>打开nginx.conf</p><ol><li>修改nginx配置文件<br>server {<br>listen 80;<br>server_name xxx.com; #nginx所在服务器的主机名<br>#反向代理的配置<br>location / { #拦截所有请求<br>root html;<pre><code>proxy_pass http://192.168.0.21:8080;   #这里是代理走向的目标服务器：tomcat
-</code></pre>}<br>}</li></ol></li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重启nginx</span></span><br><span class="line">kill -HUP `cat /usr/local/nginx/logs/nginx.pid `</span><br></pre></td></tr></table></figure><ol start="7"><li><p>动静分离</p><ol><li>删除上面的server配置</li><li><p>按照上面的方法配置一下内容<br>#动态资源 index.jsp<br>location ~ .*.(jsp|do|action)$ {<br>proxy_pass <a href="http://192.168.0.2:8080" target="_blank" rel="noopener">http://192.168.0.2:8080</a>;<br>}</p><p>#静态资源<br>location ~ .*.(html|js|css|gif|jpg|jpeg|png)$ {<br>expires 3d;<br>}</p><p>负载均衡<br>在http这个节下面配置一个叫upstream的，后面的名字可以随意取，但是要和location下的proxy_pass http://后的保持一致。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    是在http里面的, 已有http, 不是在server里,在server外面</span><br><span class="line">    upstream tomcats &#123; </span><br><span class="line">        server shizhan02:8080 weight=1;#weight表示多少个</span><br><span class="line">        server shizhan03:8080 weight=1;</span><br><span class="line">        server shizhan04:8080 weight=1;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">卸载server里</span></span><br><span class="line">location ~ .*\.(jsp|do|action) &#123;</span><br><span class="line">    proxy_pass http://tomcats;        #tomcats是后面的tomcat服务器组的逻辑组号</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol></li></ol><h1 id="利用keepalived实现高可靠（HA）"><a href="#利用keepalived实现高可靠（HA）" class="headerlink" title="利用keepalived实现高可靠（HA）"></a>利用keepalived实现高可靠（HA）</h1><p>HA(High Available), 高可用性集群，是保证业务连续性的有效解决方案，一般有两个或两个以上的节点，且分为活动节点及备用节点。<br><img src="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p><p>keepalive是一款可以实现高可靠的软件，通常部署在2台服务器上，分为一主一备。Keepalived可以对本机上的进程进行检测，一旦Master检测出某个进程出现问题，将自己切换成Backup状态，然后通知另外一个节点切换成Master状态。</p><ol><li>与上面安装过程一样</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">下载keepalived官网:https://keepalived.org</span><br><span class="line"></span><br><span class="line">将keepalived解压到/usr/local/src目录下</span><br><span class="line">tar -zxvf  keepalived-1.2.19.tar.gz -C /usr/local/src</span><br><span class="line"></span><br><span class="line">进入到/usr/local/src/keepalived-1.2.19目录</span><br><span class="line">cd /usr/local/src/keepalived-1.2.19</span><br><span class="line"></span><br><span class="line">开始configure</span><br><span class="line">./configure --prefix=/usr/local/keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">编译并安装</span></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure><ol start="2"><li><p>修改/etc/keepalived/keepalived.conf 配置虚拟ip 两个节点必须是在同一内网,配置心跳检测<br>原理：<br>Keepalived并不跟nginx耦合，它俩完全不是一家人<br>但是keepalived提供一个机制：让用户自定义一个shell脚本去检测用户自己的程序，返回状态给keepalived就可以了</p><p>#MASTER节点</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> vrrp_script chk_health &#123;</span><br><span class="line">     script "/usr/local/keepalived/sbin/notify.sh"</span><br><span class="line">     interval 1</span><br><span class="line">     weight -2</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> vrrp_instance VI_1 &#123;</span><br><span class="line">     state MASTER   #指定A节点为主节点 备用节点上设置为BACKUP即可</span><br><span class="line">     interface eth0    #绑定虚拟IP的网络接口</span><br><span class="line">     virtual_router_id 51   #VRRP组名，两个节点的设置必须一样，以指明各个节点属于同一VRRP组</span><br><span class="line">     priority 100   #主节点的优先级（1-254之间），备用节点必须比主节点优先级低</span><br><span class="line">     advert_int 1  #组播信息发送间隔，两个节点设置必须一样</span><br><span class="line">     mcast_src_ip 192.168.88.200 #本地主机ip</span><br><span class="line">     authentication &#123;    #设置验证信息，两个节点必须一致</span><br><span class="line">         auth_type PASS</span><br><span class="line">         auth_pass 1111</span><br><span class="line">     &#125;</span><br><span class="line">     track_script &#123;</span><br><span class="line">        chk_health</span><br><span class="line">     &#125;</span><br><span class="line">     virtual_ipaddress &#123; #指定虚拟IP, 两个节点设置必须一样</span><br><span class="line">         192.168.88.199 #如果两个nginx的ip分别是192.168.88.200,,...201，则此处的虚拟ip跟它俩同一个网段即可</span><br><span class="line"> </span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>#BACKUP节点</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"> vrrp_script chk_health &#123;</span><br><span class="line">    script "/usr/local/keepalived/sbin/notify.sh"</span><br><span class="line">    interval 1</span><br><span class="line">    weight -2</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    mcast_src_ip 192.168.88.201</span><br><span class="line">    priority 99</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     track_script &#123;</span><br><span class="line">        chk_health</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.88.199/24</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>#使用的脚本</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">A=`ps -C nginx --no-header |wc -l`  #检查是否有nginx运行</span><br><span class="line">if [ $A -eq 0 ];then </span><br><span class="line">        /usr/local/nginx/sbin/nginx  #启动nginx</span><br><span class="line">        sleep 2 #休眠两秒</span><br><span class="line">        if [ `ps -C nginx --no-header |wc -l` -eq 0 ];then #如果两秒后nginx没有运行</span><br><span class="line">                killall keepalived #关闭keepalived ，将虚拟ip让给BACKUP节点（必须关闭MASTER上的keepalived，BACKUP才能的到VIP）</span><br><span class="line">        fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li><li><p>启动两台机器上的nginx和keepalived<br>/usr/local/nginx/sbin/ngin<br>service keepalived start</p></li><li><p>测试</p><ol><li><p>将MASTER节点上的notify.sh脚本写错nginx启动路径（例如：/usr/local/nginx/sbin/nginxxxxxxx）， 让keepalived稍后无法启动nginx而自己关闭，这样可以测试是否两个节点可以相互替换。</p></li><li><p>关闭MASTER节点上的nginx</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br></pre></td></tr></table></figure></li><li><p>查看虚拟ip占用情况，正确情况应该是MASTER上的虚拟ip消失，而BACKUP上出现你所配置的虚拟ip</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -a | grep eth0</span><br></pre></td></tr></table></figure></li><li><p>在浏览器中打开你配置的虚拟ip ，进行多个测试， 无论是MASTER节点是否存活，只要BACKUP还存活都可以正常运行</p></li></ol></li></ol><p>如果测试中发现两个节点都出现了虚拟ip的，首先尝试关闭自己的防火墙<br>servcie iptables stop 暂时关闭防火墙<br>chkconfig iptables off 永久关闭防火墙</p><!-- rebuild by neat -->
+        <p><a href="https://pan.baidu.com/s/1ulNk8cTuKZJinFavFwG01Q" target="_blank" rel="noopener">所用安装包也可以从此处下载</a></p><hr><ol>
+<li>下载nginx<br> 官网：<a href="https://nginx.org/（我的是1.8.1）" target="_blank" rel="noopener">https://nginx.org/（我的是1.8.1）</a></li>
+<li>上传并解压nginx<br> tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src</li>
+<li>编译nginx<br> #进入到nginx源码目录<br> cd /usr/local/src/nginx-1.8.1<br> #检查安装环境,并指定将来要安装的路径<br> ./configure –prefix=/usr/local/nginx<br> #缺包报错 ./configure: error: C compiler cc is not found<br> #使用YUM安装缺少的包<br> yum -y install gcc pcre-devel openssl openssl-devel（<strong>centos命令，如果是其他系统请自行更改</strong>）</li>
+</ol><a id="more"></a>
+
+
+<ol start="4">
+<li><p>编译安装<br> make &amp;&amp; make install</p>
+</li>
+<li><p>安装完后测试是否正常：<br>/usr/loca/nginx/sbin/nginx<br>查看端口是否有ngnix进程监听<br>netstat -ntlp | grep 80<br>如果启动nginx报错：<br>nginx: [emerg] open() “/etc/nginx.conf” failed (2: no such file or directory)</p>
+<ol>
+<li>find / -name nginx.conf</li>
+<li>cp  查找到的nginx.conf位置   启动缺少nginx.conf位置</li>
+</ol>
+</li>
+<li><p>配置nginx<br> 打开nginx.conf</p>
+<ol>
+<li>修改nginx配置文件<br>server {<br>  listen       80;<br>  server_name  xxx.com;    #nginx所在服务器的主机名<br>#反向代理的配置<br>location / {             #拦截所有请求<br>  root html;<pre><code>proxy_pass http://192.168.0.21:8080;   #这里是代理走向的目标服务器：tomcat
+</code></pre>  }<br>}</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重启nginx</span></span><br><span class="line">kill -HUP `cat /usr/local/nginx/logs/nginx.pid `</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><p>动静分离</p>
+<ol>
+<li>删除上面的server配置</li>
+<li><p>按照上面的方法配置一下内容<br>#动态资源 index.jsp<br>location ~ .*.(jsp|do|action)$ {<br>  proxy_pass <a href="http://192.168.0.2:8080" target="_blank" rel="noopener">http://192.168.0.2:8080</a>;<br>}</p>
+<p>#静态资源<br>location ~ .*.(html|js|css|gif|jpg|jpeg|png)$ {<br>  expires 3d;<br>}</p>
+<p>  负载均衡<br>在http这个节下面配置一个叫upstream的，后面的名字可以随意取，但是要和location下的proxy_pass http://后的保持一致。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    是在http里面的, 已有http, 不是在server里,在server外面</span><br><span class="line">    upstream tomcats &#123; </span><br><span class="line">        server shizhan02:8080 weight=1;#weight表示多少个</span><br><span class="line">        server shizhan03:8080 weight=1;</span><br><span class="line">        server shizhan04:8080 weight=1;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">卸载server里</span></span><br><span class="line">location ~ .*\.(jsp|do|action) &#123;</span><br><span class="line">    proxy_pass http://tomcats;        #tomcats是后面的tomcat服务器组的逻辑组号</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="利用keepalived实现高可靠（HA）"><a href="#利用keepalived实现高可靠（HA）" class="headerlink" title="利用keepalived实现高可靠（HA）"></a>利用keepalived实现高可靠（HA）</h1><p>HA(High Available), 高可用性集群，是保证业务连续性的有效解决方案，一般有两个或两个以上的节点，且分为活动节点及备用节点。<br><img src="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<p>keepalive是一款可以实现高可靠的软件，通常部署在2台服务器上，分为一主一备。Keepalived可以对本机上的进程进行检测，一旦Master检测出某个进程出现问题，将自己切换成Backup状态，然后通知另外一个节点切换成Master状态。</p>
+<ol>
+<li>与上面安装过程一样</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">下载keepalived官网:https://keepalived.org</span><br><span class="line"></span><br><span class="line">将keepalived解压到/usr/local/src目录下</span><br><span class="line">tar -zxvf  keepalived-1.2.19.tar.gz -C /usr/local/src</span><br><span class="line"></span><br><span class="line">进入到/usr/local/src/keepalived-1.2.19目录</span><br><span class="line">cd /usr/local/src/keepalived-1.2.19</span><br><span class="line"></span><br><span class="line">开始configure</span><br><span class="line">./configure --prefix=/usr/local/keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">编译并安装</span></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>修改/etc/keepalived/keepalived.conf  配置虚拟ip 两个节点必须是在同一内网,配置心跳检测<br> 原理：<br> Keepalived并不跟nginx耦合，它俩完全不是一家人<br> 但是keepalived提供一个机制：让用户自定义一个shell脚本去检测用户自己的程序，返回状态给keepalived就可以了</p>
+<p>#MASTER节点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> vrrp_script chk_health &#123;</span><br><span class="line">     script "/usr/local/keepalived/sbin/notify.sh"</span><br><span class="line">     interval 1</span><br><span class="line">     weight -2</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> vrrp_instance VI_1 &#123;</span><br><span class="line">     state MASTER   #指定A节点为主节点 备用节点上设置为BACKUP即可</span><br><span class="line">     interface eth0    #绑定虚拟IP的网络接口</span><br><span class="line">     virtual_router_id 51   #VRRP组名，两个节点的设置必须一样，以指明各个节点属于同一VRRP组</span><br><span class="line">     priority 100   #主节点的优先级（1-254之间），备用节点必须比主节点优先级低</span><br><span class="line">     advert_int 1  #组播信息发送间隔，两个节点设置必须一样</span><br><span class="line">     mcast_src_ip 192.168.88.200 #本地主机ip</span><br><span class="line">     authentication &#123;    #设置验证信息，两个节点必须一致</span><br><span class="line">         auth_type PASS</span><br><span class="line">         auth_pass 1111</span><br><span class="line">     &#125;</span><br><span class="line">     track_script &#123;</span><br><span class="line">        chk_health</span><br><span class="line">     &#125;</span><br><span class="line">     virtual_ipaddress &#123; #指定虚拟IP, 两个节点设置必须一样</span><br><span class="line">         192.168.88.199 #如果两个nginx的ip分别是192.168.88.200,,...201，则此处的虚拟ip跟它俩同一个网段即可</span><br><span class="line"> </span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#BACKUP节点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"> vrrp_script chk_health &#123;</span><br><span class="line">    script "/usr/local/keepalived/sbin/notify.sh"</span><br><span class="line">    interval 1</span><br><span class="line">    weight -2</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    mcast_src_ip 192.168.88.201</span><br><span class="line">    priority 99</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     track_script &#123;</span><br><span class="line">        chk_health</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.88.199/24</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#使用的脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">A=`ps -C nginx --no-header |wc -l`  #检查是否有nginx运行</span><br><span class="line">if [ $A -eq 0 ];then </span><br><span class="line">        /usr/local/nginx/sbin/nginx  #启动nginx</span><br><span class="line">        sleep 2 #休眠两秒</span><br><span class="line">        if [ `ps -C nginx --no-header |wc -l` -eq 0 ];then #如果两秒后nginx没有运行</span><br><span class="line">                killall keepalived #关闭keepalived ，将虚拟ip让给BACKUP节点（必须关闭MASTER上的keepalived，BACKUP才能的到VIP）</span><br><span class="line">        fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动两台机器上的nginx和keepalived<br> /usr/local/nginx/sbin/ngin<br> service keepalived start</p>
+</li>
+<li><p>测试</p>
+<ol>
+<li><p>将MASTER节点上的notify.sh脚本写错nginx启动路径（例如：/usr/local/nginx/sbin/nginxxxxxxx）， 让keepalived稍后无法启动nginx而自己关闭，这样可以测试是否两个节点可以相互替换。 </p>
+</li>
+<li><p>关闭MASTER节点上的nginx</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看虚拟ip占用情况，正确情况应该是MASTER上的虚拟ip消失，而BACKUP上出现你所配置的虚拟ip</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -a | grep eth0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在浏览器中打开你配置的虚拟ip   ，进行多个测试， 无论是MASTER节点是否存活，只要BACKUP还存活都可以正常运行</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>如果测试中发现两个节点都出现了虚拟ip的，首先尝试关闭自己的防火墙<br>servcie iptables stop 暂时关闭防火墙<br>chkconfig iptables off     永久关闭防火墙</p>
+
     </div>
 
 
@@ -496,7 +564,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -586,9 +654,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -605,7 +671,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -651,16 +747,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

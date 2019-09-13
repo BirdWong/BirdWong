@@ -196,7 +196,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -222,7 +222,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -380,7 +380,75 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p><a href="https://windows.github.com/" target="_blank" rel="noopener">GitHub Windows</a></p><h2 id="安装Node-JS"><a href="#安装Node-JS" class="headerlink" title="安装Node.JS"></a>安装Node.JS</h2><p><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.JS</a></p><p>确认npm命令已经配置好</p><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure><h1 id="初始化配置Hexo"><a href="#初始化配置Hexo" class="headerlink" title="初始化配置Hexo"></a>初始化配置Hexo</h1><h2 id="创建根目录"><a href="#创建根目录" class="headerlink" title="创建根目录"></a>创建根目录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建博客根目录</span></span><br><span class="line">mkdir blogroot</span><br></pre></td></tr></table></figure><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><h2 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入根目录</span></span><br><span class="line">cd blogroot</span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化项目</span></span><br><span class="line">hexo init</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装插件</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure><h2 id="安装git插件安装配置"><a href="#安装git插件安装配置" class="headerlink" title="安装git插件安装配置"></a>安装git插件安装配置</h2><h3 id="安装git插件"><a href="#安装git插件" class="headerlink" title="安装git插件"></a>安装git插件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装git插件</span></span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改根目录下的_config.yml</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span> <span class="string">//</span> <span class="string">上传方式</span></span><br><span class="line"><span class="attr">  repository:</span> <span class="string">//项目地址</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">//</span> <span class="string">上传分支</span></span><br><span class="line"><span class="attr">  message:</span> <span class="string">//</span> <span class="string">上传时默认信息，如果不设置则为上传时的时间</span></span><br></pre></td></tr></table></figure><h2 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成文章</span></span><br><span class="line">hexo n</span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成public静态文件</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="meta">#</span><span class="bash"> 本地预览效果</span></span><br><span class="line">hexo s</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将public静态文件上传到github</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure><h1 id="github准备"><a href="#github准备" class="headerlink" title="github准备"></a>github准备</h1><h2 id="创建博客仓库"><a href="#创建博客仓库" class="headerlink" title="创建博客仓库"></a>创建博客仓库</h2><ol><li><p>创建项目</p><p><img src="http://img.jijiking51.cn/7523.523.png" alt="创建项目"></p></li><li><p>项目名为<code>用户名.github.io</code></p><p><img src="http://img.jijiking51.cn/16550419103133126.jpg" alt="16550419103133126.jpg"></p></li><li><p>点击项目setting，下翻到GitHub Pages，设置上传的分支（与上面配置里面写的相同），并且按change theme选择主题（默认就行）</p></li></ol><h2 id="配置ssh私钥"><a href="#配置ssh私钥" class="headerlink" title="配置ssh私钥"></a>配置ssh私钥</h2><ol><li><p>右键git bash</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> username和email@email.com替换为自己的</span></span><br><span class="line">git config --global user.name "username"</span><br><span class="line">git config --global user.email "email@email.com"</span><br></pre></td></tr></table></figure></li><li><p>生成秘钥</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输入后一路回车就好</span></span><br><span class="line">ssh-keygen -t rsa -C "账户邮箱"</span><br></pre></td></tr></table></figure></li><li><p>输入<code>eval &quot;$(ssh-agent -s)&quot;</code>，添加密钥到ssh-agent。</p><p>再输入<code>ssh-add ~/.ssh/id_rsa</code>，添加生成的SSH key到ssh-agent。</p></li><li><p>github的个人setting中找到<code>SSH and GPG keys</code>，添加新的ssh，打开C:\Users\Administrator.ssh\id_rsa.pub 文件，将里面的内容张贴到里面</p></li><li><p>输入<code>ssh -T git@github.com</code>，出现用户名则表示成功</p></li></ol><h2 id="配置个人域名"><a href="#配置个人域名" class="headerlink" title="配置个人域名"></a>配置个人域名</h2><ol><li><p>github点击<code>settings</code>，拉到下面<code>Custom domain</code>处 ，填写自己域名</p><p><img src="http://img.jijiking51.cn/v2-dea19c65560424590c7c3141315e4663_hd[1].jpg" alt="v2-dea19c65560424590c7c3141315e4663_hd[1].jpg"></p></li><li><p>本地的source中添加CNAME文件（更新博客的时候保证每次都带有这个文件），检查项目下是否出现了CNAME文件，内容是填写的域名（不要加http，www），如果没有就创建一个新的文件并填写对应内容</p></li><li><p><code>ping</code>一下github分配的博客页面，得到一个IP，在自己的域名解析中，将www和@的都解析到这个IP上</p></li></ol><h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p>配置好github Page后报错<code>Page build failed: Date is not a valid datetime</code>,这是非jekyll生成的站点，要添加.nojekyll空文件在repository的根目录下，关闭针对jekyll的检查。</p><p>方法：</p><p>​ 在github根目录下创建空文件<code>.nojekyll</code>,同样，我们要在source中添加这个文件</p><h1 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h1><p>使用<a href="https://github.com/ZEROKISEKI/hexo-theme-gal" target="_blank" rel="noopener">gal主题</a></p><ol><li><p>获取主题</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ZEROKISEKI/hexo-theme-gal.git themes/gal</span><br></pre></td></tr></table></figure></li><li><p>将clone下来的文件<code>/_source/</code>的<code>tags</code>和<code>categories</code>文件夹拷贝到博客根目录下的<code>source</code>文件夹下</p></li><li><p>在博客根目录下下载对应插件</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-sass --save </span><br><span class="line"></span><br><span class="line">npm install hexo-renderer-scss --save</span><br><span class="line"></span><br><span class="line">npm install hexo-generator-json-content --save</span><br></pre></td></tr></table></figure></li><li><p>添加内容到根目录下的<code>_config.yml</code></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">jsonContent:</span><br><span class="line">  dateFormat: MM-DD</span><br><span class="line">  pages:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    preview: true</span><br><span class="line">  posts:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    tags: [&#123;</span><br><span class="line">      name: tag.name,</span><br><span class="line">      slug: tag.slug,</span><br><span class="line">      permalink: tag.permalink</span><br><span class="line">    &#125;]</span><br><span class="line">    preview: true</span><br></pre></td></tr></table></figure></li><li><p>开启搜索，404，分类，标签页面</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo new page "search"              // 搜索功能的必须步骤</span><br><span class="line">hexo new page "404"                 // 开启404页面</span><br><span class="line">hexo new page "categories"			// 开启分类页面</span><br><span class="line">hexo new page "tags"				// 开启标签页面</span><br></pre></td></tr></table></figure></li><li><p>配置分类和标签页面</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改根目录下的<span class="built_in">source</span>/categories/index.md文件</span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加 <span class="built_in">type</span>: <span class="string">"categories"</span></span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "categories"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改根目录下<span class="built_in">source</span>/tags/index.md文件</span></span><br><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: 2017-05-27 14:22:08</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加<span class="built_in">type</span>: <span class="string">"tags"</span></span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "tags"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以后写文章头部示例</span></span><br><span class="line">---</span><br><span class="line">title: 测试</span><br><span class="line">date: 2019-04-2 14:02:57</span><br><span class="line">categories: </span><br><span class="line">- demo</span><br><span class="line">tags:</span><br><span class="line">- 测试标签1</span><br><span class="line">- 测试标签2</span><br><span class="line">---</span><br></pre></td></tr></table></figure></li><li><p>其他配置参考<a href="https://github.com/ZEROKISEKI/hexo-theme-gal/wiki/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">gal项目wiki</a></p></li></ol><!-- rebuild by neat -->
+        <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p><a href="https://windows.github.com/" target="_blank" rel="noopener">GitHub Windows</a></p><h2 id="安装Node-JS"><a href="#安装Node-JS" class="headerlink" title="安装Node.JS"></a>安装Node.JS</h2><p><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.JS</a></p><p>确认npm命令已经配置好</p><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure><h1 id="初始化配置Hexo"><a href="#初始化配置Hexo" class="headerlink" title="初始化配置Hexo"></a>初始化配置Hexo</h1><h2 id="创建根目录"><a href="#创建根目录" class="headerlink" title="创建根目录"></a>创建根目录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建博客根目录</span></span><br><span class="line">mkdir blogroot</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+<h2 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入根目录</span></span><br><span class="line">cd blogroot</span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化项目</span></span><br><span class="line">hexo init</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装插件</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<h2 id="安装git插件安装配置"><a href="#安装git插件安装配置" class="headerlink" title="安装git插件安装配置"></a>安装git插件安装配置</h2><h3 id="安装git插件"><a href="#安装git插件" class="headerlink" title="安装git插件"></a>安装git插件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装git插件</span></span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改根目录下的_config.yml</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span> <span class="string">//</span> <span class="string">上传方式</span></span><br><span class="line"><span class="attr">  repository:</span> <span class="string">//项目地址</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">//</span> <span class="string">上传分支</span></span><br><span class="line"><span class="attr">  message:</span> <span class="string">//</span> <span class="string">上传时默认信息，如果不设置则为上传时的时间</span></span><br></pre></td></tr></table></figure>
+<h2 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成文章</span></span><br><span class="line">hexo n</span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成public静态文件</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="meta">#</span><span class="bash"> 本地预览效果</span></span><br><span class="line">hexo s</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将public静态文件上传到github</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<h1 id="github准备"><a href="#github准备" class="headerlink" title="github准备"></a>github准备</h1><h2 id="创建博客仓库"><a href="#创建博客仓库" class="headerlink" title="创建博客仓库"></a>创建博客仓库</h2><ol>
+<li><p>创建项目</p>
+<p><img src="http://img.jijiking51.cn/7523.523.png" alt="创建项目"></p>
+</li>
+<li><p>项目名为<code>用户名.github.io</code></p>
+<p><img src="http://img.jijiking51.cn/16550419103133126.jpg" alt="16550419103133126.jpg"></p>
+</li>
+<li><p>点击项目setting，下翻到GitHub Pages，设置上传的分支（与上面配置里面写的相同），并且按change theme选择主题（默认就行）</p>
+</li>
+</ol>
+<h2 id="配置ssh私钥"><a href="#配置ssh私钥" class="headerlink" title="配置ssh私钥"></a>配置ssh私钥</h2><ol>
+<li><p>右键git bash</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> username和email@email.com替换为自己的</span></span><br><span class="line">git config --global user.name "username"</span><br><span class="line">git config --global user.email "email@email.com"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成秘钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输入后一路回车就好</span></span><br><span class="line">ssh-keygen -t rsa -C "账户邮箱"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入<code>eval &quot;$(ssh-agent -s)&quot;</code>，添加密钥到ssh-agent。</p>
+<p>再输入<code>ssh-add ~/.ssh/id_rsa</code>，添加生成的SSH key到ssh-agent。</p>
+</li>
+<li><p>github的个人setting中找到<code>SSH and GPG keys</code>，添加新的ssh，打开C:\Users\Administrator.ssh\id_rsa.pub 文件，将里面的内容张贴到里面</p>
+</li>
+<li><p>输入<code>ssh -T git@github.com</code>，出现用户名则表示成功</p>
+</li>
+</ol>
+<h2 id="配置个人域名"><a href="#配置个人域名" class="headerlink" title="配置个人域名"></a>配置个人域名</h2><ol>
+<li><p>github点击<code>settings</code>，拉到下面<code>Custom domain</code>处 ，填写自己域名</p>
+<p><img src="http://img.jijiking51.cn/v2-dea19c65560424590c7c3141315e4663_hd[1].jpg" alt="v2-dea19c65560424590c7c3141315e4663_hd[1].jpg"></p>
+</li>
+<li><p>本地的source中添加CNAME文件（更新博客的时候保证每次都带有这个文件），检查项目下是否出现了CNAME文件，内容是填写的域名（不要加http，www），如果没有就创建一个新的文件并填写对应内容</p>
+</li>
+<li><p><code>ping</code>一下github分配的博客页面，得到一个IP，在自己的域名解析中，将www和@的都解析到这个IP上</p>
+</li>
+</ol>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p>配置好github Page后报错<code>Page build failed: Date is not a valid datetime</code>,这是非jekyll生成的站点，要添加.nojekyll空文件在repository的根目录下，关闭针对jekyll的检查。</p>
+<p>方法：</p>
+<p>​    在github根目录下创建空文件<code>.nojekyll</code>,同样，我们要在source中添加这个文件</p>
+<h1 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h1><p>使用<a href="https://github.com/ZEROKISEKI/hexo-theme-gal" target="_blank" rel="noopener">gal主题</a></p>
+<ol>
+<li><p>获取主题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ZEROKISEKI/hexo-theme-gal.git themes/gal</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将clone下来的文件<code>/_source/</code>的<code>tags</code>和<code>categories</code>文件夹拷贝到博客根目录下的<code>source</code>文件夹下 </p>
+</li>
+<li><p>在博客根目录下下载对应插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-sass --save </span><br><span class="line"></span><br><span class="line">npm install hexo-renderer-scss --save</span><br><span class="line"></span><br><span class="line">npm install hexo-generator-json-content --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加内容到根目录下的<code>_config.yml</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">jsonContent:</span><br><span class="line">  dateFormat: MM-DD</span><br><span class="line">  pages:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    preview: true</span><br><span class="line">  posts:</span><br><span class="line">    title: true</span><br><span class="line">    text: true</span><br><span class="line">    path: true</span><br><span class="line">    date: true</span><br><span class="line">    excerpt: true</span><br><span class="line">    tags: [&#123;</span><br><span class="line">      name: tag.name,</span><br><span class="line">      slug: tag.slug,</span><br><span class="line">      permalink: tag.permalink</span><br><span class="line">    &#125;]</span><br><span class="line">    preview: true</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开启搜索，404，分类，标签页面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo new page "search"              // 搜索功能的必须步骤</span><br><span class="line">hexo new page "404"                 // 开启404页面</span><br><span class="line">hexo new page "categories"			// 开启分类页面</span><br><span class="line">hexo new page "tags"				// 开启标签页面</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置分类和标签页面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改根目录下的<span class="built_in">source</span>/categories/index.md文件</span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加 <span class="built_in">type</span>: <span class="string">"categories"</span></span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "categories"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改根目录下<span class="built_in">source</span>/tags/index.md文件</span></span><br><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: 2017-05-27 14:22:08</span><br><span class="line">---</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加<span class="built_in">type</span>: <span class="string">"tags"</span></span></span><br><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date: 2017-05-27 13:47:40</span><br><span class="line">type: "tags"</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以后写文章头部示例</span></span><br><span class="line">---</span><br><span class="line">title: 测试</span><br><span class="line">date: 2019-04-2 14:02:57</span><br><span class="line">categories: </span><br><span class="line">- demo</span><br><span class="line">tags:</span><br><span class="line">- 测试标签1</span><br><span class="line">- 测试标签2</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其他配置参考<a href="https://github.com/ZEROKISEKI/hexo-theme-gal/wiki/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">gal项目wiki</a></p>
+</li>
+</ol>
+
     </div>
 
 
@@ -493,7 +561,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -583,9 +651,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -602,7 +668,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -648,16 +744,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

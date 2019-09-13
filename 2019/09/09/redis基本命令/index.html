@@ -66,17 +66,17 @@
 	     });
 	</script>
 
-  <meta name="description" content="全局命令查看所有键值1234keys *# 生产环境中可能会有很多键值，这个命令不要用键总数1dbsize检查键是否存在1exists key删除键1del key [key ...]设置过期时间1expire key seconds获取键过期剩余时间12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在键的数据结构类型123type key# 如果">
+  <meta name="description" content="全局命令 查看所有键值 1234keys *# 生产环境中可能会有很多键值，这个命令不要用  键总数 1dbsize  检查键是否存在 1exists key  删除键 1del key [key ...]  设置过期时间 1expire key seconds  获取键过期剩余时间 12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在  键的数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis基本命令">
 <meta property="og:url" content="https://jijiking51.cn/2019/09/09/redis基本命令/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="全局命令查看所有键值1234keys *# 生产环境中可能会有很多键值，这个命令不要用键总数1dbsize检查键是否存在1exists key删除键1del key [key ...]设置过期时间1expire key seconds获取键过期剩余时间12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在键的数据结构类型123type key# 如果">
+<meta property="og:description" content="全局命令 查看所有键值 1234keys *# 生产环境中可能会有很多键值，这个命令不要用  键总数 1dbsize  检查键是否存在 1exists key  删除键 1del key [key ...]  设置过期时间 1expire key seconds  获取键过期剩余时间 12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在  键的数据">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-09-09T08:36:26.940Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis基本命令">
-<meta name="twitter:description" content="全局命令查看所有键值1234keys *# 生产环境中可能会有很多键值，这个命令不要用键总数1dbsize检查键是否存在1exists key删除键1del key [key ...]设置过期时间1expire key seconds获取键过期剩余时间12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在键的数据结构类型123type key# 如果">
+<meta name="twitter:description" content="全局命令 查看所有键值 1234keys *# 生产环境中可能会有很多键值，这个命令不要用  键总数 1dbsize  检查键是否存在 1exists key  删除键 1del key [key ...]  设置过期时间 1expire key seconds  获取键过期剩余时间 12345ttl key# 大于0 代表过期剩余时间# -1  没有设置过过期时间# -2  键不存在  键的数据">
   <link rel="canonical" href="https://jijiking51.cn/2019/09/09/redis基本命令/">
 
 
@@ -191,7 +191,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -217,7 +217,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -375,7 +375,237 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h1><ol><li><p>查看所有键值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keys *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产环境中可能会有很多键值，这个命令不要用</span></span><br></pre></td></tr></table></figure></li><li><p>键总数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbsize</span><br></pre></td></tr></table></figure></li><li><p>检查键是否存在</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exists key</span><br></pre></td></tr></table></figure></li><li><p>删除键</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">del key [key ...]</span><br></pre></td></tr></table></figure></li><li><p>设置过期时间</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire key seconds</span><br></pre></td></tr></table></figure></li><li><p>获取键过期剩余时间</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ttl key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 大于0 代表过期剩余时间</span></span><br><span class="line"><span class="comment"># -1  没有设置过过期时间</span></span><br><span class="line"><span class="comment"># -2  键不存在</span></span><br></pre></td></tr></table></figure></li><li><p>键的数据结构类型</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span> key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果键不存在返回none</span></span><br></pre></td></tr></table></figure></li></ol><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><h1 id="字符串命令"><a href="#字符串命令" class="headerlink" title="字符串命令"></a>字符串命令</h1><ol><li><p>设置值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> key value [ex seconds] [px milliseconds] [nx | xx]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时有setnx 和 setex两个命令</span></span><br><span class="line">setnx = <span class="built_in">set</span> key value nx</span><br><span class="line">setex = <span class="built_in">set</span> key value ex</span><br><span class="line"></span><br><span class="line"><span class="comment"># setnx 可以用于分布式锁， 因为redis是单线程处理机制， setnx key value 命令只会有一个用户设置成功</span></span><br></pre></td></tr></table></figure><p>ex seconds: 设置过期时间，秒</p><p>px milliseconds: 设置过期时间， 毫秒</p><p>nx: 键必须不存在才能被设置成功，用于添加</p><p>xx: 键必须存在才能被设置成功，用于更新</p></li><li><p>获取值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get key</span><br></pre></td></tr></table></figure></li><li><p>批量设置值</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mset key value [key value ...]</span><br></pre></td></tr></table></figure></li><li><p>批量获取值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mget key [key ...]</span><br></pre></td></tr></table></figure></li><li><p>计数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 整数自增加1</span></span><br><span class="line">incr key</span><br><span class="line"><span class="comment"># 整数自减减1</span></span><br><span class="line">decr key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 整数自增指定数</span></span><br><span class="line">incrby key increment</span><br><span class="line"><span class="comment"># 整数自减指定数 </span></span><br><span class="line">decrby key decrement</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自增浮点数 如果要减就设置负数</span></span><br><span class="line">incrbyfloat key increment</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 情况1. 值不是整数， 返回错误</span></span><br><span class="line"><span class="comment"># 情况2. 键不存在， 按照值为0， 自增</span></span><br><span class="line"><span class="comment"># 情况3. 值是整数，返回自增后结果</span></span><br></pre></td></tr></table></figure></li><li><p>追加值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">append key value</span><br></pre></td></tr></table></figure></li><li><p>字符串字节长度</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">strlen key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果key不存在返回0</span></span><br><span class="line"><span class="comment"># 中文占三个字节， 所以一个中文长度为3</span></span><br></pre></td></tr></table></figure></li><li><p>设置并返回值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">getset key value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 首先获取这个key目前的内容值</span></span><br><span class="line"><span class="comment"># 然后设置这个key的值为value</span></span><br><span class="line"><span class="comment"># 如果没有这个key 则返回值为nil， 否则为设置之前获取的值</span></span><br></pre></td></tr></table></figure></li><li><p>设置指定位置的字符</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setrange key offeset value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定位置的字符会被替换， 如果指定的offeset大于目前字符串长度，中间缺少的长度会用\x00填充</span></span><br></pre></td></tr></table></figure></li><li><p>获取部分字符串</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getrange key start end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果start为负数将从最后开始计数</span></span><br></pre></td></tr></table></figure></li></ol><h1 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h1><ol><li><p>设置值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hset key field value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 哈希操作也提供了hsetnx命令，和string操作中的setnx用法相同只是vulue变成field</span></span><br></pre></td></tr></table></figure></li><li><p>获取值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hget key field</span><br></pre></td></tr></table></figure></li><li><p>删除field</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hdel key field [field ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的数字是删除个数</span></span><br></pre></td></tr></table></figure></li><li><p>计算field个数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hlen key</span><br></pre></td></tr></table></figure></li><li><p>批量设置获取field-value</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hmget key field [field ...]</span><br><span class="line">hmset key field value [field value  ...]</span><br></pre></td></tr></table></figure></li><li><p>判断field是否存在</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexists key field</span><br></pre></td></tr></table></figure></li><li><p>获取所有field</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hkey key</span><br></pre></td></tr></table></figure></li><li><p>获取所有的value</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvals key</span><br></pre></td></tr></table></figure></li><li><p>获取所有的field-value</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hgetall key</span><br><span class="line"></span><br><span class="line"><span class="comment"># hgetall如果field过多会导致阻塞， 如果要获取全部用hscan命令， hscan会渐进式遍历哈希</span></span><br></pre></td></tr></table></figure></li><li><p>哈希计数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hincrby key field</span><br><span class="line">hicrbyfloat key field</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># hincrby 等同于 incrby</span></span><br><span class="line"><span class="comment"># hincrbyfloat 等同于 incrby</span></span><br></pre></td></tr></table></figure></li><li><p>计算value的字符串长度</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hstrlen key field</span><br></pre></td></tr></table></figure></li></ol><h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><h2 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h2><ol><li><p>从右边插入元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpush key value [value ...]</span><br></pre></td></tr></table></figure></li><li><p>从左边插入元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpush key value [value ...]</span><br></pre></td></tr></table></figure></li><li><p>向第一个相同元素的前或者后插入元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">linsert key before|after pivot value</span><br><span class="line"></span><br><span class="line"><span class="comment"># linsert 只会匹配第一个相同的pivot， 修改成功后就会借书</span></span><br></pre></td></tr></table></figure></li></ol><h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ol><li><p>获取指定范围内的元素列表</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lrange key start end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从左到右获取是0 —— n-1， 从右到左获取是 -1 到 -n，， 获取所有的内容 lrange key 0 -1</span></span><br><span class="line"><span class="comment"># lrange的start和end都包括了自身</span></span><br></pre></td></tr></table></figure></li><li><p>获取列表指定索引下标的元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lindex key index</span><br><span class="line"></span><br><span class="line"><span class="comment"># index &gt;= 0 从左往右</span></span><br><span class="line"><span class="comment"># index &lt; 0 从右往左</span></span><br></pre></td></tr></table></figure></li><li><p>获取列表长度</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">llen key</span><br></pre></td></tr></table></figure></li></ol><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ol><li><p>从左往右删除</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpop key</span><br></pre></td></tr></table></figure></li><li><p>从右往左删除</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpop key</span><br></pre></td></tr></table></figure></li><li><p>删除指定元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lrem key count value</span><br><span class="line"></span><br><span class="line"><span class="comment"># count&gt;0  从左往右删除最多count个匹配的结果</span></span><br><span class="line"><span class="comment"># count&lt;0  从右往左删除最多count个匹配的结果</span></span><br><span class="line"><span class="comment"># count=0  删除所有匹配的结果</span></span><br></pre></td></tr></table></figure></li><li><p>按照索引范围修剪列表</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ltrim key start end</span><br><span class="line"></span><br><span class="line"><span class="comment">#  只会保留start 到  end 的内容， 如果这个范围为空， 则列表也会为空</span></span><br></pre></td></tr></table></figure></li></ol><h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><ol><li><p>修改指定索引下标的元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lset key index value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果这个key 或者index 超过这个list的长度，会报错</span></span><br></pre></td></tr></table></figure></li><li><p>阻塞操作</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blpop key [key ... ] timeout</span><br><span class="line">brpop key [key ... ] timeout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 阻塞操作是弹出操作的阻塞版本</span></span><br><span class="line"><span class="comment"># timeout 是阻塞的时间</span></span><br><span class="line"><span class="comment"># 如果列表不为空会立马返回</span></span><br><span class="line"><span class="comment"># 如果列表为空， 那么就要将阻塞timeout时间， 当timeout=0时会一直阻塞</span></span><br><span class="line"><span class="comment"># 如果在阻塞期间添加了数据，阻塞端会立即返回数据</span></span><br><span class="line"><span class="comment"># 如果是多个key， 那么阻塞期间会从左至右遍历key， 一旦有一个key不为空则立马返回</span></span><br><span class="line"><span class="comment"># 如果是多个客户端同时阻塞获取同一个key， 会按照请求的时间顺序返回，先来先服务</span></span><br></pre></td></tr></table></figure></li></ol><h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="集合内操作"><a href="#集合内操作" class="headerlink" title="集合内操作"></a>集合内操作</h2><ol><li><p>添加元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sadd key element [element ...]</span><br></pre></td></tr></table></figure></li><li><p>删除元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srem key element [element ...]</span><br></pre></td></tr></table></figure></li><li><p>计算元素个数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scard key</span><br></pre></td></tr></table></figure></li><li><p>判断元素是否在集合中</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sismember key element</span><br></pre></td></tr></table></figure></li><li><p>随机从集合返回指定个数元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srandmember key [count] <span class="comment"># count不写 默认为1</span></span><br></pre></td></tr></table></figure></li><li><p>从集合随机弹出元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spop key [count] <span class="comment"># count不写 默认为1</span></span><br></pre></td></tr></table></figure></li><li><p>获取所有元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smembers key</span><br><span class="line"><span class="comment"># 返回结果是无序结果</span></span><br></pre></td></tr></table></figure></li></ol><h2 id="集合间操作"><a href="#集合间操作" class="headerlink" title="集合间操作"></a>集合间操作</h2><ol><li><p>求多个集合的交集</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sinter key [key ...]</span><br></pre></td></tr></table></figure></li><li><p>求多个集合的并集</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sunion key [key ...]</span><br></pre></td></tr></table></figure></li><li><p>求多个集合的差集</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdiff key [key ...]</span><br></pre></td></tr></table></figure></li><li><p>将交集、并集、差集的结果保存</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sinterstore destination key [key ...]</span><br><span class="line">sunionstore destination key [key ...]</span><br><span class="line">sdiffstore destination key [key ...]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令=原命令+store</span></span><br><span class="line"><span class="comment"># destination： 给结果value一个key名称</span></span><br><span class="line"><span class="comment"># key [key ...] :需要进行的操作集合</span></span><br></pre></td></tr></table></figure></li></ol><h1 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h1><h2 id="集合内"><a href="#集合内" class="headerlink" title="集合内"></a>集合内</h2><ol><li><p>添加成员</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">zadd key score member [score member ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zadd 后有四个可选项</span></span><br><span class="line"><span class="comment"># nx：member必须不存在才可以设置成功，用于添加</span></span><br><span class="line"><span class="comment"># xx：member必须存在才可以设置成功， 用于修改</span></span><br><span class="line"><span class="comment"># ch：返回此次操作后有序集合元素和分数发生变化的个数</span></span><br><span class="line"><span class="comment"># incr：对score做增加，相当于zincrby</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add的时间复杂度为log n</span></span><br></pre></td></tr></table></figure></li><li><p>计算成员个数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcard key</span><br></pre></td></tr></table></figure></li><li><p>获取某个成员的分数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zscore key member</span><br></pre></td></tr></table></figure></li><li><p>计算某个成员的排名</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zrank key member</span><br><span class="line">zrevrank key member</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrank 是从低到高</span></span><br><span class="line"><span class="comment"># zrevrank 是从高到低</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一位是0， 没找到为nil</span></span><br></pre></td></tr></table></figure></li><li><p>删除成员</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrem key member [member ...]</span><br></pre></td></tr></table></figure></li><li><p>增加成员的分数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zincrby key increment member</span><br><span class="line"></span><br><span class="line"><span class="comment"># increment：增加的分数</span></span><br><span class="line"><span class="comment"># 如果key不存在则会添加这个key，并将increment设置为初始分数</span></span><br></pre></td></tr></table></figure></li><li><p>返回指定排名范围的成员</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zrange key start end [withscores]</span><br><span class="line">zrevrange key start end [withscores]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrange从低到高， zrevrange从高到低</span></span><br><span class="line"><span class="comment"># 如果加上withscores会加上分数一并返回</span></span><br></pre></td></tr></table></figure></li><li><p>返回指定分数范围的成员</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zrangebyscore key min max [withscores] [<span class="built_in">limit</span> offset count]</span><br><span class="line">zrevrangebyscore key min max [withscores] [<span class="built_in">limit</span> offset count]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrangebyscore从低到高， zrevrangebyscore 从高到低</span></span><br><span class="line"><span class="comment"># min 和 max 表示 min &lt;= score &lt;= max, 如果想使用开区间， 也就是 min &lt; score &lt;= max  可以使用小括号， 即 (min max,   如果想表达无限， 使用负无穷 -inf， 正无穷+inf</span></span><br></pre></td></tr></table></figure></li><li><p>返回指定分数范围成员个数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcount key min max</span><br></pre></td></tr></table></figure></li><li><p>删除指定排名内的升序元素</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zremrangebyrank key start end</span><br></pre></td></tr></table></figure></li><li><p>删除指定分数范围的成员</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zremrangebyscore key min max</span><br></pre></td></tr></table></figure></li></ol><h2 id="集合间的操作"><a href="#集合间的操作" class="headerlink" title="集合间的操作"></a>集合间的操作</h2><ol><li><p>交集</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zinterstore destination numkeys key [key ...] [weights weight [weight ...]]  [aggregate sum | min | max]</span><br><span class="line"></span><br><span class="line"><span class="comment"># destination 交集计算结果保存到这个键</span></span><br><span class="line"><span class="comment"># numkeys 需要做交集计算键的个数</span></span><br><span class="line"><span class="comment"># key [key ...]</span></span><br><span class="line"><span class="comment"># weights weight [weight ...] 每个键的权重，在做交集计算时，每个键中的每个member会将自己分数乘以这个权重， 每个键的权重默认是1</span></span><br><span class="line"><span class="comment"># aggregate sum | min | max  :计算成员交集后，分值可以按照sum， min， max做汇总，默认值是sum</span></span><br></pre></td></tr></table></figure></li><li><p>并集</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zunionstore destination numkeys key [key ... ] [weights weight [weight ...]] [ aggregate sum|min|max ]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令参数与zinsertstore一致</span></span><br></pre></td></tr></table></figure></li></ol><h1 id="HyperLogLog命令"><a href="#HyperLogLog命令" class="headerlink" title="HyperLogLog命令"></a>HyperLogLog命令</h1><p>HyperLogLog是用来做基数统计的算法，HyperLogLog的优点是在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的，并且很小很小，只需要12KB内存就可以计算接近2^64个不同元素的基数，但是HyperLogLog只能依据输入的元素算出基数，而不能向set一样输出</p><ol><li><p>添加基数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pfadd key element [element ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果HyperLogLog更改了就返回1 否则返回0</span></span><br></pre></td></tr></table></figure></li><li><p>返回近似基数</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pfcount key [key ...]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的基数并不是精确值， 而是一个带有0.81%标准错误，所以这个只能返回近似值</span></span><br></pre></td></tr></table></figure></li><li><p>合并HyperLogLog</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pfmerge destkey sourcekey [sourcekey ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并后保存的名称  sourcekey需要合并的key</span></span><br></pre></td></tr></table></figure></li></ol><!-- rebuild by neat -->
+        <h1 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h1><ol>
+<li><p>查看所有键值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keys *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产环境中可能会有很多键值，这个命令不要用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>键总数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbsize</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查键是否存在</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exists key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除键</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">del key [key ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置过期时间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire key seconds</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取键过期剩余时间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ttl key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 大于0 代表过期剩余时间</span></span><br><span class="line"><span class="comment"># -1  没有设置过过期时间</span></span><br><span class="line"><span class="comment"># -2  键不存在</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>键的数据结构类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span> key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果键不存在返回none</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol><a id="more"></a>
+<h1 id="字符串命令"><a href="#字符串命令" class="headerlink" title="字符串命令"></a>字符串命令</h1><ol>
+<li><p>设置值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> key value [ex seconds] [px milliseconds] [nx | xx]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同时有setnx 和 setex两个命令</span></span><br><span class="line">setnx = <span class="built_in">set</span> key value nx</span><br><span class="line">setex = <span class="built_in">set</span> key value ex</span><br><span class="line"></span><br><span class="line"><span class="comment"># setnx 可以用于分布式锁， 因为redis是单线程处理机制， setnx key value 命令只会有一个用户设置成功</span></span><br></pre></td></tr></table></figure>
+<p>ex seconds: 设置过期时间，秒</p>
+<p>px milliseconds: 设置过期时间， 毫秒</p>
+<p>nx: 键必须不存在才能被设置成功，用于添加</p>
+<p>xx: 键必须存在才能被设置成功，用于更新</p>
+</li>
+<li><p>获取值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>批量设置值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mset key value [key value ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>批量获取值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mget key [key ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 整数自增加1</span></span><br><span class="line">incr key</span><br><span class="line"><span class="comment"># 整数自减减1</span></span><br><span class="line">decr key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 整数自增指定数</span></span><br><span class="line">incrby key increment</span><br><span class="line"><span class="comment"># 整数自减指定数 </span></span><br><span class="line">decrby key decrement</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自增浮点数 如果要减就设置负数</span></span><br><span class="line">incrbyfloat key increment</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 情况1. 值不是整数， 返回错误</span></span><br><span class="line"><span class="comment"># 情况2. 键不存在， 按照值为0， 自增</span></span><br><span class="line"><span class="comment"># 情况3. 值是整数，返回自增后结果</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>追加值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">append key value</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串字节长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">strlen key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果key不存在返回0</span></span><br><span class="line"><span class="comment"># 中文占三个字节， 所以一个中文长度为3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置并返回值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">getset key value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 首先获取这个key目前的内容值</span></span><br><span class="line"><span class="comment"># 然后设置这个key的值为value</span></span><br><span class="line"><span class="comment"># 如果没有这个key 则返回值为nil， 否则为设置之前获取的值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置指定位置的字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setrange key offeset value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定位置的字符会被替换， 如果指定的offeset大于目前字符串长度，中间缺少的长度会用\x00填充</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取部分字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getrange key start end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果start为负数将从最后开始计数</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h1><ol>
+<li><p>设置值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hset key field value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 哈希操作也提供了hsetnx命令，和string操作中的setnx用法相同只是vulue变成field</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hget key field</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除field</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hdel key field [field ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的数字是删除个数</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算field个数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hlen key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>批量设置获取field-value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hmget key field [field ...]</span><br><span class="line">hmset key field value [field value  ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>判断field是否存在</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexists key field</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有field</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hkey key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvals key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的field-value</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hgetall key</span><br><span class="line"></span><br><span class="line"><span class="comment"># hgetall如果field过多会导致阻塞， 如果要获取全部用hscan命令， hscan会渐进式遍历哈希</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>哈希计数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hincrby key field</span><br><span class="line">hicrbyfloat key field</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># hincrby 等同于 incrby</span></span><br><span class="line"><span class="comment"># hincrbyfloat 等同于 incrby</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算value的字符串长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hstrlen key field</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><h2 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h2><ol>
+<li><p>从右边插入元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpush key value [value ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从左边插入元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpush key value [value ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向第一个相同元素的前或者后插入元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">linsert key before|after pivot value</span><br><span class="line"></span><br><span class="line"><span class="comment"># linsert 只会匹配第一个相同的pivot， 修改成功后就会借书</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ol>
+<li><p>获取指定范围内的元素列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lrange key start end</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从左到右获取是0 —— n-1， 从右到左获取是 -1 到 -n，， 获取所有的内容 lrange key 0 -1</span></span><br><span class="line"><span class="comment"># lrange的start和end都包括了自身</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取列表指定索引下标的元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lindex key index</span><br><span class="line"></span><br><span class="line"><span class="comment"># index &gt;= 0 从左往右</span></span><br><span class="line"><span class="comment"># index &lt; 0 从右往左</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取列表长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">llen key</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ol>
+<li><p>从左往右删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpop key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从右往左删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpop key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除指定元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lrem key count value</span><br><span class="line"></span><br><span class="line"><span class="comment"># count&gt;0  从左往右删除最多count个匹配的结果</span></span><br><span class="line"><span class="comment"># count&lt;0  从右往左删除最多count个匹配的结果</span></span><br><span class="line"><span class="comment"># count=0  删除所有匹配的结果</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按照索引范围修剪列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ltrim key start end</span><br><span class="line"></span><br><span class="line"><span class="comment">#  只会保留start 到  end 的内容， 如果这个范围为空， 则列表也会为空</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><ol>
+<li><p>修改指定索引下标的元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lset key index value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果这个key 或者index 超过这个list的长度，会报错</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>阻塞操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blpop key [key ... ] timeout</span><br><span class="line">brpop key [key ... ] timeout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 阻塞操作是弹出操作的阻塞版本</span></span><br><span class="line"><span class="comment"># timeout 是阻塞的时间</span></span><br><span class="line"><span class="comment"># 如果列表不为空会立马返回</span></span><br><span class="line"><span class="comment"># 如果列表为空， 那么就要将阻塞timeout时间， 当timeout=0时会一直阻塞</span></span><br><span class="line"><span class="comment"># 如果在阻塞期间添加了数据，阻塞端会立即返回数据</span></span><br><span class="line"><span class="comment"># 如果是多个key， 那么阻塞期间会从左至右遍历key， 一旦有一个key不为空则立马返回</span></span><br><span class="line"><span class="comment"># 如果是多个客户端同时阻塞获取同一个key， 会按照请求的时间顺序返回，先来先服务</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="集合内操作"><a href="#集合内操作" class="headerlink" title="集合内操作"></a>集合内操作</h2><ol>
+<li><p>添加元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sadd key element [element ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srem key element [element ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算元素个数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scard key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>判断元素是否在集合中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sismember key element</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>随机从集合返回指定个数元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srandmember key [count] <span class="comment"># count不写 默认为1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从集合随机弹出元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spop key [count] <span class="comment"># count不写 默认为1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smembers key</span><br><span class="line"><span class="comment"># 返回结果是无序结果</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="集合间操作"><a href="#集合间操作" class="headerlink" title="集合间操作"></a>集合间操作</h2><ol>
+<li><p>求多个集合的交集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sinter key [key ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>求多个集合的并集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sunion key [key ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>求多个集合的差集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdiff key [key ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将交集、并集、差集的结果保存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sinterstore destination key [key ...]</span><br><span class="line">sunionstore destination key [key ...]</span><br><span class="line">sdiffstore destination key [key ...]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令=原命令+store</span></span><br><span class="line"><span class="comment"># destination： 给结果value一个key名称</span></span><br><span class="line"><span class="comment"># key [key ...] :需要进行的操作集合</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h1><h2 id="集合内"><a href="#集合内" class="headerlink" title="集合内"></a>集合内</h2><ol>
+<li><p>添加成员</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">zadd key score member [score member ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zadd 后有四个可选项</span></span><br><span class="line"><span class="comment"># nx：member必须不存在才可以设置成功，用于添加</span></span><br><span class="line"><span class="comment"># xx：member必须存在才可以设置成功， 用于修改</span></span><br><span class="line"><span class="comment"># ch：返回此次操作后有序集合元素和分数发生变化的个数</span></span><br><span class="line"><span class="comment"># incr：对score做增加，相当于zincrby</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add的时间复杂度为log n</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算成员个数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcard key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取某个成员的分数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zscore key member</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算某个成员的排名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zrank key member</span><br><span class="line">zrevrank key member</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrank 是从低到高</span></span><br><span class="line"><span class="comment"># zrevrank 是从高到低</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一位是0， 没找到为nil</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除成员</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrem key member [member ...]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增加成员的分数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zincrby key increment member</span><br><span class="line"></span><br><span class="line"><span class="comment"># increment：增加的分数</span></span><br><span class="line"><span class="comment"># 如果key不存在则会添加这个key，并将increment设置为初始分数</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回指定排名范围的成员</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zrange key start end [withscores]</span><br><span class="line">zrevrange key start end [withscores]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrange从低到高， zrevrange从高到低</span></span><br><span class="line"><span class="comment"># 如果加上withscores会加上分数一并返回</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回指定分数范围的成员</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zrangebyscore key min max [withscores] [<span class="built_in">limit</span> offset count]</span><br><span class="line">zrevrangebyscore key min max [withscores] [<span class="built_in">limit</span> offset count]</span><br><span class="line"></span><br><span class="line"><span class="comment"># zrangebyscore从低到高， zrevrangebyscore 从高到低</span></span><br><span class="line"><span class="comment"># min 和 max 表示 min &lt;= score &lt;= max, 如果想使用开区间， 也就是 min &lt; score &lt;= max  可以使用小括号， 即 (min max,   如果想表达无限， 使用负无穷 -inf， 正无穷+inf</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回指定分数范围成员个数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcount key min max</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除指定排名内的升序元素</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zremrangebyrank key start end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除指定分数范围的成员</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zremrangebyscore key min max</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="集合间的操作"><a href="#集合间的操作" class="headerlink" title="集合间的操作"></a>集合间的操作</h2><ol>
+<li><p>交集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zinterstore destination numkeys key [key ...] [weights weight [weight ...]]  [aggregate sum | min | max]</span><br><span class="line"></span><br><span class="line"><span class="comment"># destination 交集计算结果保存到这个键</span></span><br><span class="line"><span class="comment"># numkeys 需要做交集计算键的个数</span></span><br><span class="line"><span class="comment"># key [key ...]</span></span><br><span class="line"><span class="comment"># weights weight [weight ...] 每个键的权重，在做交集计算时，每个键中的每个member会将自己分数乘以这个权重， 每个键的权重默认是1</span></span><br><span class="line"><span class="comment"># aggregate sum | min | max  :计算成员交集后，分值可以按照sum， min， max做汇总，默认值是sum</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>并集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zunionstore destination numkeys key [key ... ] [weights weight [weight ...]] [ aggregate sum|min|max ]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令参数与zinsertstore一致</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="HyperLogLog命令"><a href="#HyperLogLog命令" class="headerlink" title="HyperLogLog命令"></a>HyperLogLog命令</h1><p>HyperLogLog是用来做基数统计的算法，HyperLogLog的优点是在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的，并且很小很小，只需要12KB内存就可以计算接近2^64个不同元素的基数，但是HyperLogLog只能依据输入的元素算出基数，而不能向set一样输出</p>
+<ol>
+<li><p>添加基数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pfadd key element [element ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果HyperLogLog更改了就返回1 否则返回0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回近似基数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pfcount key [key ...]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的基数并不是精确值， 而是一个带有0.81%标准错误，所以这个只能返回近似值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并HyperLogLog</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pfmerge destkey sourcekey [sourcekey ...]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并后保存的名称  sourcekey需要合并的key</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
     </div>
 
 
@@ -479,7 +709,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -569,9 +799,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -588,7 +816,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -634,16 +892,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

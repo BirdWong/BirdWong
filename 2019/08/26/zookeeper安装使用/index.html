@@ -191,7 +191,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -217,7 +217,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -383,7 +383,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="下载安装文件"><a href="#下载安装文件" class="headerlink" title="下载安装文件"></a>下载安装文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxvf zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除无用文件</span></span><br><span class="line">rm -rf dist-maven/ src/ *.xml *.txt</span><br></pre></td></tr></table></figure><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:41 GMT+0800 (CST) --><h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  conf</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">vi zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件保存目录</span></span><br><span class="line">dataDir=/root/zkdata</span><br><span class="line"><span class="comment"># 添加集群信息</span></span><br><span class="line">server.1=172.17.0.2:2888:3888</span><br><span class="line">server.2=172.17.0.3:2888:3888</span><br><span class="line">server.3=172.17.0.4:2888:3888</span><br></pre></td></tr></table></figure><h1 id="创建文件目录"><a href="#创建文件目录" class="headerlink" title="创建文件目录"></a>创建文件目录</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /root/zkdata</span><br><span class="line"><span class="comment"># 选举的时候通过id比较来选举， 并且id读取的是文件存放目录下的myid文件</span></span><br><span class="line"><span class="built_in">echo</span> 1 &gt; /root/zkdata/myid</span><br></pre></td></tr></table></figure><h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure><h1 id="选举方式"><a href="#选举方式" class="headerlink" title="选举方式"></a>选举方式</h1><pre class="mermaid">graph LR
+        <h1 id="下载安装文件"><a href="#下载安装文件" class="headerlink" title="下载安装文件"></a>下载安装文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxvf zookeeper-3.4.14.tar.gz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除无用文件</span></span><br><span class="line">rm -rf dist-maven/ src/ *.xml *.txt</span><br></pre></td></tr></table></figure><a id="more"></a>
+<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  conf</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">vi zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件保存目录</span></span><br><span class="line">dataDir=/root/zkdata</span><br><span class="line"><span class="comment"># 添加集群信息</span></span><br><span class="line">server.1=172.17.0.2:2888:3888</span><br><span class="line">server.2=172.17.0.3:2888:3888</span><br><span class="line">server.3=172.17.0.4:2888:3888</span><br></pre></td></tr></table></figure>
+<h1 id="创建文件目录"><a href="#创建文件目录" class="headerlink" title="创建文件目录"></a>创建文件目录</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /root/zkdata</span><br><span class="line"><span class="comment"># 选举的时候通过id比较来选举， 并且id读取的是文件存放目录下的myid文件</span></span><br><span class="line"><span class="built_in">echo</span> 1 &gt; /root/zkdata/myid</span><br></pre></td></tr></table></figure>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure>
+<h1 id="选举方式"><a href="#选举方式" class="headerlink" title="选举方式"></a>选举方式</h1><pre class="mermaid">graph LR
     subgraph 服务器1
     A(myid1:1)---B(ip:172.17.0.2)
     end
@@ -392,7 +396,34 @@
     end
     subgraph 服务器3
     F(myid1:3)---E(ip:172.17.0.4)
-    end</pre><ol><li>服务器1启动， 发现无leader，发起选举， 只有自己，投票自己，少于半数，选举失败</li><li>服务器2启动， 发现无leader，发起选举，服务器2自己投自己，服务器1自己投自己，选举失败，均未过半</li><li>服务器1服务器2发现无leader， 发起选举， 服务器2 id &gt; 服务器1 id， 服务器1选举服务器2， 服务器2选举服务器2， 超过半数。 选举成功</li><li>服务器3启动， 已经有leader， 不进行选举， 自动转为follower</li></ol><h1 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h1><h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看帮助</span></span><br><span class="line"><span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接指定服务器</span></span><br><span class="line">connect IP:PORT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个app1的节点，并且内容为this is app1 servers parent</span></span><br><span class="line">create /app1 <span class="string">"this is app1 servers parent"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在app1下创建一个server01的节点， 内容为一个ip和权重</span></span><br><span class="line">create /app1/server01 <span class="string">"192.168.33.5,100"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1内容</span></span><br><span class="line">get /app1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1/server01</span></span><br><span class="line">get /app1/server01</span><br></pre></td></tr></table></figure><h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><h3 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h3><p>通过create中的可选参数[-e]指定</p><ul><li>短暂节点：断开链接后自动删除，可以用于服务器注册，一旦服务器挂掉，zookeeper就会自动删除</li><li>持久节点：断开不删除，除非执行删除命令</li></ul><p>-e说明是短暂节点， 如果不申明，说明是持久节点</p><h3 id="节点形式"><a href="#节点形式" class="headerlink" title="节点形式"></a>节点形式</h3><ul><li>短暂节点</li><li>短暂节点带序号</li><li>持久节点（默认）</li><li>持戒节点带序号</li></ul><p>带序号说明在同一个节点下建立新的节点，在create命令后带<code>-s</code>新的节点名后面会自动增加一个递增序列id</p><h1 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h1><h2 id="数据监听"><a href="#数据监听" class="headerlink" title="数据监听"></a>数据监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent节点数据内容被修改的时候会有监听提示， 并且，监听只生效一次</span></span><br></pre></td></tr></table></figure><h2 id="节点监听"><a href="#节点监听" class="headerlink" title="节点监听"></a>节点监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent 子节点数量发生变化时进行监听提示， 并且监听只生效一次</span></span><br></pre></td></tr></table></figure><h1 id="配置日志轮循输出"><a href="#配置日志轮循输出" class="headerlink" title="配置日志轮循输出"></a>配置日志轮循输出</h1><h2 id="第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件"><a href="#第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件" class="headerlink" title="第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件"></a>第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vi  ./conf/log4j.properties</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改，并且与$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件中的ZOO_LOG4J_PROP变量的值保持一致</span></span><br><span class="line">zookeeper.root.logger=INFO,ROLLINGFILE </span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照日期每天输出logs</span></span><br><span class="line">log4j.appender.ROLLINGFILE=org.apache.log4j.DailyRollingFileAppender</span><br></pre></td></tr></table></figure><h2 id="第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件"><a href="#第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件" class="headerlink" title="第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件"></a>第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkEvn.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#日志输出路径 不需mkdir zookeeper启动时自动创建</span></span><br><span class="line">ZOO_LOG_DIR=<span class="string">"/opt/zookeeper/logs"</span></span><br><span class="line"></span><br><span class="line">ZOO_LOG4J_PROP=<span class="string">"INFO,ROLLINGFILE"</span></span><br></pre></td></tr></table></figure><h2 id="第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件"><a href="#第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件" class="headerlink" title="第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件"></a>第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkServer.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出日志文件名</span></span><br><span class="line">_ZOO_DAEMON_OUT=<span class="variable">$ZOO_LOG_DIR</span>/zookeeper.log</span><br></pre></td></tr></table></figure><!-- rebuild by neat -->
+    end</pre>
+
+<ol>
+<li>服务器1启动， 发现无leader，发起选举， 只有自己，投票自己，少于半数，选举失败</li>
+<li>服务器2启动， 发现无leader，发起选举，服务器2自己投自己，服务器1自己投自己，选举失败，均未过半</li>
+<li>服务器1服务器2发现无leader， 发起选举， 服务器2 id &gt; 服务器1 id， 服务器1选举服务器2， 服务器2选举服务器2， 超过半数。 选举成功</li>
+<li>服务器3启动， 已经有leader， 不进行选举， 自动转为follower</li>
+</ol>
+<h1 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h1><h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看帮助</span></span><br><span class="line"><span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接指定服务器</span></span><br><span class="line">connect IP:PORT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个app1的节点，并且内容为this is app1 servers parent</span></span><br><span class="line">create /app1 <span class="string">"this is app1 servers parent"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在app1下创建一个server01的节点， 内容为一个ip和权重</span></span><br><span class="line">create /app1/server01 <span class="string">"192.168.33.5,100"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1内容</span></span><br><span class="line">get /app1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取app1/server01</span></span><br><span class="line">get /app1/server01</span><br></pre></td></tr></table></figure>
+<h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><h3 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h3><p>通过create中的可选参数[-e]指定</p>
+<ul>
+<li>短暂节点：断开链接后自动删除，可以用于服务器注册，一旦服务器挂掉，zookeeper就会自动删除</li>
+<li>持久节点：断开不删除，除非执行删除命令</li>
+</ul>
+<p>-e说明是短暂节点， 如果不申明，说明是持久节点</p>
+<h3 id="节点形式"><a href="#节点形式" class="headerlink" title="节点形式"></a>节点形式</h3><ul>
+<li>短暂节点</li>
+<li>短暂节点带序号</li>
+<li>持久节点（默认）</li>
+<li>持戒节点带序号</li>
+</ul>
+<p>带序号说明在同一个节点下建立新的节点，在create命令后带<code>-s</code>新的节点名后面会自动增加一个递增序列id</p>
+<h1 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h1><h2 id="数据监听"><a href="#数据监听" class="headerlink" title="数据监听"></a>数据监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent节点数据内容被修改的时候会有监听提示， 并且，监听只生效一次</span></span><br></pre></td></tr></table></figure>
+<h2 id="节点监听"><a href="#节点监听" class="headerlink" title="节点监听"></a>节点监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls /parent watch</span><br><span class="line"></span><br><span class="line"><span class="comment"># parent 子节点数量发生变化时进行监听提示， 并且监听只生效一次</span></span><br></pre></td></tr></table></figure>
+<h1 id="配置日志轮循输出"><a href="#配置日志轮循输出" class="headerlink" title="配置日志轮循输出"></a>配置日志轮循输出</h1><h2 id="第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件"><a href="#第一步：修改-ZOOKEEPER-HOME-conf-log4j-properties文件" class="headerlink" title="第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件"></a>第一步：修改$ZOOKEEPER_HOME/conf/log4j.properties文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vi  ./conf/log4j.properties</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改，并且与$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件中的ZOO_LOG4J_PROP变量的值保持一致</span></span><br><span class="line">zookeeper.root.logger=INFO,ROLLINGFILE </span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照日期每天输出logs</span></span><br><span class="line">log4j.appender.ROLLINGFILE=org.apache.log4j.DailyRollingFileAppender</span><br></pre></td></tr></table></figure>
+<h2 id="第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件"><a href="#第二步-修改-ZOOKEEPER-HOME-bin目录下的zkEnv-sh文件" class="headerlink" title="第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件"></a>第二步:修改$ZOOKEEPER_HOME/bin目录下的zkEnv.sh文件</h2> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkEvn.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#日志输出路径 不需mkdir zookeeper启动时自动创建</span></span><br><span class="line">ZOO_LOG_DIR=<span class="string">"/opt/zookeeper/logs"</span></span><br><span class="line"></span><br><span class="line">ZOO_LOG4J_PROP=<span class="string">"INFO,ROLLINGFILE"</span></span><br></pre></td></tr></table></figure>
+<h2 id="第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件"><a href="#第三步：修改-ZOOKEEPER-HOME-bin目录下的zkServer-sh文件" class="headerlink" title="第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件"></a>第三步：修改$ZOOKEEPER_HOME/bin目录下的zkServer.sh文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi ./bin/zkServer.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出日志文件名</span></span><br><span class="line">_ZOO_DAEMON_OUT=<span class="variable">$ZOO_LOG_DIR</span>/zookeeper.log</span><br></pre></td></tr></table></figure>
+
     </div>
 
 
@@ -496,7 +527,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -586,9 +617,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -605,7 +634,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -651,16 +710,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

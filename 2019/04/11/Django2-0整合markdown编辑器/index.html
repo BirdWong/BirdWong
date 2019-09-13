@@ -66,13 +66,13 @@
 	     });
 	</script>
 
-  <meta name="description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
-<meta name="keywords" content="Markdown,Django">
+  <meta name="description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm 1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
+<meta name="keywords" content="Django,Markdown">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django2.0整合markdown编辑器">
 <meta property="og:url" content="https://jijiking51.cn/2019/04/11/Django2-0整合markdown编辑器/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
+<meta property="og:description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm 1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://img.jijiking51.cn/20180605095432377.png">
 <meta property="og:image" content="http://img.jijiking51.cn/20180605095633626.png">
@@ -82,7 +82,7 @@
 <meta property="og:updated_time" content="2019-04-11T12:43:56.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django2.0整合markdown编辑器">
-<meta name="twitter:description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
+<meta name="twitter:description" content="测试成功环境：python：3.5.4os：Deepin 15.5Django：2.0IDE：pycharm 1.Django整合Ueditor（百度制作的编辑器）学习于博主： Code人生请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径">
 <meta name="twitter:image" content="http://img.jijiking51.cn/20180605095432377.png">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/11/Django2-0整合markdown编辑器/">
 
@@ -198,7 +198,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -224,7 +224,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -382,7 +382,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote><p>测试成功环境：<br>python：3.5.4<br>os：Deepin 15.5<br>Django：2.0<br>IDE：pycharm</p></blockquote><h1 id="1-Django整合Ueditor（百度制作的编辑器）"><a href="#1-Django整合Ueditor（百度制作的编辑器）" class="headerlink" title="1.Django整合Ueditor（百度制作的编辑器）"></a>1.Django整合Ueditor（百度制作的编辑器）</h1><p>学习于博主： <a href="https://www.jianshu.com/p/d236a33a8c01" target="_blank" rel="noopener">Code人生</a></p><h2 id="请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径"><a href="#请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径" class="headerlink" title="请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径"></a>请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径</h2><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><h1 id="2-Django整合django-mdeditor"><a href="#2-Django整合django-mdeditor" class="headerlink" title="2.Django整合django-mdeditor"></a>2.Django整合django-mdeditor</h1><h2 id="1-安装django-mdeditor"><a href="#1-安装django-mdeditor" class="headerlink" title="1.安装django-mdeditor"></a>1.安装django-mdeditor</h2><p>shell中运行<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django-mdeditor</span><br></pre></td></tr></table></figure><p></p><p>##2.新建一个项目 ##</p><p>在项目的settings.py的INSTALLED_APPS中添加’mdeditor’,<br><img src="http://img.jijiking51.cn/20180605095432377.png" alt="20180605095432377.png"></p><p>添加媒体路径到你的设置中：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, &apos;uploads&apos;)</span><br><span class="line">MEDIA_URL = &apos;/media/&apos;</span><br></pre></td></tr></table></figure><p><img src="http://img.jijiking51.cn/20180605095633626.png" alt="20180605095633626.png"></p><p>在你的根目录下分别创建对应的文件夹 uploads/editor<br><img src="http://img.jijiking51.cn/20180605095821499.png" alt="20180605095821499.png"></p><p>将该设置添加到你的urls.py中：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url, include</span><br><span class="line">from django.conf.urls.static import static</span><br><span class="line">from django.conf import settings</span><br><span class="line">from django.contrib import admin</span><br><span class="line">from django.urls import path</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(&apos;admin/&apos;,admin.site.urls),</span><br><span class="line">    url(r&apos;mdeditor/&apos;, include(&apos;mdeditor.urls&apos;)),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">if settings.DEBUG:</span><br><span class="line">    # static files (images, css, javascript, etc.)</span><br><span class="line">    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)</span><br></pre></td></tr></table></figure><p><strong>如果是按照教程的步骤新建的项目，请直接覆盖源代码即可</strong></p><p>##3.添加一个app ##<br>shell在根目录中运行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp Example</span><br></pre></td></tr></table></figure><p>打开Example，在models.py中添加</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from django.db import models</span><br><span class="line">from mdeditor.fields import MDTextField</span><br><span class="line"></span><br><span class="line">class ExampleModel(models.Model):</span><br><span class="line">    name = models.CharField(max_length=10)</span><br><span class="line">    content = MDTextField()</span><br></pre></td></tr></table></figure><p>在Example/admin.py中粘贴</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line"></span><br><span class="line"># Register your models here.</span><br><span class="line">from Example.models import ExampleModel</span><br><span class="line"></span><br><span class="line">admin.site.register(ExampleModel)</span><br></pre></td></tr></table></figure><p>再次回到项目中，在settings.py的INSTALLED_APPS中添加<br>‘Example’,</p><p>然后我们运行引用model</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure><p>最后设置admin用户</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure><p>按照提示， 设置用户名，邮箱，密码之后就完成了</p><h2 id="4-查看效果"><a href="#4-查看效果" class="headerlink" title="4.查看效果"></a>4.查看效果</h2><p>运行项目<br>打开<br><a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener">http://127.0.0.1:8000/admin/</a></p><p>输入刚刚设置的账户和密码<img src="http://img.jijiking51.cn/20180605101915336.png" alt="20180605101915336.png"></p><p>点击Add添加你的第一篇文章<br><img src="http://img.jijiking51.cn/20180605102131161.png" alt="20180605102131161.png"></p><!-- rebuild by neat -->
+        <blockquote>
+<p>测试成功环境：<br>python：3.5.4<br>os：Deepin 15.5<br>Django：2.0<br>IDE：pycharm</p>
+</blockquote><h1 id="1-Django整合Ueditor（百度制作的编辑器）"><a href="#1-Django整合Ueditor（百度制作的编辑器）" class="headerlink" title="1.Django整合Ueditor（百度制作的编辑器）"></a>1.Django整合Ueditor（百度制作的编辑器）</h1><p>学习于博主： <a href="https://www.jianshu.com/p/d236a33a8c01" target="_blank" rel="noopener">Code人生</a></p><h2 id="请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径"><a href="#请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径" class="headerlink" title="请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径"></a>请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径</h2><a id="more"></a>
+
+<h1 id="2-Django整合django-mdeditor"><a href="#2-Django整合django-mdeditor" class="headerlink" title="2.Django整合django-mdeditor"></a>2.Django整合django-mdeditor</h1><h2 id="1-安装django-mdeditor"><a href="#1-安装django-mdeditor" class="headerlink" title="1.安装django-mdeditor"></a>1.安装django-mdeditor</h2><p>shell中运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django-mdeditor</span><br></pre></td></tr></table></figure></p>
+<p>##2.新建一个项目 ##</p>
+<p>在项目的settings.py的INSTALLED_APPS中添加’mdeditor’,<br><img src="http://img.jijiking51.cn/20180605095432377.png" alt="20180605095432377.png"></p>
+<p>添加媒体路径到你的设置中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, &apos;uploads&apos;)</span><br><span class="line">MEDIA_URL = &apos;/media/&apos;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.jijiking51.cn/20180605095633626.png" alt="20180605095633626.png"></p>
+<p>在你的根目录下分别创建对应的文件夹 uploads/editor<br><img src="http://img.jijiking51.cn/20180605095821499.png" alt="20180605095821499.png"></p>
+<p>将该设置添加到你的urls.py中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url, include</span><br><span class="line">from django.conf.urls.static import static</span><br><span class="line">from django.conf import settings</span><br><span class="line">from django.contrib import admin</span><br><span class="line">from django.urls import path</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(&apos;admin/&apos;,admin.site.urls),</span><br><span class="line">    url(r&apos;mdeditor/&apos;, include(&apos;mdeditor.urls&apos;)),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">if settings.DEBUG:</span><br><span class="line">    # static files (images, css, javascript, etc.)</span><br><span class="line">    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)</span><br></pre></td></tr></table></figure>
+<p><strong>如果是按照教程的步骤新建的项目，请直接覆盖源代码即可</strong></p>
+<p>##3.添加一个app ##<br>shell在根目录中运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp Example</span><br></pre></td></tr></table></figure>
+<p>打开Example，在models.py中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from django.db import models</span><br><span class="line">from mdeditor.fields import MDTextField</span><br><span class="line"></span><br><span class="line">class ExampleModel(models.Model):</span><br><span class="line">    name = models.CharField(max_length=10)</span><br><span class="line">    content = MDTextField()</span><br></pre></td></tr></table></figure>
+<p>在Example/admin.py中粘贴</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line"></span><br><span class="line"># Register your models here.</span><br><span class="line">from Example.models import ExampleModel</span><br><span class="line"></span><br><span class="line">admin.site.register(ExampleModel)</span><br></pre></td></tr></table></figure>
+<p>再次回到项目中，在settings.py的INSTALLED_APPS中添加<br>‘Example’,</p>
+<p>然后我们运行引用model</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+<p>最后设置admin用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+<p>按照提示， 设置用户名，邮箱，密码之后就完成了</p>
+<h2 id="4-查看效果"><a href="#4-查看效果" class="headerlink" title="4.查看效果"></a>4.查看效果</h2><p>运行项目<br>打开<br><a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener">http://127.0.0.1:8000/admin/</a></p>
+<p>输入刚刚设置的账户和密码<img src="http://img.jijiking51.cn/20180605101915336.png" alt="20180605101915336.png"></p>
+<p>点击Add添加你的第一篇文章<br><img src="http://img.jijiking51.cn/20180605102131161.png" alt="20180605102131161.png"></p>
+
     </div>
 
 
@@ -414,9 +443,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/Markdown/" rel="tag"><i class="fa fa-tag"></i> Markdown</a>
-            
               <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
+            
+              <a href="/tags/Markdown/" rel="tag"><i class="fa fa-tag"></i> Markdown</a>
             
           </div>
         
@@ -497,7 +526,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -587,9 +616,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -606,7 +633,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -652,16 +709,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

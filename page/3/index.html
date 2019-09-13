@@ -187,7 +187,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -213,7 +213,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -260,6 +260,442 @@
           <div id="content" class="content page-home">
             
   <section id="posts" class="posts-expand">
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/16/redis源码-adlist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/04/16/redis源码-adlist/" class="post-title-link" itemprop="url">redis源码-adlist</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-16 17:05:34" itemprop="dateCreated datePublished" datetime="2019-04-16T17:05:34+08:00">2019-04-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-23 14:14:55" itemprop="dateModified" datetime="2019-08-23T14:14:55+08:00">2019-08-23</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/04/16/redis源码-adlist/" class="post-meta-item leancloud_visitors" data-flag-title="redis源码-adlist" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/04/16/redis源码-adlist/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/16/redis源码-adlist/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>15k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>24 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Redis链表和链表节点的实现"><a href="#Redis链表和链表节点的实现" class="headerlink" title="Redis链表和链表节点的实现"></a>Redis链表和链表节点的实现</h1><p>链表的每个节点用listNode结构表示<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> &#123;</span></span><br><span class="line">    <span class="comment">// 前置节点</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">prev</span>;</span></span><br><span class="line">    <span class="comment">// 后置节点</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="comment">// 节点值</span></span><br><span class="line">    <span class="keyword">void</span> *value;</span><br><span class="line">&#125; listNode;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/16/redis源码-adlist/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/15/redis源码-sds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/04/15/redis源码-sds/" class="post-title-link" itemprop="url">redis源码-sds</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-15 17:15:22" itemprop="dateCreated datePublished" datetime="2019-04-15T17:15:22+08:00">2019-04-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-23 14:15:06" itemprop="dateModified" datetime="2019-08-23T14:15:06+08:00">2019-08-23</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/04/15/redis源码-sds/" class="post-meta-item leancloud_visitors" data-flag-title="redis源码-sds" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/04/15/redis源码-sds/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/15/redis源码-sds/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>43k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>1:12</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="SDS-动态字符串定义"><a href="#SDS-动态字符串定义" class="headerlink" title="SDS-动态字符串定义"></a>SDS-动态字符串定义</h1><p>SDS定义于<code>sds.h/sds.c</code>文件<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *  这个版本中， 不同的字符串长度使用的都是同一个结构体，</span></span><br><span class="line"><span class="comment"> *  这样会造成一定的内存浪费</span></span><br><span class="line"><span class="comment"> *  version 3.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> &#123;</span></span><br><span class="line">    <span class="comment">// 字符串的长度 </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> len;</span><br><span class="line">    <span class="comment">// 记录buf中未使用字节的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="comment">// 字节数组，用于保存字符串</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 提供五种header定义，满足各种字符串大小</span></span><br><span class="line"><span class="comment"> * len：字符串的长度</span></span><br><span class="line"><span class="comment"> * alloc：字符串最大容量</span></span><br><span class="line"><span class="comment"> * flags：标记header的类型</span></span><br><span class="line"><span class="comment"> * buf： 字节数组，用于保存字符串</span></span><br><span class="line"><span class="comment"> * version 5.0 </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></span><br><span class="line"><span class="comment"> * However is here to document the layout of type 5 SDS strings. */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, and 5 msb of string length */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint8_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint8_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint16_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint64_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="keyword">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/15/redis源码-sds/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/deepin开机后假死/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/04/11/deepin开机后假死/" class="post-title-link" itemprop="url">deepin开机后假死</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-11 20:51:13 / 修改时间：20:59:19" itemprop="dateCreated datePublished" datetime="2019-04-11T20:51:13+08:00">2019-04-11</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/04/11/deepin开机后假死/" class="post-meta-item leancloud_visitors" data-flag-title="deepin开机后假死" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/04/11/deepin开机后假死/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/deepin开机后假死/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>思路参考：<a href="https://blog.csdn.net/fdqw_sph/article/details/78759529" target="_blank" rel="noopener">https://blog.csdn.net/fdqw_sph/article/details/78759529</a></p><p>首先，我的电脑是显卡和Linux不兼容（多种版本Linux，例如：manjaro三个版本均无法使用，Ubuntu除17.10之外均无法使用——17.10还无法正常关机，需要手动关闭所有软件才可以关机，deepin开机登陆后假死，dock无反应，单cpu飙升100，kill不掉那个100%的进程）</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/11/deepin开机后假死/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
       
 
   <article class="post" itemscope itemtype="http://schema.org/Article">
@@ -511,7 +947,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>首先安装mysql驱动</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install mysql-connector-python --allow-external mysql-connector-python</span><br></pre></td></tr></table></figure><p>mysql连接实例：<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">#加载驱动</span><br><span class="line">import mysql.connector</span><br><span class="line">#建立连接</span><br><span class="line">conn = mysql.connector.connect(user=&apos;root&apos;,password=&apos;123456&apos;,database=&apos;school&apos;)</span><br><span class="line">#获取连接的游标</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line">#执行Sql</span><br><span class="line">cursor.execute(&quot;show tables&quot;)</span><br><span class="line">#获取返回列表（list）</span><br><span class="line">a  = cursor.fetchall()</span><br><span class="line">#遍历</span><br><span class="line">for  i in a:</span><br><span class="line">	print(re.match(tables_name,str(i)).group(1))</span><br><span class="line">#关闭游标</span><br><span class="line">cursor.close()</span><br><span class="line">#提交未提交事物</span><br><span class="line">conn.commit()</span><br><span class="line">#关闭连接</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+          <p>首先安装mysql驱动</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install mysql-connector-python --allow-external mysql-connector-python</span><br></pre></td></tr></table></figure><p>mysql连接实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">#加载驱动</span><br><span class="line">import mysql.connector</span><br><span class="line">#建立连接</span><br><span class="line">conn = mysql.connector.connect(user=&apos;root&apos;,password=&apos;123456&apos;,database=&apos;school&apos;)</span><br><span class="line">#获取连接的游标</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line">#执行Sql</span><br><span class="line">cursor.execute(&quot;show tables&quot;)</span><br><span class="line">#获取返回列表（list）</span><br><span class="line">a  = cursor.fetchall()</span><br><span class="line">#遍历</span><br><span class="line">for  i in a:</span><br><span class="line">	print(re.match(tables_name,str(i)).group(1))</span><br><span class="line">#关闭游标</span><br><span class="line">cursor.close()</span><br><span class="line">#提交未提交事物</span><br><span class="line">conn.commit()</span><br><span class="line">#关闭连接</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -651,7 +1087,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol><li>准备</li></ol><hr><p>首先下载安装django</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django</span><br></pre></td></tr></table></figure><p>pycharm可以直接建立django的项目，也可以执行命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure><p>这样就建立了一个mysite的django项目。</p>
+          <ol>
+<li>准备</li>
+</ol><hr><p>首先下载安装django</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install django</span><br></pre></td></tr></table></figure><p>pycharm可以直接建立django的项目，也可以执行命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure><p>这样就建立了一个mysite的django项目。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -791,7 +1229,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote><p>测试成功环境：<br>python：3.5.4<br>os：Deepin 15.5<br>Django：2.0<br>IDE：pycharm</p></blockquote><h1 id="1-Django整合Ueditor（百度制作的编辑器）"><a href="#1-Django整合Ueditor（百度制作的编辑器）" class="headerlink" title="1.Django整合Ueditor（百度制作的编辑器）"></a>1.Django整合Ueditor（百度制作的编辑器）</h1><p>学习于博主： <a href="https://www.jianshu.com/p/d236a33a8c01" target="_blank" rel="noopener">Code人生</a></p><h2 id="请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径"><a href="#请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径" class="headerlink" title="请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径"></a>请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径</h2>
+          <blockquote>
+<p>测试成功环境：<br>python：3.5.4<br>os：Deepin 15.5<br>Django：2.0<br>IDE：pycharm</p>
+</blockquote><h1 id="1-Django整合Ueditor（百度制作的编辑器）"><a href="#1-Django整合Ueditor（百度制作的编辑器）" class="headerlink" title="1.Django整合Ueditor（百度制作的编辑器）"></a>1.Django整合Ueditor（百度制作的编辑器）</h1><p>学习于博主： <a href="https://www.jianshu.com/p/d236a33a8c01" target="_blank" rel="noopener">Code人生</a></p><h2 id="请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径"><a href="#请按照博主的教程一步一步走，其中下载的DjangoUeditor-DjangoUeditor中的代码导入模块有问题，请完善路径" class="headerlink" title="请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径"></a>请按照博主的教程一步一步走，其中下载的DjangoUeditor/DjangoUeditor中的代码导入模块有问题，请完善路径</h2>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -931,7 +1371,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p>如果需要返回一个可变对象的引用， 应该首先对他进克隆（clone）。对象克隆是指存放在另一个位置上的对象副本。</p><p><img src="http://img.jijiking51.cn/20180911212426147.png" alt="20180911212426147.png"></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">b</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">b</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.day;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">	    <span class="comment">//使用clone方法 返回的是一个存放在另一个位置上的对象副本</span></span><br><span class="line">        <span class="keyword">return</span> (Date)<span class="keyword">this</span>.day.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        a  obj = <span class="keyword">new</span> a();</span><br><span class="line"></span><br><span class="line">        Date d = obj.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        b  obj_B = <span class="keyword">new</span> b();</span><br><span class="line"></span><br><span class="line">        Date d_bDate = obj_B.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d_bDate.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><!-- rebuild by neat -->
+          <p>如果需要返回一个可变对象的引用， 应该首先对他进克隆（clone）。对象克隆是指存放在另一个位置上的对象副本。</p>
+<p><img src="http://img.jijiking51.cn/20180911212426147.png" alt="20180911212426147.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">b</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">b</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.day;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">	    <span class="comment">//使用clone方法 返回的是一个存放在另一个位置上的对象副本</span></span><br><span class="line">        <span class="keyword">return</span> (Date)<span class="keyword">this</span>.day.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        a  obj = <span class="keyword">new</span> a();</span><br><span class="line"></span><br><span class="line">        Date d = obj.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        b  obj_B = <span class="keyword">new</span> b();</span><br><span class="line"></span><br><span class="line">        Date d_bDate = obj_B.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d_bDate.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -1062,7 +1504,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p>java语言中，方法参数有一下几个注意点:</p><ol><li>一个方法不能修改一个基本数据类型的参数（即数值型和布尔型）</li><li>一个方法可以改变一个对象参数的状态</li><li>一个方法不能让对象参数引用一个新的对象</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">    String name ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">clone</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WrapperA</span></span>&#123;</span><br><span class="line">    A a ;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WrapperA</span><span class="params">(A a)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.a  = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1.验证第一条定义</span></span><br><span class="line">        <span class="keyword">int</span> number1 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> number2 = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">        swapNumber(number1, number2);</span><br><span class="line">        <span class="comment">//结果是 100  200  并没有改变基本类型</span></span><br><span class="line">        System.out.println(number1+<span class="string">"  "</span>+number2);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.验证第二条定义</span></span><br><span class="line"></span><br><span class="line">        A testA = <span class="keyword">new</span> A(<span class="string">"testA1"</span>);</span><br><span class="line"></span><br><span class="line">        change(testA);</span><br><span class="line">        <span class="comment">//结果是testA2  改变了引用类型</span></span><br><span class="line">        System.out.println(testA.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//验证第三条定义</span></span><br><span class="line">        A a1 = <span class="keyword">new</span> A(<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">        A a2 = <span class="keyword">new</span> A(<span class="string">"2"</span>);</span><br><span class="line"></span><br><span class="line">        swapA(a1, a2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*结果还是 1  2   并没有交换 一个方法并不能让对象参数引用一个新的对象。</span></span><br><span class="line"><span class="comment">            原理：</span></span><br><span class="line"><span class="comment">                当a1传入swapA时，复制了一个引用对象x，也就是swapA中的a1</span></span><br><span class="line"><span class="comment">                swapA中将x指向了a2</span></span><br><span class="line"><span class="comment">                但是a1 并没有改变</span></span><br><span class="line"><span class="comment">                所以改变的仅仅是复制的引用，原来的引用并没有改变</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        System.out.println(a1.name+<span class="string">"    "</span>+a2.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果想交换可以使用以下方法</span></span><br><span class="line"></span><br><span class="line">        WrapperA wa1 = <span class="keyword">new</span> WrapperA(a1);</span><br><span class="line">        WrapperA wa2 = <span class="keyword">new</span> WrapperA(a2);</span><br><span class="line">        swapWrapperA(wa1, wa2);</span><br><span class="line"></span><br><span class="line">        a1 = wa1.a;</span><br><span class="line">        a2 = wa2.a;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//a1 和 a2 被改变</span></span><br><span class="line">        System.out.println(a1.name+<span class="string">"    "</span>+a2.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第一条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapNumber</span><span class="params">(<span class="keyword">int</span> a , <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        a += b;</span><br><span class="line">        b = a - b;</span><br><span class="line">        a = a - b;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第二条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(A a)</span></span>&#123;</span><br><span class="line">        a.name = <span class="string">"testA2"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第三条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapA</span><span class="params">(A a1 , A a2)</span></span>&#123;</span><br><span class="line">        A a3 = a1.clone() ;</span><br><span class="line">        a1 = a2.clone();</span><br><span class="line">        a2 = a3;</span><br><span class="line"></span><br><span class="line">        System.out.println(a1.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//交换方法</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapWrapperA</span><span class="params">(WrapperA a1,WrapperA a2)</span></span>&#123;</span><br><span class="line">        A a3 = a1.a;</span><br><span class="line">        a1.a = a2.a;</span><br><span class="line">        a2.a = a3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><!-- rebuild by neat -->
+          <p>java语言中，方法参数有一下几个注意点:</p>
+<ol>
+<li>一个方法不能修改一个基本数据类型的参数（即数值型和布尔型）</li>
+<li>一个方法可以改变一个对象参数的状态</li>
+<li>一个方法不能让对象参数引用一个新的对象</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">    String name ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">clone</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WrapperA</span></span>&#123;</span><br><span class="line">    A a ;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WrapperA</span><span class="params">(A a)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.a  = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1.验证第一条定义</span></span><br><span class="line">        <span class="keyword">int</span> number1 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> number2 = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">        swapNumber(number1, number2);</span><br><span class="line">        <span class="comment">//结果是 100  200  并没有改变基本类型</span></span><br><span class="line">        System.out.println(number1+<span class="string">"  "</span>+number2);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.验证第二条定义</span></span><br><span class="line"></span><br><span class="line">        A testA = <span class="keyword">new</span> A(<span class="string">"testA1"</span>);</span><br><span class="line"></span><br><span class="line">        change(testA);</span><br><span class="line">        <span class="comment">//结果是testA2  改变了引用类型</span></span><br><span class="line">        System.out.println(testA.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//验证第三条定义</span></span><br><span class="line">        A a1 = <span class="keyword">new</span> A(<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">        A a2 = <span class="keyword">new</span> A(<span class="string">"2"</span>);</span><br><span class="line"></span><br><span class="line">        swapA(a1, a2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*结果还是 1  2   并没有交换 一个方法并不能让对象参数引用一个新的对象。</span></span><br><span class="line"><span class="comment">            原理：</span></span><br><span class="line"><span class="comment">                当a1传入swapA时，复制了一个引用对象x，也就是swapA中的a1</span></span><br><span class="line"><span class="comment">                swapA中将x指向了a2</span></span><br><span class="line"><span class="comment">                但是a1 并没有改变</span></span><br><span class="line"><span class="comment">                所以改变的仅仅是复制的引用，原来的引用并没有改变</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        System.out.println(a1.name+<span class="string">"    "</span>+a2.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果想交换可以使用以下方法</span></span><br><span class="line"></span><br><span class="line">        WrapperA wa1 = <span class="keyword">new</span> WrapperA(a1);</span><br><span class="line">        WrapperA wa2 = <span class="keyword">new</span> WrapperA(a2);</span><br><span class="line">        swapWrapperA(wa1, wa2);</span><br><span class="line"></span><br><span class="line">        a1 = wa1.a;</span><br><span class="line">        a2 = wa2.a;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//a1 和 a2 被改变</span></span><br><span class="line">        System.out.println(a1.name+<span class="string">"    "</span>+a2.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第一条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapNumber</span><span class="params">(<span class="keyword">int</span> a , <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        a += b;</span><br><span class="line">        b = a - b;</span><br><span class="line">        a = a - b;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第二条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(A a)</span></span>&#123;</span><br><span class="line">        a.name = <span class="string">"testA2"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于测试第三条定义</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapA</span><span class="params">(A a1 , A a2)</span></span>&#123;</span><br><span class="line">        A a3 = a1.clone() ;</span><br><span class="line">        a1 = a2.clone();</span><br><span class="line">        a2 = a3;</span><br><span class="line"></span><br><span class="line">        System.out.println(a1.name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//交换方法</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swapWrapperA</span><span class="params">(WrapperA a1,WrapperA a2)</span></span>&#123;</span><br><span class="line">        A a3 = a1.a;</span><br><span class="line">        a1.a = a2.a;</span><br><span class="line">        a2.a = a3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -1193,439 +1641,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><a href="https://pan.baidu.com/s/1ulNk8cTuKZJinFavFwG01Q" target="_blank" rel="noopener">所用安装包也可以从此处下载</a></p><hr><ol><li>下载nginx<br>官网：<a href="https://nginx.org/（我的是1.8.1）" target="_blank" rel="noopener">https://nginx.org/（我的是1.8.1）</a></li><li>上传并解压nginx<br>tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src</li><li>编译nginx<br>#进入到nginx源码目录<br>cd /usr/local/src/nginx-1.8.1<br>#检查安装环境,并指定将来要安装的路径<br>./configure –prefix=/usr/local/nginx<br>#缺包报错 ./configure: error: C compiler cc is not found<br>#使用YUM安装缺少的包<br>yum -y install gcc pcre-devel openssl openssl-devel（<strong>centos命令，如果是其他系统请自行更改</strong>）</li></ol>
+          <p><a href="https://pan.baidu.com/s/1ulNk8cTuKZJinFavFwG01Q" target="_blank" rel="noopener">所用安装包也可以从此处下载</a></p><hr><ol>
+<li>下载nginx<br> 官网：<a href="https://nginx.org/（我的是1.8.1）" target="_blank" rel="noopener">https://nginx.org/（我的是1.8.1）</a></li>
+<li>上传并解压nginx<br> tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src</li>
+<li>编译nginx<br> #进入到nginx源码目录<br> cd /usr/local/src/nginx-1.8.1<br> #检查安装环境,并指定将来要安装的路径<br> ./configure –prefix=/usr/local/nginx<br> #缺包报错 ./configure: error: C compiler cc is not found<br> #使用YUM安装缺少的包<br> yum -y install gcc pcre-devel openssl openssl-devel（<strong>centos命令，如果是其他系统请自行更改</strong>）</li>
+</ol>
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/ZooKeeper详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/04/11/ZooKeeper详解/" class="post-title-link" itemprop="url">ZooKeeper详解</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-11 18:03:31" itemprop="dateCreated datePublished" datetime="2019-04-11T18:03:31+08:00">2019-04-11</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-10 22:10:54" itemprop="dateModified" datetime="2019-09-10T22:10:54+08:00">2019-09-10</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/zookeeper/" itemprop="url" rel="index"><span itemprop="name">zookeeper</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/04/11/ZooKeeper详解/" class="post-meta-item leancloud_visitors" data-flag-title="ZooKeeper详解" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/04/11/ZooKeeper详解/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/ZooKeeper详解/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>7.2k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>12 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <div class="note info"><p>转自：<a href="https://juejin.im/post/5baf7db75188255c3d11622e" target="_blank" rel="noopener">codeyuyu</a></p></div><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>提到ZooKeeper，相信大家都不会陌生。Dubbo，Kafka,Hadoop等等项目里都能看到它的影子。但是你真的了解 ZooKeeper 吗？如果面试官让你给他讲讲 ZooKeeper 是个什么东西，你能回答到什么地步呢？</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/11/ZooKeeper详解/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/MybatisGenerator逆向工程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/04/11/MybatisGenerator逆向工程/" class="post-title-link" itemprop="url">MybatisGenerator逆向工程</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-11 17:57:39 / 修改时间：18:02:08" itemprop="dateCreated datePublished" datetime="2019-04-11T17:57:39+08:00">2019-04-11</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JAVA/" itemprop="url" rel="index"><span itemprop="name">JAVA</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/04/11/MybatisGenerator逆向工程/" class="post-meta-item leancloud_visitors" data-flag-title="MybatisGenerator逆向工程" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/04/11/MybatisGenerator逆向工程/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/MybatisGenerator逆向工程/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>3.6k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>6 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>项目介绍：<a href="http://www.mybatis.org/generator/" target="_blank" rel="noopener">http://www.mybatis.org/generator/</a><br>XML中的标签意思：<a href="http://www.mybatis.org/generator/quickstart.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/quickstart.html</a><br>XML示例文件：<a href="http://www.mybatis.org/generator/configreference/xmlconfig.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/configreference/xmlconfig.html</a><br>启动方式：<a href="http://www.mybatis.org/generator/running/running.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/running/running.html</a><br>本文采用_From another Java program with an XML configuration的方式启动<br><br>&nbsp;<br>&nbsp;<br></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/11/MybatisGenerator逆向工程/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/" class="post-title-link" itemprop="url">ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-11 17:51:17 / 修改时间：17:57:04" itemprop="dateCreated datePublished" datetime="2019-04-11T17:51:17+08:00">2019-04-11</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/TensorFlow-GPU/" itemprop="url" rel="index"><span itemprop="name">TensorFlow_GPU</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/" class="post-meta-item leancloud_visitors" data-flag-title="ubuntu18.04安装Anaconda3+tensorflow-gpu1.8.0+cuda9.1+cudnn7.05" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>3.6k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>6 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>参考</strong><br>测试代码来源：<br><a href="https://vimsky.com/article/3872.html" target="_blank" rel="noopener">https://vimsky.com/article/3872.html</a><br>18.04图形界面开启与关闭<br><a href="https://blog.csdn.net/happy_lucky52/article/details/82626901" target="_blank" rel="noopener">https://blog.csdn.net/happy_lucky52/article/details/82626901</a><br>ubuntu18.04安装cuda+cudnn<br><a href="https://blog.csdn.net/u010801439/article/details/80483036" target="_blank" rel="noopener">https://blog.csdn.net/u010801439/article/details/80483036</a></p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/11/ubuntu18-04安装Anaconda3-tensorflow-gpu1-8-0-cuda9-1-cudnn7-05/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1689,7 +1713,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1779,9 +1803,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1798,7 +1820,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
         <div class="back-to-top motion-element">
@@ -1827,16 +1879,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 

@@ -82,7 +82,7 @@
 <meta property="og:image" content="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V">
 <meta property="og:image" content="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL">
 <meta property="og:image" content="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi">
-<meta property="og:updated_time" content="2019-09-10T14:09:19.416Z">
+<meta property="og:updated_time" content="2019-09-13T12:21:51.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql的InnoDB与MyISAM速率对比">
 <meta name="twitter:description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。">
@@ -201,7 +201,7 @@
       
     
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">18</span></a>
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">17</span></a>
 
   </li>
       
@@ -227,7 +227,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">36</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -310,11 +310,19 @@
                 
               
 
-              <time title="创建时间：2019-09-10 21:45:15 / 修改时间：22:09:19" itemprop="dateCreated datePublished" datetime="2019-09-10T21:45:15+08:00">2019-09-10</time>
+              <time title="创建时间：2019-09-10 21:45:15" itemprop="dateCreated datePublished" datetime="2019-09-10T21:45:15+08:00">2019-09-10</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-13 20:21:51" itemprop="dateModified" datetime="2019-09-13T20:21:51+08:00">2019-09-13</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -323,7 +331,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
 
                 
                 
@@ -362,7 +370,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>765</span>
+              <span>766</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -385,7 +393,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq" alt="表demo_dynamic设置为InnoDB存储引擎"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p><a id="more"></a><!-- build time:Tue Sep 10 2019 22:14:40 GMT+0800 (CST) --><p><img src="http://img.jijiking51.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3" alt="原本的存储引擎速度"></p><p>我们在表中填充了5,000,000行。</p><p><img src="http://img.jijiking51.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm" alt="表填充了5,000行"></p><p>我选择了一个<em>demo_name</em>值来搜索行集中间的值。请注意，我们已使用随机密钥生成函数而不是实际名称的结果填充了<em>demo_name</em>列。我们还在查询中指定了SQL_NO_CACHE选项，以确保MySQL不会提取缓存结果。我们的搜索耗时高达4.32秒。不太好，但请记住，搜索列上没有索引。</p><p>现在让我们将引擎更改为MyISAM并再次运行我们的SELECT。</p><p><img src="http://img.jijiking51.cn/FnToa6YcC5712umgVwCYtRIYGeKN" alt="引擎更改为MyISAM"></p><p><img src="http://img.jijiking51.cn/FgPt_NagERlf0AA50c5v_Um1ebMF" alt="MyISAM选择"></p><p>好。可以说选择MyISAM的速度更快。但是，使用MyISAM表的一个缺点是MyISAM实现了表级锁定。这意味着运行查询所花费的时间是1.58秒，任何其他查询都被放入队列中，以便在我们发布锁定后进行处理。四个查询同时尝试访问我们的<em>demo_dynamic</em>表的点，使用InnoDB的行级锁定会更有效。假设这四个查询没有尝试访问同一行。</p><h1 id="固定表与动态表对比"><a href="#固定表与动态表对比" class="headerlink" title="固定表与动态表对比"></a>固定表与动态表对比</h1><p>幸运的是，通过使用固定（或静态）行格式，MyISAM表可以更快地选择记录。当表包含任何可变长度的列时，MyISAM默认使用动态行格式。（例如VARCHAR，TEXT，BLOB）。</p><p>您可以通过查看<code>INFORMATION_SCHEMA.TABLES</code>表来检查表的当前行格式。</p><p><img src="http://img.jijiking51.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27" alt="检查行格式"></p><p>为了测试，我们将从我们的<em>demo_dynamic</em>表创建一个新的表<em>demo_fixed</em>，并将行格式设置为fixed。</p><p><img src="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V" alt="创建表格"></p><p><img src="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL" alt="行格式"></p><p><img src="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi" alt="从固定中选择"></p><p>与Dynamic相比，固定行格式的速度提高了44％。固定行格式的缺点是存储列所需的空间。更改为固定行格式将填充任何带有空格的可变长度列。但是，只要您的性能权衡以磁盘空间为代价，性能就会获胜。</p><!-- rebuild by neat -->
+        <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq" alt="表demo_dynamic设置为InnoDB存储引擎"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p><a id="more"></a> 
+
+
+
+
+
+
+<p><img src="http://img.jijiking51.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3" alt="原本的存储引擎速度"></p>
+<p>我们在表中填充了5,000,000行。</p>
+<p><img src="http://img.jijiking51.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm" alt="表填充了5,000行"></p>
+<p>我选择了一个<em>demo_name</em>值来搜索行集中间的值。请注意，我们已使用随机密钥生成函数而不是实际名称的结果填充了<em>demo_name</em>列。我们还在查询中指定了SQL_NO_CACHE选项，以确保MySQL不会提取缓存结果。我们的搜索耗时高达4.32秒。不太好，但请记住，搜索列上没有索引。</p>
+<p>现在让我们将引擎更改为MyISAM并再次运行我们的SELECT。</p>
+<p><img src="http://img.jijiking51.cn/FnToa6YcC5712umgVwCYtRIYGeKN" alt="引擎更改为MyISAM"></p>
+<p><img src="http://img.jijiking51.cn/FgPt_NagERlf0AA50c5v_Um1ebMF" alt="MyISAM选择"></p>
+<p>好。可以说选择MyISAM的速度更快。但是，使用MyISAM表的一个缺点是MyISAM实现了表级锁定。这意味着运行查询所花费的时间是1.58秒，任何其他查询都被放入队列中，以便在我们发布锁定后进行处理。四个查询同时尝试访问我们的<em>demo_dynamic</em>表的点，使用InnoDB的行级锁定会更有效。假设这四个查询没有尝试访问同一行。</p>
+<h1 id="固定表与动态表对比"><a href="#固定表与动态表对比" class="headerlink" title="固定表与动态表对比"></a>固定表与动态表对比</h1><p>幸运的是，通过使用固定（或静态）行格式，MyISAM表可以更快地选择记录。当表包含任何可变长度的列时，MyISAM默认使用动态行格式。（例如VARCHAR，TEXT，BLOB）。</p>
+<p>您可以通过查看<code>INFORMATION_SCHEMA.TABLES</code>表来检查表的当前行格式。</p>
+<p><img src="http://img.jijiking51.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27" alt="检查行格式"></p>
+<p>为了测试，我们将从我们的<em>demo_dynamic</em>表创建一个新的表<em>demo_fixed</em>，并将行格式设置为fixed。</p>
+<p><img src="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V" alt="创建表格"></p>
+<p><img src="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL" alt="行格式"></p>
+<p><img src="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi" alt="从固定中选择"></p>
+<p>与Dynamic相比，固定行格式的速度提高了44％。固定行格式的缺点是存储列所需的空间。更改为固定行格式将填充任何带有空格的可变长度列。但是，只要您的性能权衡以磁盘空间为代价，性能就会获胜。</p>
+
     </div>
 
 
@@ -427,6 +458,10 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/13/MySQL-SQL基础/" rel="prev" title="MySQL-SQL基础">
+                  MySQL-SQL基础 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -485,7 +520,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -575,9 +610,7 @@
         
           
         
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -594,7 +627,37 @@
           
         </div>
         <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=2945061139&auto=1&height=32"></iframe>
+            <!-- none-select-br -->
+
+            <p></p>
+
+            <!-- hitokoto -->
+
+            <div class="hitokoto-title">
+	            <i class="fa fa-paragraph"></i>
+	            <b>一言</b>
+            </div>
+
+            <div id="hitokoto">:D 获取中...</div>
+            <i id="hitofrom">:D 获取中...</i>
+
+            <script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script>
+              fetch('https://v1.hitokoto.cn')
+                .then(function (res){
+                  return res.json();
+                })
+                .then(function (data) {
+                  var hitokoto = document.getElementById('hitokoto');
+                  hitokoto.innerText = '\xa0\xa0' + data.hitokoto;
+                  var hitofrom = document.getElementById('hitofrom');
+                  hitofrom.innerText = "——" + data.from + '\xa0'; 
+                })
+                .catch(function (err) {
+                  console.error(err);
+                })
+            </script>
         </div>
       </div>
       <!--noindex-->
@@ -640,16 +703,35 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">307k</span>
+    <span title="站点总字数">319k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:32</span>
+    <span title="站点阅读时长">8:51</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
 
 
 
