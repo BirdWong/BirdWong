@@ -75,19 +75,10 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="线程与进程线程与进程理论 进程和线程以及他们的区别  进程：一个程序在一个数据集上的一次运行过程。系统资源分配的单位。 一个程序在不同数据集合上运行或一个程序在同样数据集上的多次运行都是不同的进程。 进程是独立的，有自己的内存空间和上下文环境，无法获取其他进程的存储空间。同一进程的两段代码不能同时执行，除非引入线程。  线程：进程的一个实体，是被系统独立调度和执行的基本单位，CPU使用的基本单位。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://img.jijiking51.cn/%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="http://img.jijiking51.cn/进程状态.png">
-<meta property="og:image" content="http://img.jijiking51.cn/线程的状态.jpg">
-<meta property="og:image" content="http://img.jijiking51.cn/2019_04_11虚拟内存.jpg">
-<meta property="og:image" content="http://img.jijiking51.cn/237989889dd8fccd6d7c4e19a14842bd.png">
-<meta property="og:image" content="http://img.jijiking51.cn/d368a95145d83dd590c60ede178d18b5.png">
-<meta property="og:image" content="http://img.jijiking51.cn/6bf12885218dac74fb005f19550e7bb1.png">
-<meta property="og:image" content="http://img.jijiking51.cn/0e7e75c53424ac39d6835e2a0ad90c90.png">
 <meta property="og:updated_time" content="2019-04-12T03:56:07.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java面试_操作系统">
 <meta name="twitter:description" content="线程与进程线程与进程理论 进程和线程以及他们的区别  进程：一个程序在一个数据集上的一次运行过程。系统资源分配的单位。 一个程序在不同数据集合上运行或一个程序在同样数据集上的多次运行都是不同的进程。 进程是独立的，有自己的内存空间和上下文环境，无法获取其他进程的存储空间。同一进程的两段代码不能同时执行，除非引入线程。  线程：进程的一个实体，是被系统独立调度和执行的基本单位，CPU使用的基本单位。">
-<meta name="twitter:image" content="http://img.jijiking51.cn/%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84.png">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/09/Java面试-操作系统/">
 
 
@@ -228,7 +219,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -409,7 +400,7 @@
 </ul>
 </li>
 <li><p>进程在内存中的结构</p>
-<p><img src="http://img.jijiking51.cn/%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84.png" alt="进程在内存中的结构"></p>
+<p><img alt="进程在内存中的结构" data-src="http://img.jijiking51.cn/%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84.png"></p>
 <ul>
 <li>代码区：存放CPU执行的机器指令，代码区是可共享，并且是只读的 </li>
 <li><p>数据段：全局变量、静态变量、常量（编译后知道大小）（未初始化的在一个区域(BBS区)，初始化的在相邻区域(数据区)）</p>
@@ -453,7 +444,7 @@
 <p> 就绪（等待分配cpu） </p>
 <p> 等待（等待某个是啊金的发送） </p>
 <p> 终止（进程完成执行） </p>
-<p> <img src="http://img.jijiking51.cn/进程状态.png" alt="进程状态.png"></p>
+<p> <img alt="进程状态.png" data-src="http://img.jijiking51.cn/进程状态.png"></p>
 </li>
 <li><p>进程间的通信如何实现</p>
 <p> 通信的方式有：信号、信号量、消息队列、共享内存、管道、有名管道</p>
@@ -481,7 +472,7 @@
 </li>
 <li><p>线程状态</p>
 <p> 创建(new)、就绪(runnable/start)、运行(running)、阻塞(blocked)、等待(waiting)、时间等待(time waiting) 和 消亡(dead/terminated)。在给定的时间点上，一个线程只能处于一种状态 </p>
-<p> <img src="http://img.jijiking51.cn/线程的状态.jpg" alt="线程的状态.jpg"></p>
+<p> <img alt="线程的状态.jpg" data-src="http://img.jijiking51.cn/线程的状态.jpg"></p>
 </li>
 <li><p>线程同步的方式</p>
 <ul>
@@ -615,7 +606,7 @@
 </li>
 <li><p>什么是虚拟内存 </p>
 <p>虚拟内存允许执行进程不必完全在内存中。虚拟内存的基本思想是：每个进程拥有独立的地址空间，这个空间被分为大小相等的多个块，称为页(Page)，每个页都是一段连续的地址。这些页被映射到物理内存，但并不是所有的页都必须在内存中才能运行程序。当程序引用到一部分在物理内存中的地址空间时，由硬件立刻进行必要的映射；当程序引用到一部分不在物理内存中的地址空间时，由操作系统负责将缺失的部分装入物理内存并重新执行失败的命令。这样，对于进程而言，逻辑上似乎有很大的内存空间，实际上其中一部分对应物理内存上的一块(称为帧，通常页和帧大小相等)，还有一些没加载在内存中的对应在硬盘上</p>
-<p><img src="http://img.jijiking51.cn/2019_04_11虚拟内存.jpg" alt="2019_04_11虚拟内存.jpg"> </p>
+<p><img alt="2019_04_11虚拟内存.jpg" data-src="http://img.jijiking51.cn/2019_04_11虚拟内存.jpg"> </p>
 <p>注意，请求分页系统、请求分段系统和请求段页式系统都是针对虚拟内存的，通过请求实现内存与外存的信息置换。</p>
 </li>
 <li><p>虚拟内存的应用与优点 </p>
@@ -749,7 +740,7 @@
 <li>N 磁道上的比特数</li>
 <li>r 磁盘转数</li>
 </ul>
-<p><img src="http://img.jijiking51.cn/237989889dd8fccd6d7c4e19a14842bd.png" alt="Disk_I_O_Transfer_times"></p>
+<p><img alt="Disk_I_O_Transfer_times" data-src="http://img.jijiking51.cn/237989889dd8fccd6d7c4e19a14842bd.png"></p>
 <h3 id="磁盘调度算法-1"><a href="#磁盘调度算法-1" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h3><p>通过优化磁盘访问请求顺序来提高磁盘访问性能</p>
 <ul>
 <li>寻道时间是磁道访问最耗时的部分</li>
@@ -762,19 +753,19 @@
 <li>在有很多进程的情况下 接近随机调度的性能</li>
 </ul>
 <p>磁盘访问序列 = 98,183,37,122,14,124,65,67<br>初始磁头位置 53</p>
-<p><img src="http://img.jijiking51.cn/d368a95145d83dd590c60ede178d18b5.png" alt="FIFO_Disk_Scheduling_Algorithm"></p>
+<p><img alt="FIFO_Disk_Scheduling_Algorithm" data-src="http://img.jijiking51.cn/d368a95145d83dd590c60ede178d18b5.png"></p>
 <h4 id="最短服务时间优先-SSTF"><a href="#最短服务时间优先-SSTF" class="headerlink" title="最短服务时间优先(SSTF)"></a>最短服务时间优先(SSTF)</h4><ul>
 <li>选择从磁臂当前位置需要移动最少的I/O请求</li>
 <li>总是选择最短寻道时间</li>
 </ul>
 <p>磁盘访问序列 = 98,183,37,122,14,124,65,67<br>初始磁头位置 53</p>
-<p><img src="http://img.jijiking51.cn/6bf12885218dac74fb005f19550e7bb1.png" alt="SSTF_Disk_Scheduling_Algorithm"></p>
+<p><img alt="SSTF_Disk_Scheduling_Algorithm" data-src="http://img.jijiking51.cn/6bf12885218dac74fb005f19550e7bb1.png"></p>
 <h4 id="扫描算法-SCAN"><a href="#扫描算法-SCAN" class="headerlink" title="扫描算法(SCAN)"></a>扫描算法(SCAN)</h4><p>磁臂在一个方向上移动 访问所有未完成的请求 直到磁臂到达该方向上最后的磁道 也称为电梯算法(elevator algorithm)</p>
 <ul>
 <li>中间磁道的访问性能较好 两头的比较差 C-SCAN算法改进了这个缺点</li>
 </ul>
 <p>磁盘访问序列 = 98,183,37,122,14,124,65,67<br>初始磁头位置 53</p>
-<p><img src="http://img.jijiking51.cn/0e7e75c53424ac39d6835e2a0ad90c90.png" alt="SCAN_Disk_Scheduling_Algorithm"></p>
+<p><img alt="SCAN_Disk_Scheduling_Algorithm" data-src="http://img.jijiking51.cn/0e7e75c53424ac39d6835e2a0ad90c90.png"></p>
 <h4 id="循环扫描算法-C-SCAN"><a href="#循环扫描算法-C-SCAN" class="headerlink" title="循环扫描算法(C-SCAN)"></a>循环扫描算法(C-SCAN)</h4><p>限制了仅在一个方向上扫描 当最后一个磁道也被访问过了以后 磁币返回到磁盘的另外一段再次进行</p>
 <ul>
 <li>就算对头没有I/O请求也要走到头 浪费了 C-LOOK算法改进了这个缺点</li>
@@ -1051,7 +1042,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1234,12 +1225,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

@@ -75,20 +75,10 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="整数集合整数集合是集合键的底层实现之一， 当一个集合只包含整数值元素，并且这个集合的元素数量不多时，redis会使用整数集合键实现整数集合的实现整数集合是用于保存整数值的集合抽象数据结构，可以保存int16_t / int32_t / int64_t的整数值123456789101112typedef struct intset &amp;#123;        // 编码方式    uint32_t">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://img.jijiking51.cn/26759e9b1f2249921df66ea1e0073931.png">
-<meta property="og:image" content="http://img.jijiking51.cn/436a0f3475c8ed9634bb8a148ec9e397.png">
-<meta property="og:image" content="http://img.jijiking51.cn/a8a36bb1a30069e059833e5a430240cb.png">
-<meta property="og:image" content="http://img.jijiking51.cn/b2a10cd731e57b8562f35052c55d9003.png">
-<meta property="og:image" content="http://img.jijiking51.cn/a89d862003c91aee8d7ce661758d4076.png">
-<meta property="og:image" content="http://img.jijiking51.cn/149448ca8fa14819452597bc4b60e4e9.png">
-<meta property="og:image" content="http://img.jijiking51.cn/db80975ff3ad0522ee1ee953f1d97826.png">
-<meta property="og:image" content="http://img.jijiking51.cn/c0eefe4bbdb27c786d6f06295b5cb2cc.png">
-<meta property="og:image" content="http://img.jijiking51.cn/8dcc44e92d93a6a07be5648dcf3a6162.png">
 <meta property="og:updated_time" content="2019-08-23T06:15:15.446Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis源码-整数集合">
 <meta name="twitter:description" content="整数集合整数集合是集合键的底层实现之一， 当一个集合只包含整数值元素，并且这个集合的元素数量不多时，redis会使用整数集合键实现整数集合的实现整数集合是用于保存整数值的集合抽象数据结构，可以保存int16_t / int32_t / int64_t的整数值123456789101112typedef struct intset &amp;#123;        // 编码方式    uint32_t">
-<meta name="twitter:image" content="http://img.jijiking51.cn/26759e9b1f2249921df66ea1e0073931.png">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/21/redis源码-整数集合/">
 
 
@@ -229,7 +219,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -407,7 +397,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="http://img.jijiking51.cn/26759e9b1f2249921df66ea1e0073931.png" alt="五个整数集合"></p>
+<p><img alt="五个整数集合" data-src="http://img.jijiking51.cn/26759e9b1f2249921df66ea1e0073931.png"></p>
 <p>contents数组中，只要有一个整数需要用到int64_t(大类型)， 那么所有的都必须升级为int64_t(大类型)</p>
 <h2 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h2><p>当我们要将一个新的元素添加到整数集合里面，并且新的元素比目前数组中所有元素的类型都要长的时候，整数集合需要先升级，然后才能将这个整数添加到整数集合。<br>升级一共分为三个步骤：</p>
 <ol>
@@ -415,14 +405,14 @@
 <li>将底层数组现有的所有元素都转换成新元素相同的类型，并将转换后的元素放到正确位置上，并且整个过程要维持底层数组的有序性不变。</li>
 <li>将新元素放到底层数组</li>
 </ol>
-<p>下面图片表示了升级流程：<br><img src="http://img.jijiking51.cn/436a0f3475c8ed9634bb8a148ec9e397.png" alt="包含三个元素的intset"></p>
-<p>初始状态下， 这是一个int16_t的数组，但是如果我们要插入int32_t的一个元素，所以我们先分配空间给它升级<br><img src="http://img.jijiking51.cn/a8a36bb1a30069e059833e5a430240cb.png" alt="初始状态数组内存位置"></p>
-<p><img src="http://img.jijiking51.cn/b2a10cd731e57b8562f35052c55d9003.png" alt="分配空间后示意图"></p>
-<p>因为升级过程中要保证数组序列的有序性，所以，四个数字中，3还是排第三位，所以要移到第三位所在的空间<br><img src="http://img.jijiking51.cn/a89d862003c91aee8d7ce661758d4076.png" alt="升级"></p>
-<p>二号位移动到二号位所在空间<br><img src="http://img.jijiking51.cn/149448ca8fa14819452597bc4b60e4e9.png" alt="升级"></p>
-<p>一号位空间重新扩充<br><img src="http://img.jijiking51.cn/db80975ff3ad0522ee1ee953f1d97826.png" alt="升级"></p>
-<p>新元素插入到数组的对应位置<br><img src="http://img.jijiking51.cn/c0eefe4bbdb27c786d6f06295b5cb2cc.png" alt="升级"></p>
-<p>更改encoding类型，修改length长度，新元素插入完成<br><img src="http://img.jijiking51.cn/8dcc44e92d93a6a07be5648dcf3a6162.png" alt="升级结束"></p>
+<p>下面图片表示了升级流程：<br><img alt="包含三个元素的intset" data-src="http://img.jijiking51.cn/436a0f3475c8ed9634bb8a148ec9e397.png"></p>
+<p>初始状态下， 这是一个int16_t的数组，但是如果我们要插入int32_t的一个元素，所以我们先分配空间给它升级<br><img alt="初始状态数组内存位置" data-src="http://img.jijiking51.cn/a8a36bb1a30069e059833e5a430240cb.png"></p>
+<p><img alt="分配空间后示意图" data-src="http://img.jijiking51.cn/b2a10cd731e57b8562f35052c55d9003.png"></p>
+<p>因为升级过程中要保证数组序列的有序性，所以，四个数字中，3还是排第三位，所以要移到第三位所在的空间<br><img alt="升级" data-src="http://img.jijiking51.cn/a89d862003c91aee8d7ce661758d4076.png"></p>
+<p>二号位移动到二号位所在空间<br><img alt="升级" data-src="http://img.jijiking51.cn/149448ca8fa14819452597bc4b60e4e9.png"></p>
+<p>一号位空间重新扩充<br><img alt="升级" data-src="http://img.jijiking51.cn/db80975ff3ad0522ee1ee953f1d97826.png"></p>
+<p>新元素插入到数组的对应位置<br><img alt="升级" data-src="http://img.jijiking51.cn/c0eefe4bbdb27c786d6f06295b5cb2cc.png"></p>
+<p>更改encoding类型，修改length长度，新元素插入完成<br><img alt="升级结束" data-src="http://img.jijiking51.cn/8dcc44e92d93a6a07be5648dcf3a6162.png"></p>
 <p>因为每次向整数集合添加新元素都<strong>可能</strong>会引起升级，而每次升级都需要对底层数组中已有的所有元素进行类型转换，所以向整数集合添加新元素的时间复杂度为O(N)。</p>
 <h2 id="升级的好出"><a href="#升级的好出" class="headerlink" title="升级的好出"></a>升级的好出</h2><ul>
 <li>提升整数集合的灵活性</li>
@@ -619,7 +609,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -802,12 +792,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

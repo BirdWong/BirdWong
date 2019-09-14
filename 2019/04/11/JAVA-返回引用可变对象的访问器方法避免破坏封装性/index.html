@@ -75,12 +75,10 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="如果需要返回一个可变对象的引用， 应该首先对他进克隆（clone）。对象克隆是指存放在另一个位置上的对象副本。  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152import java.util.Date;class b&amp;#123;    private D">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://img.jijiking51.cn/20180911212426147.png">
 <meta property="og:updated_time" content="2019-04-11T12:39:38.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA_返回引用可变对象的访问器方法避免破坏封装性">
 <meta name="twitter:description" content="如果需要返回一个可变对象的引用， 应该首先对他进克隆（clone）。对象克隆是指存放在另一个位置上的对象副本。  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152import java.util.Date;class b&amp;#123;    private D">
-<meta name="twitter:image" content="http://img.jijiking51.cn/20180911212426147.png">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/11/JAVA-返回引用可变对象的访问器方法避免破坏封装性/">
 
 
@@ -221,7 +219,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -380,7 +378,7 @@
 
       
         <p>如果需要返回一个可变对象的引用， 应该首先对他进克隆（clone）。对象克隆是指存放在另一个位置上的对象副本。</p>
-<p><img src="http://img.jijiking51.cn/20180911212426147.png" alt="20180911212426147.png"></p>
+<p><img alt="20180911212426147.png" data-src="http://img.jijiking51.cn/20180911212426147.png"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">b</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">b</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.day;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date day ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.day = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">	    <span class="comment">//使用clone方法 返回的是一个存放在另一个位置上的对象副本</span></span><br><span class="line">        <span class="keyword">return</span> (Date)<span class="keyword">this</span>.day.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        a  obj = <span class="keyword">new</span> a();</span><br><span class="line"></span><br><span class="line">        Date d = obj.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"使用了clone避免封装被破坏的a类"</span>+obj.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        b  obj_B = <span class="keyword">new</span> b();</span><br><span class="line"></span><br><span class="line">        Date d_bDate = obj_B.getDay();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line">        d_bDate.setYear(<span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"没有使用了clone避免封装被破坏的b类"</span>+obj_B.getDay().getYear());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
@@ -502,7 +500,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -668,12 +666,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

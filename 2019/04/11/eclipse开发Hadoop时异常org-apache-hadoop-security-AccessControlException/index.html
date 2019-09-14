@@ -75,13 +75,10 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="问题原因1org.apache.hadoop.security.AccessControlException: Permission denied: user=min, access=WRITE, inode=&amp;quot;/access_log_copy&amp;quot;:mini:supergroup:-rw-r--r--">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://img.jijiking51.cn/20190311212209571.jpg">
-<meta property="og:image" content="http://img.jijiking51.cn/20190311212329622.jpg">
 <meta property="og:updated_time" content="2019-04-11T09:45:14.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="eclipse开发Hadoop时异常org.apache.hadoop.security.AccessControlException:">
 <meta name="twitter:description" content="问题原因1org.apache.hadoop.security.AccessControlException: Permission denied: user=min, access=WRITE, inode=&amp;quot;/access_log_copy&amp;quot;:mini:supergroup:-rw-r--r--">
-<meta name="twitter:image" content="http://img.jijiking51.cn/20190311212209571.jpg">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/">
 
 
@@ -222,7 +219,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -386,10 +383,10 @@
 <ol>
 <li><p>在JVM变量里面添加HADOOP_USER_NAME，例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-DHADOOP_USER_NAME=xxx</span><br></pre></td></tr></table></figure>
-<p>这里的xxx是Hadoop上面的用户名<br>eclipse配置如下：<br><img src="http://img.jijiking51.cn/20190311212209571.jpg" alt="在这里插入图片描述"></p>
+<p>这里的xxx是Hadoop上面的用户名<br>eclipse配置如下：<br><img alt="在这里插入图片描述" data-src="http://img.jijiking51.cn/20190311212209571.jpg"></p>
 </li>
 </ol>
-<p><img src="http://img.jijiking51.cn/20190311212329622.jpg" alt="在这里插入图片描述"></p>
+<p><img alt="在这里插入图片描述" data-src="http://img.jijiking51.cn/20190311212329622.jpg"></p>
 <pre><code>2. 将当前系统的帐号修改为Hadoop上运行的用户名
 3. 在构造客户端fs对象时，通过对象传递进去
 </code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 依赖的包名</span></span><br><span class="line"><span class="comment"> * import java.net.URI;</span></span><br><span class="line"><span class="comment"> * import java.net.URISyntaxException;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.conf.Configuration;</span></span><br><span class="line"><span class="comment"> * import org.apache.hadoop.fs.FileSystem;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">   conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://192.168.88.137:9000"</span>);</span><br><span class="line">   fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://192.168.88.137:9000"</span>),conf,<span class="string">"mini"</span>);</span><br></pre></td></tr></table></figure>
@@ -526,7 +523,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -709,12 +706,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

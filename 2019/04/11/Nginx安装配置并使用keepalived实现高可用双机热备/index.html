@@ -75,12 +75,10 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:updated_time" content="2019-04-11T10:26:18.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx安装配置并使用keepalived实现高可用双机热备">
 <meta name="twitter:description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
-<meta name="twitter:image" content="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
   <link rel="canonical" href="https://jijiking51.cn/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/">
 
 
@@ -221,7 +219,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -415,7 +413,7 @@
 </ol>
 </li>
 </ol>
-<h1 id="利用keepalived实现高可靠（HA）"><a href="#利用keepalived实现高可靠（HA）" class="headerlink" title="利用keepalived实现高可靠（HA）"></a>利用keepalived实现高可靠（HA）</h1><p>HA(High Available), 高可用性集群，是保证业务连续性的有效解决方案，一般有两个或两个以上的节点，且分为活动节点及备用节点。<br><img src="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h1 id="利用keepalived实现高可靠（HA）"><a href="#利用keepalived实现高可靠（HA）" class="headerlink" title="利用keepalived实现高可靠（HA）"></a>利用keepalived实现高可靠（HA）</h1><p>HA(High Available), 高可用性集群，是保证业务连续性的有效解决方案，一般有两个或两个以上的节点，且分为活动节点及备用节点。<br><img alt="在这里插入图片描述" data-src="https://img-blog.csdn.net/20181014112942419?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"></p>
 <p>keepalive是一款可以实现高可靠的软件，通常部署在2台服务器上，分为一主一备。Keepalived可以对本机上的进程进行检测，一旦Master检测出某个进程出现问题，将自己切换成Backup状态，然后通知另外一个节点切换成Master状态。</p>
 <ol>
 <li>与上面安装过程一样</li>
@@ -582,7 +580,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -765,12 +763,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

@@ -214,7 +214,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -261,6 +261,195 @@
           <div id="content" class="content page-home">
             
   <section id="posts" class="posts-expand">
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/14/MySQL-字符集设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/14/MySQL-字符集设置/" class="post-title-link" itemprop="url">MySQL-字符集设置</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 19:23:50 / 修改时间：21:00:53" itemprop="dateCreated datePublished" datetime="2019-09-14T19:23:50+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/14/MySQL-字符集设置/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-字符集设置" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/14/MySQL-字符集设置/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/14/MySQL-字符集设置/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>show character set;</td>
+<td>查看所有可用的字符集以及其默认校对集</td>
+</tr>
+<tr>
+<td>select * from <code>CHARACTER_SETS</code>;</td>
+<td>查看所有可用的字符集以及其默认校对集</td>
+</tr>
+<tr>
+<td>show collation like ‘%name%’;</td>
+<td>查看所有字符集拥有的校对集(_ci 大小写不敏感、_cs 大小写敏感、 _bin 二元，比较基于字符编码的值，与language无关)</td>
+</tr>
+<tr>
+<td>show variables like ‘character_set_server’;</td>
+<td>查看当前服务器使用的编码</td>
+</tr>
+<tr>
+<td>show variables like ‘character_set_database’;</td>
+<td>查看数据库的默认编码</td>
+</tr>
+<tr>
+<td>show variables like ‘collation_database’;</td>
+<td>查看数据库的默认校对集</td>
+</tr>
+<tr>
+<td>show variables like ‘character_set_client’;</td>
+<td>查看当前数据库的客户端编码</td>
+</tr>
+<tr>
+<td>show variables like ‘character_set_connection</td>
+<td>查看当前数据库的连接编码</td>
+</tr>
+<tr>
+<td>show variables like ‘character_set_results’;</td>
+<td>查看当前数据库的返回结果编码</td>
+</tr>
+<tr>
+<td>set names ‘utf8’;</td>
+<td>设置上面三个参数的编码（也可以在配置文件<code>my.cnf</code>设置<code>[mysql] default-character-set=utf8</code></td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/14/MySQL-字符集设置/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
       
 
   <article class="post" itemscope itemtype="http://schema.org/Article">
@@ -1225,7 +1414,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq" alt="表demo_dynamic设置为InnoDB存储引擎"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p>
+          <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img alt="表demo_dynamic设置为InnoDB存储引擎" data-src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1709,159 +1898,11 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/07/redis运维陷阱/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/07/redis运维陷阱/" class="post-title-link" itemprop="url">redis运维陷阱</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-07 16:41:34" itemprop="dateCreated datePublished" datetime="2019-09-07T16:41:34+08:00">2019-09-07</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-09 17:04:09" itemprop="dateModified" datetime="2019-09-09T17:04:09+08:00">2019-09-09</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/09/07/redis运维陷阱/" class="post-meta-item leancloud_visitors" data-flag-title="redis运维陷阱" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/09/07/redis运维陷阱/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/07/redis运维陷阱/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>9.3k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>15 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux配置优化"><a href="#Linux配置优化" class="headerlink" title="Linux配置优化"></a>Linux配置优化</h1><h2 id="内存分配控制"><a href="#内存分配控制" class="headerlink" title="内存分配控制"></a>内存分配控制</h2><h3 id="vm-overcommit-memory"><a href="#vm-overcommit-memory" class="headerlink" title="vm.overcommit_memory"></a>vm.overcommit_memory</h3><p>Linux对大部分申请内存的请求都回复yes，以便能运行更多的程序。因为申请内存后，并不会马上使用内存，这种技术叫做<code>overcommit</code>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/07/redis运维陷阱/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1896,7 +1937,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2062,12 +2103,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:58</span>
+    <span title="站点阅读时长">9:01</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
