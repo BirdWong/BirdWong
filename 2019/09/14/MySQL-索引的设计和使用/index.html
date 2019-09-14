@@ -67,14 +67,18 @@
 	     });
 	</script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="RocWong">
-<meta property="og:url" content="https://jijiking51.cn/tags/Django/index.html">
+  <meta name="description" content="索引MySQL的所有列类型都可以被索引，同时索引是提高查找性能的最佳途径。不同的存储引擎可以定义不同的索引数量和索引长度，每种存储引擎对每个表最少支持16个索引，总索引长度至少为256字节MyISAM和InnoDB存储引擎的表默认索引为BTREE索引。同时MyISAM前缀索引支持长度为1000字节， InnoDB前缀索引支持长度为767字节（这里的长度是以字节为单位而不是以字符作单位），MEMOR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-索引的设计和使用">
+<meta property="og:url" content="https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/index.html">
 <meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="索引MySQL的所有列类型都可以被索引，同时索引是提高查找性能的最佳途径。不同的存储引擎可以定义不同的索引数量和索引长度，每种存储引擎对每个表最少支持16个索引，总索引长度至少为256字节MyISAM和InnoDB存储引擎的表默认索引为BTREE索引。同时MyISAM前缀索引支持长度为1000字节， InnoDB前缀索引支持长度为767字节（这里的长度是以字节为单位而不是以字符作单位），MEMOR">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-14T14:24:54.031Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RocWong">
-  <link rel="canonical" href="https://jijiking51.cn/tags/Django/">
+<meta name="twitter:title" content="MySQL-索引的设计和使用">
+<meta name="twitter:description" content="索引MySQL的所有列类型都可以被索引，同时索引是提高查找性能的最佳途径。不同的存储引擎可以定义不同的索引数量和索引长度，每种存储引擎对每个表最少支持16个索引，总索引长度至少为256字节MyISAM和InnoDB存储引擎的表默认索引为BTREE索引。同时MyISAM前缀索引支持长度为1000字节， InnoDB前缀索引支持长度为767字节（这里的长度是以字节为单位而不是以字符作单位），MEMOR">
+  <link rel="canonical" href="https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/">
 
 
 <script id="page-configurations">
@@ -82,13 +86,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: Django | RocWong</title>
+  <title>MySQL-索引的设计和使用 | RocWong</title>
   <meta name="generator" content="Hexo 3.8.0">
   
 
@@ -258,120 +262,219 @@
         <div class="content-wrap">
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-          <div id="content" class="content ">
+          <div id="content" class="content page-post-detail">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>Django<small>标签</small>
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">MySQL-索引的设计和使用
+
+          
         </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:02:47 / 修改时间：22:24:54" itemprop="dateCreated datePublished" datetime="2019-09-14T21:02:47+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/14/MySQL-索引的设计和使用/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-索引的设计和使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/14/MySQL-索引的设计和使用/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/14/MySQL-索引的设计和使用/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>MySQL的所有列类型都可以被索引，同时索引是提高查找性能的最佳途径。不同的存储引擎可以定义不同的索引数量和索引长度，每种存储引擎对每个表最少支持16个索引，总索引长度至少为256字节<br>MyISAM和InnoDB存储引擎的表默认索引为BTREE索引。同时MyISAM前缀索引支持长度为1000<strong>字节</strong>， InnoDB前缀索引支持长度为767<strong>字节</strong>（这里的长度是以字节为单位而不是以字符作单位），MEMORY的默认索引时hash， 但也支持BTREE索引<br>MySQL支持FULLTEXT全文本索引，该索引可以用于全文搜索，全文索引只限于<code>CHAR</code>、<code>VARCHAR</code>、<code>TEXT</code>做索引列，并且是对整个列进行的，不支持局部（前缀）索引。也可以为空间列类型创建索引，但是这个列必须是非空的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引</span><br><span class="line">create index test_c1 on test(c1);  </span><br><span class="line"># 查询时索引是否被使用</span><br><span class="line">explain select * from test where c1 &lt; 2 \G</span><br><span class="line"># 删除索引</span><br><span class="line">drop index test_c1 on test;</span><br></pre></td></tr></table></figure></p><a id="more"></a>
+<h1 id="设计的原则"><a href="#设计的原则" class="headerlink" title="设计的原则"></a>设计的原则</h1><ul>
+<li>搜索的索引列，不一定是所要选择的列。最适合索引的列时出现在WHERE字句中的列，或连接字句中指定的列，而不是SELECT后选择列中的列</li>
+<li>使用唯一索引，考虑某列中值的分布。索引的列的基数越大，索引的效果越好。例如身份证号码具有不同值，很容易区分各行，而用来记录性别的只含有男女，对此列进行索引没有太多用处，不管搜索男还是女都会回去大约一半的行</li>
+<li>使用短索引。在字符串进行索引的时候，能够使用短索引进行区分就不要对整个列进行索引，短索引可以节约大量索引空间，也会使查询速度更快。较小的索引涉及的磁盘IO较少，比较速度更快，索引高速缓存中的块能容纳更多的键值，这样就增加了找到行而不用读取索引中较多块的可能性。</li>
+<li>利用最左前缀。创建一个多列索引的时候实际是创建了MySQL可利用的n个索引，多列索引可起几个索引的作用，因为可利用索引中最左边的列集来匹配行。</li>
+<li>不要过度索引。索引不是越多越好，每个额外的索引都要占用额外的磁盘空间，并降低写操作的性能，在修改表内容时，索引必须进行更新，有时可能需要重构，因此索引越多，所花费的时间越长，所以只保持所需的索引有利于查询优化</li>
+<li>对于InnoDB，记录默认会按照一定的顺序保存，如果有明确定义的主键，则按照主键顺序保存，如果没有主键，但是有唯一索引，那就按照唯一索引的顺序保存，如果既没主键又没唯一索引那么表中会自动生成一个内部列按照这个列的顺序保存。按照主键或者内部列进行的访问是最快的，所以InnoDB要尽量自己指定主键，当表中有几个唯一索引都可以作为主键的时候，选择最常作为条件的列作为主键。InnoDB表的普通索引都会保存主键的键值，所以主键要尽可能选择较短的数据类型，可以有效减少磁盘占用，提高索引的缓存效果<h1 id="BTREE索引与HASH索引"><a href="#BTREE索引与HASH索引" class="headerlink" title="BTREE索引与HASH索引"></a>BTREE索引与HASH索引</h1>HASH：</li>
+<li>只用于使用= 或&lt;=&gt;操作符的等式比较（IN也可以）</li>
+<li>优化器不能使用hash索引来加速ORDER BY操作</li>
+<li>MySQL不能确定两个值之间到底有多少行，如果将一个MyISAM表改为HASH索引的MEMORY表，会影响一些查询的执行效率</li>
+<li>只能使用整个关键字来搜索一行</li>
+</ul>
+<p>BTREE：</p>
+<ul>
+<li>当使用&gt;、&lt;、&gt;=、&lt;=、BETWEEN、!=或者&lt; &gt;,IN或者like ‘pattern{ % }’操作时，都可以使用相关列上的索引<blockquote>
+<p>所以当使用HASH索引的时候需要注意SQL语句的编写，确保能够使用上索引</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="RocWong 支付宝">
+        <p>支付宝</p>
       </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>RocWong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/" title="MySQL-索引的设计和使用">https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
 
       
 
-  
-  
-  
+      <footer class="post-footer">
 
-  
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/14/MySQL-字符集设置/" rel="next" title="MySQL-字符集设置">
+                  <i class="fa fa-chevron-left"></i> MySQL-字符集设置
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
     
-    <div class="collection-title">
-      <h2 class="archive-year" id="archive-year-2019">2019</h2>
-    </div>
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/04/11/Django2-0使用/" itemprop="url">
-            <span itemprop="name">Django2.0使用</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-04-11T20:44:31+08:00"
-              content="2019-04-11">
-          04-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/04/11/Django2-0整合markdown编辑器/" itemprop="url">
-            <span itemprop="name">Django2.0整合markdown编辑器</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-04-11T20:40:00+08:00"
-              content="2019-04-11">
-          04-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    </div>
-
   </div>
   
   
   
+  </article>
 
-  
-
+  </div>
 
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -387,8 +490,17 @@
     
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -543,6 +655,23 @@
             </script>
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#索引"><span class="nav-number">1.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设计的原则"><span class="nav-number">2.</span> <span class="nav-text">设计的原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BTREE索引与HASH索引"><span class="nav-number">3.</span> <span class="nav-text">BTREE索引与HASH索引</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
         <div class="back-to-top motion-element">
           <i class="fa fa-arrow-up"></i>
           <span>0%</span>
@@ -793,6 +922,9 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
 
   
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
 
 <script>
 NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
