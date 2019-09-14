@@ -19,6 +19,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
   <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
   <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
 
@@ -34,9 +35,9 @@
     back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
     save_scroll: false,
     copycode: {"enable":true,"show_result":true,"style":"flat"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
-    lazyload: false,
+    lazyload: true,
     pangu: false,
     algolia: {
       appID: '',
@@ -303,6 +304,7 @@
       <div class="post-body">
         
           <div class="tag-cloud">
+          
             <div class="tag-cloud-title">
               
               
@@ -376,11 +378,48 @@
               
               目前共计 17 个标签
             </div>
+            
+            <div class="tags" id="myTags">
+  <canvas width="350" height="350" id="my3DTags">
+    <p>Anything in here will be replaced on browsers that support the canvas element</p>
+  </canvas>
+</div>
+<div class="tags" id="tags">
+  <ul style="display: none">
+    <a href="/tags/Django/" style="font-size: 19.8px; color: #a3a3a3">Django</a> <a href="/tags/Markdown/" style="font-size: 16px; color: #ccc">Markdown</a> <a href="/tags/Mybatis/" style="font-size: 16px; color: #ccc">Mybatis</a> <a href="/tags/deepin/" style="font-size: 19.8px; color: #a3a3a3">deepin</a> <a href="/tags/eclipse/" style="font-size: 19.8px; color: #a3a3a3">eclipse</a> <a href="/tags/hexo/" style="font-size: 16px; color: #ccc">hexo</a> <a href="/tags/个人博客/" style="font-size: 16px; color: #ccc">个人博客</a> <a href="/tags/基础/" style="font-size: 27.4px; color: #525252">基础</a> <a href="/tags/备份/" style="font-size: 16px; color: #ccc">备份</a> <a href="/tags/开发/" style="font-size: 16px; color: #ccc">开发</a> <a href="/tags/操作系统/" style="font-size: 16px; color: #ccc">操作系统</a> <a href="/tags/源码/" style="font-size: 31.2px; color: #292929">源码</a> <a href="/tags/系统配置/" style="font-size: 16px; color: #ccc">系统配置</a> <a href="/tags/踩坑/" style="font-size: 35px; color: #000">踩坑</a> <a href="/tags/配置/" style="font-size: 23.6px; color: #7a7a7a">配置</a> <a href="/tags/面试/" style="font-size: 16px; color: #ccc">面试</a> <a href="/tags/高可用/" style="font-size: 16px; color: #ccc">高可用</a>
+  </ul>
+</div>
+<script type="text/javascript" src="http://www.goat1000.com/tagcanvas.js?2.9"></script>
+<script type="text/javascript" >
+  window.onload = function() {
+    try {
+      TagCanvas.Start('my3DTags','tags',{
+        textFont: 'Georgia,Optima',
+        textColour: null,
+        outlineColour: '#a7a7a7',
+        weight: true,
+        reverse: true,
+        depth: 0.8,
+        maxSpeed: 0.05,
+        bgRadius: 1,
+        freezeDecel: true
+      });
+    } catch(e) {
+      // something went wrong, hide the canvas container
+      document.getElementById('myTags').style.display = 'none';
+    }
+  };
+</script>
+
             <div class="tag-cloud-tags">
               
                 <a href="/tags/Django/" style="font-size: 15.6px; color: #a7a7a7">Django</a> <a href="/tags/Markdown/" style="font-size: 12px; color: #ccc">Markdown</a> <a href="/tags/Mybatis/" style="font-size: 12px; color: #ccc">Mybatis</a> <a href="/tags/deepin/" style="font-size: 15.6px; color: #a7a7a7">deepin</a> <a href="/tags/eclipse/" style="font-size: 15.6px; color: #a7a7a7">eclipse</a> <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/个人博客/" style="font-size: 12px; color: #ccc">个人博客</a> <a href="/tags/基础/" style="font-size: 22.8px; color: #5c5c5c">基础</a> <a href="/tags/备份/" style="font-size: 12px; color: #ccc">备份</a> <a href="/tags/开发/" style="font-size: 12px; color: #ccc">开发</a> <a href="/tags/操作系统/" style="font-size: 12px; color: #ccc">操作系统</a> <a href="/tags/源码/" style="font-size: 26.4px; color: #363636">源码</a> <a href="/tags/系统配置/" style="font-size: 12px; color: #ccc">系统配置</a> <a href="/tags/踩坑/" style="font-size: 30px; color: #111">踩坑</a> <a href="/tags/配置/" style="font-size: 19.2px; color: #818181">配置</a> <a href="/tags/面试/" style="font-size: 12px; color: #ccc">面试</a> <a href="/tags/高可用/" style="font-size: 12px; color: #ccc">高可用</a>
               
             </div>
+            
+            
+            
+            
           </div>
         
       </div>
@@ -640,12 +679,12 @@
   </div>
 
   
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script size="300" alpha="0.6" zindex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
 
@@ -855,10 +894,6 @@ NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
 <script type="text/javascript" src="/js/src/dytitle.js"></script>
 
 <!-- 页面点击爆炸 -->
-
-   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-   <script type="text/javascript" src="/js/src/fireworks.js"></script>
 
 
 <!-- 复制转载提示 -->
