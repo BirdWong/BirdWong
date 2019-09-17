@@ -67,14 +67,18 @@
 	     });
 	</script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="RocWong">
-<meta property="og:url" content="https://jijiking51.cn/archives/2019/09/index.html">
+  <meta name="description" content="转载于：boyceTwo Phase Commit Protocol分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL5.7.9完美的分布式事务支持">
+<meta property="og:url" content="https://jijiking51.cn/2019/09/17/MySQL5-7-9完美的分布式事务支持/index.html">
 <meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="转载于：boyceTwo Phase Commit Protocol分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T13:04:12.566Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RocWong">
-  <link rel="canonical" href="https://jijiking51.cn/archives/2019/09/">
+<meta name="twitter:title" content="MySQL5.7.9完美的分布式事务支持">
+<meta name="twitter:description" content="转载于：boyceTwo Phase Commit Protocol分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提">
+  <link rel="canonical" href="https://jijiking51.cn/2019/09/17/MySQL5-7-9完美的分布式事务支持/">
 
 
 <script id="page-configurations">
@@ -82,13 +86,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
-    isArchive: true
+    isArchive: false
   };
 </script>
 
-  <title>归档 | RocWong</title>
+  <title>MySQL5.7.9完美的分布式事务支持 | RocWong</title>
   <meta name="generator" content="Hexo 3.8.0">
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148097669-1"></script>
@@ -268,375 +272,236 @@
         <div class="content-wrap">
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-          <div id="content" class="content page-archive">
+          <div id="content" class="content page-post-detail">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        还行! 目前共计 43 篇日志。 继续努力。
-      </span>
-      
-
-      
-
-  
-  
-  
-
-  
+  <div id="posts" class="posts-expand">
     
-    <div class="collection-title">
-      <h2 class="archive-year" id="archive-year-2019">2019</h2>
-    </div>
-  
-  
 
   <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/17/MySQL5-7-9完美的分布式事务支持/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">MySQL5.7.9完美的分布式事务支持
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-17 20:50:33 / 修改时间：21:04:12" itemprop="dateCreated datePublished" datetime="2019-09-17T20:50:33+08:00">2019-09-17</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/17/MySQL5-7-9完美的分布式事务支持/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL5.7.9完美的分布式事务支持" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
         
-          <a class="post-title-link" href="/2019/09/17/MySQL5-7-9完美的分布式事务支持/" itemprop="url">
-            <span itemprop="name">MySQL5.7.9完美的分布式事务支持</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-17T20:50:33+08:00"
-              content="2019-09-17">
-          09-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/17/MySQL5-7-9完美的分布式事务支持/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/17/MySQL5-7-9完美的分布式事务支持/" itemprop="commentCount"></span></a>
+  </span>
   
   
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/15/MySQL-事务控制和锁定语句/" itemprop="url">
-            <span itemprop="name">MySQL-事务控制和锁定语句</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-15T17:08:55+08:00"
-              content="2019-09-15">
-          09-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/14/MySQL-索引的设计和使用/" itemprop="url">
-            <span itemprop="name">MySQL-索引的设计和使用</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-14T21:02:47+08:00"
-              content="2019-09-14">
-          09-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/14/MySQL-字符集设置/" itemprop="url">
-            <span itemprop="name">MySQL-字符集设置</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-14T19:23:50+08:00"
-              content="2019-09-14">
-          09-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/13/MySQL-存储引擎/" itemprop="url">
-            <span itemprop="name">MySQL-存储引擎</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-13T20:15:19+08:00"
-              content="2019-09-13">
-          09-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/13/MySQL-运算符/" itemprop="url">
-            <span itemprop="name">MySQL-运算符</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-13T20:13:02+08:00"
-              content="2019-09-13">
-          09-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/13/MySQL-数据类型/" itemprop="url">
-            <span itemprop="name">MySQL-数据类型</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-13T20:12:00+08:00"
-              content="2019-09-13">
-          09-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/13/MySQL-SQL基础/" itemprop="url">
-            <span itemprop="name">MySQL-SQL基础</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-13T20:07:59+08:00"
-              content="2019-09-13">
-          09-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/10/mysql的InnoDB与MyISAM速率对比/" itemprop="url">
-            <span itemprop="name">mysql的InnoDB与MyISAM速率对比</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-10T21:45:15+08:00"
-              content="2019-09-10">
-          09-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-  
-  
-  
-
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/09/09/redis持久化RDB和AOF/" itemprop="url">
-            <span itemprop="name">redis持久化RDB和AOF</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-09T16:37:09+08:00"
-              content="2019-09-09">
-          09-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>3.5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>6 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info"><p>转载于：boyce</p></div><h1 id="Two-Phase-Commit-Protocol"><a href="#Two-Phase-Commit-Protocol" class="headerlink" title="Two Phase Commit Protocol"></a>Two Phase Commit Protocol</h1><p>分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提交时，只要发生一个节点提交失败，则所有的节点都不能提交，只有当所有节点都能提交时，整个分布式事务才允许被提交。</p><a id="more"></a>
+
+
+<p>分布式事务通过2PC协议将提交分成两个阶段：</p>
+<ol>
+<li>repare；</li>
+<li>commit/rollback</li>
+</ol>
+<p>第一阶段的prepare只是用来询问每个节点事务是否能提交，只有当得到所有节点的“许可”的情况下，第二阶段的commit才能进行，否则就rollback。需要注意的是：prepare成功的事务，则必须全部提交。</p>
+<h1 id="MySQL分布式事务"><a href="#MySQL分布式事务" class="headerlink" title="MySQL分布式事务"></a>MySQL分布式事务</h1><p>一直以来，MySQL数据库是支持分布式事务的，但是只能说是有限的支持，具体表现在：</p>
+<ul>
+<li>已经prepare的事务，在客户端退出或者服务宕机的时候，2PC的事务会被回滚</li>
+<li>在服务器故障重启提交后，相应的Binlog被丢失</li>
+</ul>
+<p>上述问题存在于MySQL数据库长达数十年的时间，直到MySQL-5.7.7版本，官方才修复了该问题。 <em>虽然InnoSQL早已在5.5版本修复，但是对比官方的修复方案，我们真的做的没有那么的优雅</em> 。下面将会详细介绍下该问题的具体表现和官方修复方法，这里分别采用官方MySQL-5.6.27版本(未修复)和MySQL-5.7.9版本(已修复)进行验证。</p>
+<p>先来看下存在的问题，我们先创建一个表如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create table t(</span><br><span class="line"></span><br><span class="line">    id int auto_increment primary key, </span><br><span class="line"></span><br><span class="line">    a int</span><br><span class="line"></span><br><span class="line">)engine=innodb;</span><br></pre></td></tr></table></figure>
+<p>对于上述表，通过如下操作进行数据插入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA START &apos;mysql56&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt; INSERT INTO t VALUES(1,1);</span><br><span class="line"></span><br><span class="line">mysql&gt; XA END &apos;mysql56&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt; XA PREPARE &apos;mysql56&apos;</span><br></pre></td></tr></table></figure>
+<p>通过上面的操作，用户创建了一个分布式事务，并且prepare没有返回错误，说明该分布式事务可以被提交。通过命令XA RECOVER查看显示如下结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA RECOVER;</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br><span class="line"></span><br><span class="line">| formatID | gtrid_length | bqual_length | data    |</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br><span class="line"></span><br><span class="line">| 1        | 7            | 0            | mysql56 |</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br></pre></td></tr></table></figure>
+<p>若这时候用户退出客户端后重连，通过命令xa recover会发现刚才创建的2PC事务不见了。 <strong>即prepare成功的事务丢失了，不符合2PC协议规范！！！</strong></p>
+<p>产生上述问题的主要原因在于：MySQL-5.6版本在客户端退出的时候，自动把已经prepare的事务回滚了，那么MySQL为什么要这样做？这主要取决于MySQL的内部实现，MySQL-5.7以前的版本，对于prepare的事务， <strong>MySQL是不会记录binlog的</strong> (官方说是减少fsync，起到了优化的作用)。只有当分布式事务提交的时候才会把前面的操作写入binlog信息，所以对于binlog来说， <strong>分布式事务与普通的事务没有区别</strong> ，而prepare以前的操作信息都保存在连接的IO_CACHE中，如果这个时候客户端退出了，以前的binlog信息都会被丢失，再次重连后允许提交的话，会造成Binlog丢失，从而造成主从数据的不一致，所以官方在客户端退出的时候直接把已经prepare的事务都回滚了！</p>
+<p>官方的做法，貌似干得很漂亮，牺牲了一点标准化的东西，至少保证了主从数据的一致性。但其实不然，若用户已经prepare后在客户端退出之前，MySQL发生了宕机，这个时候又会怎样？</p>
+<p>MySQL在某个分布式事务prepare成功后宕机，宕机前操作该事务的连接并没有断开，这个时候已经prepare的事务并不会被回滚，所以在MySQL重新启动后，引擎层通过recover机制能恢复该事务。当然该事务的Binlog已经在宕机过程中被丢失，这个时候，如果去提交，则会造成主从数据的不一致， <strong>即提交没有记录Binlog，从上丢失该条数据。</strong> 所以对于这种情况，官方一般建议直接回滚已经prepare的事务。</p>
+<p>以上是MySQL-5.7以前版本MySQL在分布式事务上的各种问题，那么MySQL-5.7版本官方做了哪些改进？这个可以从官方的 <strong><a href="http://dev.mysql.com/worklog/task/?id=6860" target="_blank" rel="noopener">WL#6860</a></strong> 描述上得到一些信息，我们还是本着没有实践就没有发言权的态度，从具体的操作上来分析下MySQL-5.7的改进方法：</p>
+<p>还是以上面同样的表结构进行同样的操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA START &apos;mysql57&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt; INSERT INTO t VALUES(1,1);</span><br><span class="line"></span><br><span class="line">mysql&gt; XA END &apos;mysql57&apos;;</span><br><span class="line"></span><br><span class="line">mysql&gt; XA PREPARE &apos;mysql57&apos;</span><br></pre></td></tr></table></figure>
+<p>这个时候，我们通过mysqlbinlog来查看下Master上的Binlog，结果如下：</p>
+<p><img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jijiking51.cn/FjAHi86hzTFqqQUzFHQUvcHwyhi5"></p>
+<p>同时也对比下Slave上的Relay log，如下：</p>
+<p> <img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jijiking51.cn/Freiw5j83LHvNnjhkYNlAFEbOP9l"></p>
+<p>通过上面的操作，明显发现在prepare以后，从XA START到XA PREPARE之间的操作都被记录到了Master的Binlog中，然后通过复制关系传到了Slave上。也就是说MySQL-5.7开始，MySQL对于分布式事务，在prepare的时候就完成了写Binlog的操作，通过新增一种叫 <strong>XA_prepare_log_event</strong> 的event类型来实现，这是与以前版本的主要区别(以前版本prepare时不写Binlog)</p>
+<p>当然仅靠这一点是不够的，因为我们知道Slave通过SQL thread来回放Relay log信息，由于prepare的事务能阻塞整个session，而回放的SQL thread只有一个(不考虑并行回放)，那么SQL thread会不会因为被分布式事务的prepare阶段所阻塞，从而造成整个SQL thread回放出现问题？这也正是官方要解决的第二个问题：怎么样能使SQL thread在回放到分布式事务的prepare阶段时，不阻塞后面event的回放？其实这个实现也很简单(在xa.cc::applier_reset_xa_trans)，只要在SQL thread回放到prepare的时候，进行类似于客户端断开连接的处理即可(把相关cache与SQL thread的连接句柄脱离)。最后在Slave服务器上，用户通过命令XA RECOVER可以查到如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA RECOVER;</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br><span class="line"></span><br><span class="line">| formatID | gtrid_length | bqual_length | data    |</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br><span class="line"></span><br><span class="line">| 1        | 7            | 0            | mysql57 |</span><br><span class="line"></span><br><span class="line">+----------+--------------+--------------+---------+</span><br></pre></td></tr></table></figure>
+<p>至于上面的事务什么时候提交，一般等到Master上进行 XA COMMIT  ‘mysql57’ 后，slave上也同时会被提交。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>综上所述，MySQL 5.7对于分布式事务的支持变得完美了，一个长达数十年的bug又被修复了，因而又多了一个升级到MySQL-5.7版本的理由。</p>
 
     </div>
+
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="RocWong 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>RocWong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://jijiking51.cn/2019/09/17/MySQL5-7-9完美的分布式事务支持/" title="MySQL5.7.9完美的分布式事务支持">https://jijiking51.cn/2019/09/17/MySQL5-7-9完美的分布式事务支持/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/15/MySQL-事务控制和锁定语句/" rel="next" title="MySQL-事务控制和锁定语句">
+                  <i class="fa fa-chevron-left"></i> MySQL-事务控制和锁定语句
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
   </div>
   
   
   
+  </article>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2019/09/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/09/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
+  </div>
 
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -652,8 +517,17 @@
     
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -806,6 +680,23 @@
             </script>
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Two-Phase-Commit-Protocol"><span class="nav-number">1.</span> <span class="nav-text">Two Phase Commit Protocol</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL分布式事务"><span class="nav-number">2.</span> <span class="nav-text">MySQL分布式事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
         <div class="back-to-top motion-element">
           <i class="fa fa-arrow-up"></i>
           <span>0%</span>
@@ -1051,30 +942,14 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
-    
-      
-    
-  
-    <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-    <script>
-      
-        window.addEventListener('load', () => {
-      
-        quicklink({
-          timeout: 3000,
-          priority: true,
-          ignores: [uri => uri.includes('#'),uri => uri == 'https://jijiking51.cn/archives/2019/09/',]
-        });
-      
-        });
-      
-    </script>
-  
 
   
 
 
   
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
 
 <script>
 NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
