@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 
@@ -46,7 +47,7 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false},
     path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     translation: {
@@ -67,17 +68,17 @@
 	     });
 	</script>
 
-  <meta name="description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包 | |RPM|二进制|源码||||||||">
+  <meta name="description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包    RPM 二进制 源码     优点 安装简单，适合初学者学习使用 安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL 可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL   缺点 需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-高级安装和升级">
 <meta property="og:url" content="https://jijiking51.cn/2019/09/19/MySQL-高级安装和升级/index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包 | |RPM|二进制|源码||||||||">
+<meta property="og:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包    RPM 二进制 源码     优点 安装简单，适合初学者学习使用 安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL 可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL   缺点 需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-19T14:42:35.478Z">
+<meta property="og:updated_time" content="2019-09-20T14:47:25.671Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-高级安装和升级">
-<meta name="twitter:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包 | |RPM|二进制|源码||||||||">
+<meta name="twitter:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包    RPM 二进制 源码     优点 安装简单，适合初学者学习使用 安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL 可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL   缺点 需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个">
   <link rel="canonical" href="https://jijiking51.cn/2019/09/19/MySQL-高级安装和升级/">
 
 
@@ -150,9 +151,9 @@
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  <div class="container sidebar-position-left">
+  <div class="container">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
@@ -311,11 +312,19 @@
                 
               
 
-              <time title="创建时间：2019-09-19 21:40:19 / 修改时间：22:42:35" itemprop="dateCreated datePublished" datetime="2019-09-19T21:40:19+08:00">2019-09-19</time>
+              <time title="创建时间：2019-09-19 21:40:19" itemprop="dateCreated datePublished" datetime="2019-09-19T21:40:19+08:00">2019-09-19</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-20 22:47:25" itemprop="dateModified" datetime="2019-09-20T22:47:25+08:00">2019-09-20</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -363,7 +372,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>65</span>
+              <span>2.7k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -373,7 +382,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>5 分钟</span>
             </span>
           
 
@@ -386,8 +395,137 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Linux-Unix平台下的安装"><a href="#Linux-Unix平台下的安装" class="headerlink" title="Linux/Unix平台下的安装"></a>Linux/Unix平台下的安装</h1><h2 id="安装包比较"><a href="#安装包比较" class="headerlink" title="安装包比较"></a>安装包比较</h2><p>Linux的安装包分为RPM、二进制包和源码包</p>
-<p>| |RPM|二进制|源码|<br>|||||<br>||</p>
+        <h1 id="Linux-Unix平台下的安装"><a href="#Linux-Unix平台下的安装" class="headerlink" title="Linux/Unix平台下的安装"></a>Linux/Unix平台下的安装</h1><h2 id="安装包比较"><a href="#安装包比较" class="headerlink" title="安装包比较"></a>安装包比较</h2><p>Linux的安装包分为RPM、二进制包和源码包</p><table>
+<thead>
+<tr>
+<th></th>
+<th>RPM</th>
+<th>二进制</th>
+<th>源码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>优点</strong></td>
+<td>安装简单，适合初学者学习使用</td>
+<td>安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL</td>
+<td>可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个MySQL</td>
+<td>已经经过编译，性能不如源码编译的好，不能灵活定制编译参数</td>
+<td>安装过程较复杂，编译时间长</td>
+</tr>
+<tr>
+<td><strong>文件布局</strong></td>
+<td>/usr/bin(客户端程序和脚本)<br>/usr/sbin (mysqld服务器)<br>/var/lib/mysql(日志文件和数据库)<br>/usr/include/mysql(包含头文件)<br>/usr/lib/mysql(库文件)<br>/usr/share/mysql(错误消息和字符集文件)<br>/usr/share/sql-bench(基准程序)</td>
+<td>bin(客户端程序和mysqld服务器)<br>data(日志文件和数据库)<br>docs(文档和ChangeLog)<br>include(包含头文件)<br>lib(库文件)<br>scripts(mysql_install_db脚本、用来安装系统数据库)<br>share/mysql(错误的消息文件)<br>sql-bench(基准程序)</td>
+<td>bin(客户端程序和脚本)<br>include/mysql(包含头文件)<br>info(info格式的文档)<br>lib/mysql(库文件)<br>libexec(mysql服务器)<br>share/mysql(错误消息文件)<br>sql-bench(基准程序和crash-me测试)<br>var(数据库和日志文件)</td>
+</tr>
+</tbody>
+</table><a id="more"></a>
+
+<h2 id="安装RPM包"><a href="#安装RPM包" class="headerlink" title="安装RPM包"></a>安装RPM包</h2><p>通常只要下载server(<code>MySQL-包类型[Server]-版本信息[社区|企业] -版本号(5.7.21) -0.操作系统类型[rhel3].CPU类型[i386].rpm</code>)包和client<code>MySQL-包类型[Client]-版本信息[社区|企业] -版本号(5.7.21) -0.操作系统类型[rhel3].CPU类型[i386].rpm</code>包就可以满足大部分的应用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用以下命令安装RPM文件</span></span><br><span class="line">rpm -ivh 文件名</span><br><span class="line"><span class="comment"># -i, --install 表示对后面的RPM包进行安装</span></span><br><span class="line"><span class="comment"># -v, --verbose 安装过程中提供更多的输出信息</span></span><br><span class="line"><span class="comment"># -h, --hash 打印字符#来进行安装进度的提示</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看rpm命令信息</span></span><br><span class="line">rpm --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装二进制包"><a href="#安装二进制包" class="headerlink" title="安装二进制包"></a>安装二进制包</h2><p>如果不想安装最简单却不够灵活的RPM包，又不想安装复杂费时的源码包，那么就可以安装已经编译好的二进制包</p>
+<ol>
+<li><p>用root登录操作系统，增加mysql用户和组，数据库将安装在此用户下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加用户组</span></span><br><span class="line">groupadd mysql</span><br><span class="line"><span class="comment"># 增加用户</span></span><br><span class="line">useradd -g mysql mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压二进制安装包，假设安装文件放在/home/mysql，并对解压后的mysql目录加一个符号链接’mysql’,这样对mysql目录操作会更方便</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入解压的目录</span></span><br><span class="line"><span class="built_in">cd</span> /home/mysql</span><br><span class="line"><span class="comment"># 解压安装包</span></span><br><span class="line">tar -zxvf /home/mysql/mysql-version-os.tar.gz</span><br><span class="line"><span class="comment"># 制作软链</span></span><br><span class="line">ln -s mysql-version-os mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在数据目录下创建系统数据库和系统表，–user表示这些数据库和表的owner是此用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown -R root:mysql .</span><br><span class="line">chown -R mysql:mysql data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置目录权限,将data目录owner改为mysql，其他目录和文件为root</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown -R root:mysql .</span><br><span class="line">chown -R mysql:mysql data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动MySQL</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/mysqld_safe --user=mysql &amp;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="安装源码包"><a href="#安装源码包" class="headerlink" title="安装源码包"></a>安装源码包</h2><p>如果对数据库的性能要求很高，并且希望能够灵活的定制安装选项，安装源码包将是最好的选择。</p>
+<ol>
+<li><p>用root登录操作系统，增加mysql用户和组，数据库将安装在此用户下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加用户组</span></span><br><span class="line">groupadd mysql</span><br><span class="line"><span class="comment"># 增加用户</span></span><br><span class="line">useradd -g mysql mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压源码安装文件mysql-VERSION.tar.gz,并进入解压后的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gunzip &lt; mysql-VERSION.tar.gz | tar -xvf -</span><br><span class="line"><span class="built_in">cd</span> mysql-VERSION</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用configure工具来编译源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装到/usr/local/mysql 目录下， configure的参数可以通过configure --help查看</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/mysql</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择一个MySQL自带的样例配置文件，并cp到/etc/ 下改名为my.cnf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp support-files/my-medium.cnf /etc/my.cnf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以自定义一些配置</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在数据目录创建系统数据库和系统表 –user标识这些数据库和表的owner是此用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</span><br><span class="line">bin/mysql_install_db --user=mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置目录权限，将var目录owner改为mysql（源码安装默认数据目录为var），其他目录和文件为root</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chown -R root .</span><br><span class="line">chown -R mysql var</span><br><span class="line">chgrp -R mysql .</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动MySQL</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/mysql_safe --user=mysql &amp;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="参数设置方法"><a href="#参数设置方法" class="headerlink" title="参数设置方法"></a>参数设置方法</h2><p>MySQL参数的初始化是通过参数文件进行设置，如果不设置参数文件，MySQL就按照系统中所有参数的默认值来进行启动，通过<code>mysqld -verbose --help</code>命令可以来查看参数文件中所有参数的当前设置值</p>
+<p>参数文件可以被放在多个位置，数据库启动的时候将按照不同的顺序来搜索，如果在多个位置都有参数文件，则搜索顺序靠后的文件中的参数将覆盖靠前的文件参数</p>
+<p><strong>Windows平台MySQL参数文件读取顺序</strong></p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WINDIR\my.ini</td>
+<td>全局选项</td>
+</tr>
+<tr>
+<td>C:\my.cnf</td>
+<td>全局选项</td>
+</tr>
+<tr>
+<td>INSTALLDIR\my.ini</td>
+<td>全局选项</td>
+</tr>
+<tr>
+<td>defauls-extra-file</td>
+<td>用–defaults-extra-file=path指定的文件</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Linux平台MySQL参数文件读取顺序</strong></p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/my.cnf</td>
+<td>全局选项</td>
+</tr>
+<tr>
+<td>$MYSQL_HOME/my.cnf</td>
+<td>服务器相关选项，其中$MYSQL_HOME为环境变量中指定的MySQL安装目录</td>
+</tr>
+<tr>
+<td>defaults-extra-file</td>
+<td>用–defaults-extra-file=path指定的文件</td>
+</tr>
+<tr>
+<td>~/.my.cnf</td>
+<td>用户相关选项</td>
+</tr>
+</tbody>
+</table>
 
     </div>
 
@@ -655,7 +793,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-Unix平台下的安装"><span class="nav-number">1.</span> <span class="nav-text">Linux/Unix平台下的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装包比较"><span class="nav-number">1.1.</span> <span class="nav-text">安装包比较</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-Unix平台下的安装"><span class="nav-number">1.</span> <span class="nav-text">Linux/Unix平台下的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装包比较"><span class="nav-number">1.1.</span> <span class="nav-text">安装包比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装RPM包"><span class="nav-number">1.2.</span> <span class="nav-text">安装RPM包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装二进制包"><span class="nav-number">1.3.</span> <span class="nav-text">安装二进制包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装源码包"><span class="nav-number">1.4.</span> <span class="nav-text">安装源码包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数设置方法"><span class="nav-number">1.5.</span> <span class="nav-text">参数设置方法</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -688,12 +826,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">338k</span>
+    <span title="站点总字数">340k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:23</span>
+    <span title="站点阅读时长">9:27</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
@@ -950,7 +1088,6 @@ NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
 
 <!-- 页面点击爆炸 -->
 
-
 <!-- 复制转载提示 -->
 <link rel="stylesheet" href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" />
 <script type="text/javascript" src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
@@ -958,3 +1095,7 @@ NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
 
 <script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"https://cdn.jsdelivr.net/npm/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json"},"display":{"superSample":2,"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
 </html>
+
+
+
+

@@ -277,6 +277,7 @@ window.addEventListener('DOMContentLoaded', () => {
     removeElement('#no-result');
     removeElement('.search-pop-overlay');
     document.body.style.overflow = '';
+    document.getElementById('header').style.zIndex='';
   };
 
   const proceedSearch = () => {
@@ -288,6 +289,7 @@ window.addEventListener('DOMContentLoaded', () => {
       el.style.display = 'none';
     } else {
       el.style.display = 'block';
+      document.getElementById('header').style.zIndex=2081;
     }
     document.getElementById('search-input').focus();
   };
