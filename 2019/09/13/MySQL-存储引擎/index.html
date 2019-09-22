@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="存储引擎概述存储引擎包括：MyISAM、InnoDB、BDB、MEMORY、MERGE、EXAMPLE、NDB Cluster、ARCHIVE、CSV、BLACKHOLE、FEDERATED。以上引擎只有InnoDB和BDB提供事务安全表，其他引擎都是非事物安全表">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-17T13:34:32.415Z">
+<meta property="og:updated_time" content="2019-09-22T10:56:12.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-存储引擎">
 <meta name="twitter:description" content="存储引擎概述存储引擎包括：MyISAM、InnoDB、BDB、MEMORY、MERGE、EXAMPLE、NDB Cluster、ARCHIVE、CSV、BLACKHOLE、FEDERATED。以上引擎只有InnoDB和BDB提供事务安全表，其他引擎都是非事物安全表">
@@ -323,7 +323,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-17 21:34:32" itemprop="dateModified" datetime="2019-09-17T21:34:32+08:00">2019-09-17</time>
+                <time title="修改时间：2019-09-22 18:56:12" itemprop="dateModified" datetime="2019-09-22T18:56:12+08:00">2019-09-22</time>
               </span>
             
           
@@ -578,10 +578,33 @@
 <p>支持外键约束的只有InnoDB 。在创建外键的时候，要求父表必须有对应的索引，子表在创建外键的时候也会自动创建对应索引。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> country( </span><br><span class="line">    country_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment, </span><br><span class="line">    country <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>, </span><br><span class="line">    last_update <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> o</span><br><span class="line">    n <span class="keyword">update</span> <span class="keyword">current_timestamp</span>, </span><br><span class="line">    primary <span class="keyword">key</span> (country_id) </span><br><span class="line">)<span class="keyword">engine</span>=<span class="keyword">innodb</span> <span class="keyword">default</span>  <span class="keyword">charset</span>=utf8; </span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> city( </span><br><span class="line">    city_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment, </span><br><span class="line">    city <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>, </span><br><span class="line">    country_id <span class="built_in">smallint</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span>, </span><br><span class="line">    last_update <span class="built_in">timestamp</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">default</span> <span class="keyword">current_timestamp</span> o</span><br><span class="line">    n <span class="keyword">update</span> <span class="keyword">current_timestamp</span>, </span><br><span class="line">    primary <span class="keyword">key</span>(city_id), </span><br><span class="line">    <span class="keyword">key</span> idx_fk_country_id(country_id), </span><br><span class="line">    <span class="keyword">constraint</span> fk_city_country <span class="keyword">foreign</span> </span><br><span class="line">    <span class="keyword">key</span>(country_id) <span class="keyword">references</span> country (country_id) <span class="keyword">on</span> <span class="keyword">delete</span> </span><br><span class="line">    restrict <span class="keyword">on</span> <span class="keyword">update</span> <span class="keyword">cascade</span>  </span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">innodb</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8;</span><br></pre></td></tr></table></figure>
 <p>创建索引时，可以指定在删除、更新父表时，对字表进行的对应操作，包括<code>RESTRICT</code>、<code>CASCADE</code>、<code>SET NULL</code>、 <code>NO ACTION</code>。</p>
-<p>| 字段名              | 作用                                           |<br>| ——————- | ———————————————- |<br>| RESTRICT、NO ACTION | 在子表有关联记录的情况下，父表不能更新         |<br>| CASCADE             | 父表更新或者删除时更新或者删除子表对应记录     |<br>| SET NULL            | 父表更新或者删除的时候子表的对应字段设置为NULL |</p>
-<p>在导入多个表数据时， 如果需要忽略表之前的导入顺序，可以暂时关闭外键检查，同样执行<code>LOAD DATE</code>    和<code>ALTER TABLE</code>操作时可以通过暂时关闭外键约束来加快处理速度。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关闭</span></span><br><span class="line"><span class="keyword">set</span> foreign_key_checks=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启</span></span><br><span class="line"><span class="keyword">set</span> foreign_key_checks=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RESTRICT、NO ACTION</td>
+<td>在子表有关联记录的情况下，父表不能更新</td>
+</tr>
+<tr>
+<td>CASCADE</td>
+<td>父表更新或者删除时更新或者删除子表对应记录</td>
+</tr>
+<tr>
+<td>SET NULL</td>
+<td>父表更新或者删除的时候子表的对应字段设置为NULL</td>
+</tr>
+</tbody>
+</table>
+<p>   在导入多个表数据时， 如果需要忽略表之前的导入顺序，可以暂时关闭外键检查，同样执行<code>LOAD DATE</code>    和<code>ALTER TABLE</code>操作时可以通过暂时关闭外键约束来加快处理速度。</p>
+   <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关闭</span></span><br><span class="line"><span class="keyword">set</span> foreign_key_checks=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启</span></span><br><span class="line"><span class="keyword">set</span> foreign_key_checks=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<ol start="3">
 <li><p>存储方式</p>
 <p>InnoDB存储表和索引的方式有两种方式</p>
 <ul>
