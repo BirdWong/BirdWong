@@ -69,7 +69,7 @@
 	</script>
 
   <meta name="description" content="所用安装包也可以从此处下载 下载nginx 官网：https://nginx.org/（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C /usr/local/src 编译nginx #进入到nginx源码目录 cd /usr/local/src/nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 ./configure –pre">
-<meta name="keywords" content="踩坑,高可用,配置">
+<meta name="keywords" content="踩坑,配置,高可用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx安装配置并使用keepalived实现高可用双机热备">
 <meta property="og:url" content="https://jijiking51.cn/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/index.html">
@@ -230,7 +230,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">50</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">51</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -411,7 +411,7 @@
 </ol>
 </li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>重启nginx</span><br><span class="line">kill -HUP `cat /usr/local/nginx/logs/nginx.pid `</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">重启nginx</span></span><br><span class="line">kill -HUP `cat /usr/local/nginx/logs/nginx.pid `</span><br></pre></td></tr></table></figure>
 <ol start="7">
 <li><p>动静分离</p>
 <ol>
@@ -419,7 +419,7 @@
 <li><p>按照上面的方法配置一下内容<br>#动态资源 index.jsp<br>location ~ .*.(jsp|do|action)$ {<br>  proxy_pass <a href="http://192.168.0.2:8080" target="_blank" rel="noopener">http://192.168.0.2:8080</a>;<br>}</p>
 <p>#静态资源<br>location ~ .*.(html|js|css|gif|jpg|jpeg|png)$ {<br>  expires 3d;<br>}</p>
 <p>  负载均衡<br>在http这个节下面配置一个叫upstream的，后面的名字可以随意取，但是要和location下的proxy_pass http://后的保持一致。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    是在http里面的, 已有http, 不是在server里,在server外面</span><br><span class="line">    upstream tomcats &#123; </span><br><span class="line">        server shizhan02:8080 weight=1;#weight表示多少个</span><br><span class="line">        server shizhan03:8080 weight=1;</span><br><span class="line">        server shizhan04:8080 weight=1;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#</span>卸载server里</span><br><span class="line">location ~ .*\.(jsp|do|action) &#123;</span><br><span class="line">    proxy_pass http://tomcats;        #tomcats是后面的tomcat服务器组的逻辑组号</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    是在http里面的, 已有http, 不是在server里,在server外面</span><br><span class="line">    upstream tomcats &#123; </span><br><span class="line">        server shizhan02:8080 weight=1;#weight表示多少个</span><br><span class="line">        server shizhan03:8080 weight=1;</span><br><span class="line">        server shizhan04:8080 weight=1;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">卸载server里</span></span><br><span class="line">location ~ .*\.(jsp|do|action) &#123;</span><br><span class="line">    proxy_pass http://tomcats;        #tomcats是后面的tomcat服务器组的逻辑组号</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
@@ -429,7 +429,7 @@
 <ol>
 <li>与上面安装过程一样</li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">下载keepalived官网:https://keepalived.org</span><br><span class="line"></span><br><span class="line">将keepalived解压到/usr/local/src目录下</span><br><span class="line">tar -zxvf  keepalived-1.2.19.tar.gz -C /usr/local/src</span><br><span class="line"></span><br><span class="line">进入到/usr/local/src/keepalived-1.2.19目录</span><br><span class="line">cd /usr/local/src/keepalived-1.2.19</span><br><span class="line"></span><br><span class="line">开始configure</span><br><span class="line">./configure --prefix=/usr/local/keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>编译并安装</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">下载keepalived官网:https://keepalived.org</span><br><span class="line"></span><br><span class="line">将keepalived解压到/usr/local/src目录下</span><br><span class="line">tar -zxvf  keepalived-1.2.19.tar.gz -C /usr/local/src</span><br><span class="line"></span><br><span class="line">进入到/usr/local/src/keepalived-1.2.19目录</span><br><span class="line">cd /usr/local/src/keepalived-1.2.19</span><br><span class="line"></span><br><span class="line">开始configure</span><br><span class="line">./configure --prefix=/usr/local/keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">编译并安装</span></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li><p>修改/etc/keepalived/keepalived.conf  配置虚拟ip 两个节点必须是在同一内网,配置心跳检测<br> 原理：<br> Keepalived并不跟nginx耦合，它俩完全不是一家人<br> 但是keepalived提供一个机制：让用户自定义一个shell脚本去检测用户自己的程序，返回状态给keepalived就可以了</p>
 <p>#MASTER节点</p>
@@ -437,7 +437,7 @@
 <p>#BACKUP节点</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line"> vrrp_script chk_health &#123;</span><br><span class="line">    script "/usr/local/keepalived/sbin/notify.sh"</span><br><span class="line">    interval 1</span><br><span class="line">    weight -2</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    mcast_src_ip 192.168.88.201</span><br><span class="line">    priority 99</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     track_script &#123;</span><br><span class="line">        chk_health</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.88.199/24</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>#使用的脚本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">A=`ps -C nginx --no-header |wc -l`  #检查是否有nginx运行</span><br><span class="line">if [ $A -eq 0 ];then </span><br><span class="line">        /usr/local/nginx/sbin/nginx  #启动nginx</span><br><span class="line">        sleep 2 #休眠两秒</span><br><span class="line">        if [ `ps -C nginx --no-header |wc -l` -eq 0 ];then #如果两秒后nginx没有运行</span><br><span class="line">                killall keepalived #关闭keepalived ，将虚拟ip让给BACKUP节点（必须关闭MASTER上的keepalived，BACKUP才能的到VIP）</span><br><span class="line">        fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">A=`ps -C nginx --no-header |wc -l`  #检查是否有nginx运行</span><br><span class="line">if [ $A -eq 0 ];then </span><br><span class="line">        /usr/local/nginx/sbin/nginx  #启动nginx</span><br><span class="line">        sleep 2 #休眠两秒</span><br><span class="line">        if [ `ps -C nginx --no-header |wc -l` -eq 0 ];then #如果两秒后nginx没有运行</span><br><span class="line">                killall keepalived #关闭keepalived ，将虚拟ip让给BACKUP节点（必须关闭MASTER上的keepalived，BACKUP才能的到VIP）</span><br><span class="line">        fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动两台机器上的nginx和keepalived<br> /usr/local/nginx/sbin/ngin<br> service keepalived start</p>
 </li>
@@ -508,9 +508,9 @@
             
               <a href="/tags/踩坑/" rel="tag"><i class="fa fa-tag"></i> 踩坑</a>
             
-              <a href="/tags/高可用/" rel="tag"><i class="fa fa-tag"></i> 高可用</a>
-            
               <a href="/tags/配置/" rel="tag"><i class="fa fa-tag"></i> 配置</a>
+            
+              <a href="/tags/高可用/" rel="tag"><i class="fa fa-tag"></i> 高可用</a>
             
           </div>
         
@@ -591,7 +591,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -774,12 +774,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">380k</span>
+    <span title="站点总字数">382k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:33</span>
+    <span title="站点阅读时长">10:36</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="MySQL权限管理权限系统的工作原理权限系统分为两个阶段 对连接的用户进行身份认证，合法的用户通过认证，不合法的用户拒绝连接 身份认证是通过IP地址和用户名联合进行验证。例如root@localhost，只能接受root以localhost登陆，其他的地址登陆都将拒绝，就算用户名相同，但是IP不同，也会认为非同一个用户  对通过认证的合法用户赋予相对应的权限，用户可以在这些权限范围内对数据库做相应">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-11T09:04:29.623Z">
+<meta property="og:updated_time" content="2019-10-11T09:15:11.908Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-权限与安全">
 <meta name="twitter:description" content="MySQL权限管理权限系统的工作原理权限系统分为两个阶段 对连接的用户进行身份认证，合法的用户通过认证，不合法的用户拒绝连接 身份认证是通过IP地址和用户名联合进行验证。例如root@localhost，只能接受root以localhost登陆，其他的地址登陆都将拒绝，就算用户名相同，但是IP不同，也会认为非同一个用户  对通过认证的合法用户赋予相对应的权限，用户可以在这些权限范围内对数据库做相应">
@@ -229,7 +229,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">50</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">51</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -323,7 +323,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-11 17:04:29" itemprop="dateModified" datetime="2019-10-11T17:04:29+08:00">2019-10-11</time>
+                <time title="修改时间：2019-10-11 17:15:11" itemprop="dateModified" datetime="2019-10-11T17:15:11+08:00">2019-10-11</time>
               </span>
             
           
@@ -549,7 +549,7 @@
 <h2 id="secure-auth"><a href="#secure-auth" class="headerlink" title="secure-auth"></a>secure-auth</h2><p>此参数可以强制4.1以前的客户端无法连接，即使使用了old-password参数也不行。mysql5.7之后拒绝关闭</p>
 <h2 id="skip-grant-tables"><a href="#skip-grant-tables" class="headerlink" title="skip-grant-tables"></a>skip-grant-tables</h2><p>此选项导致服务器根本不使用权限系统，从而给每个人以完全访问所有数据库的权利。 通过<code>mysqladmin flush-privileges</code> 、 <code>mysqladmin reload</code>或者<code>flush privileges</code>可以让一个正在运行的服务器再次开始使用授权表</p>
 <h2 id="skip-network"><a href="#skip-network" class="headerlink" title="skip-network"></a>skip-network</h2><p>在网上不允许TCP/IP连接，所有到数据库的连接必须由命名管道、共享内存、或者UNIX套接字文件进行，适合应用和数据库共用一台服务器的情况，大大增强安全性，但是维护困难</p>
-<h2 id="skip-show-database"><a href="#skip-show-database" class="headerlink" title="skip-show-database"></a>skip-show-database</h2><p>只允许show databases权限的用户执行shou databases语句，</p>
+<h2 id="skip-show-database"><a href="#skip-show-database" class="headerlink" title="skip-show-database"></a>skip-show-database</h2><p>未开启前是允许任何用户可以执行show databases命令，但是只显示此用户可以操作的数据库，开启后只允许show databases权限的用户执行show databases语句，</p>
 
     </div>
 
@@ -610,6 +610,10 @@
 
             <div class="post-nav-prev post-nav-item">
               
+                <a href="/2019/10/11/MySQL-复制/" rel="prev" title="MySQL-复制">
+                  MySQL-复制 <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
@@ -667,7 +671,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -850,12 +854,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">380k</span>
+    <span title="站点总字数">382k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:33</span>
+    <span title="站点阅读时长">10:36</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 

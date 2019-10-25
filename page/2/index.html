@@ -225,7 +225,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">50</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">51</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -272,6 +272,154 @@
           <div id="content" class="content page-home">
             
   <section id="posts" class="posts-expand">
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/14/MySQL-索引的设计和使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/14/MySQL-索引的设计和使用/" class="post-title-link" itemprop="url">MySQL-索引的设计和使用</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-14 21:02:47" itemprop="dateCreated datePublished" datetime="2019-09-14T21:02:47+08:00">2019-09-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-17 21:31:37" itemprop="dateModified" datetime="2019-09-17T21:31:37+08:00">2019-09-17</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/09/14/MySQL-索引的设计和使用/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-索引的设计和使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/14/MySQL-索引的设计和使用/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/14/MySQL-索引的设计和使用/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>1.5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>MySQL的所有列类型都可以被索引，同时索引是提高查找性能的最佳途径。不同的存储引擎可以定义不同的索引数量和索引长度，每种存储引擎对每个表最少支持16个索引，总索引长度至少为256字节<br>MyISAM和InnoDB存储引擎的表默认索引为BTREE索引。同时MyISAM前缀索引支持长度为1000<strong>字节</strong>， InnoDB前缀索引支持长度为767<strong>字节</strong>（这里的长度是以字节为单位而不是以字符作单位），MEMORY的默认索引时hash， 但也支持BTREE索引<br>MySQL支持FULLTEXT全文本索引，该索引可以用于全文搜索，全文索引只限于<code>CHAR</code>、<code>VARCHAR</code>、<code>TEXT</code>做索引列，并且是对整个列进行的，不支持局部（前缀）索引。也可以为空间列类型创建索引，但是这个列必须是非空的。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建索引</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> test_c1 <span class="keyword">on</span> <span class="keyword">test</span>(c1);  </span><br><span class="line"><span class="comment"># 查询时索引是否被使用</span></span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">where</span> c1 &lt; <span class="number">2</span> \G</span><br><span class="line"><span class="comment"># 删除索引</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">index</span> test_c1 <span class="keyword">on</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/14/MySQL-索引的设计和使用/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
       
 
   <article class="post" itemscope itemtype="http://schema.org/Article">
@@ -1504,11 +1652,19 @@
                 
               
 
-              <time title="创建时间：2019-09-09 16:34:51 / 修改时间：16:36:26" itemprop="dateCreated datePublished" datetime="2019-09-09T16:34:51+08:00">2019-09-09</time>
+              <time title="创建时间：2019-09-09 16:34:51" itemprop="dateCreated datePublished" datetime="2019-09-09T16:34:51+08:00">2019-09-09</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-25 17:00:44" itemprop="dateModified" datetime="2019-10-25T17:00:44+08:00">2019-10-25</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -1556,7 +1712,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5k</span>
+              <span>6.3k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -1566,7 +1722,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>8 分钟</span>
+              <span>11 分钟</span>
             </span>
           
 
@@ -1579,29 +1735,168 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h1><ol>
-<li><p>查看所有键值</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keys *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产环境中可能会有很多键值，这个命令不要用</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>键总数</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbsize</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>检查键是否存在</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exists key</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除键</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">del key [key ...]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设置过期时间</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire key seconds</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取键过期剩余时间</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ttl key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 大于0 代表过期剩余时间</span></span><br><span class="line"><span class="comment"># -1  没有设置过过期时间</span></span><br><span class="line"><span class="comment"># -2  键不存在</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>键的数据结构类型</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span> key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果键不存在返回none</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+          <h1 id="客户端连接可选参数"><a href="#客户端连接可选参数" class="headerlink" title="客户端连接可选参数"></a>客户端连接可选参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-h</td>
+<td>服务器主机名</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>服务器端口</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>服务器套接字</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>服务器密码</td>
+</tr>
+<tr>
+<td>-u  &lt;uri></td>
+<td>服务器uri</td>
+</tr>
+<tr>
+<td>-r &lt;repeat></td>
+<td>执行指定的命令n次</td>
+</tr>
+<tr>
+<td>-i &lt;interval></td>
+<td>使用-r时，每个命令等待&lt;interval>秒，可以指定亚秒时间，比如-i 0.1</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>数据库号</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>从stdin读取最后一个参数</td>
+</tr>
+<tr>
+<td>-d &lt;delimiter></td>
+<td>multi-bulk delimiter in用于原始格式（默认值为：\ n）</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>启用群集模式（跟踪-询问和移动重定向）</td>
+</tr>
+<tr>
+<td>–raw</td>
+<td>对回复使用原始格式（当STDOUT不是tty）</td>
+</tr>
+<tr>
+<td>–no-raw</td>
+<td>即使STDOUT不是tty，也强制格式化输出。</td>
+</tr>
+<tr>
+<td>–csv</td>
+<td>格式的CSV输出</td>
+</tr>
+<tr>
+<td>–stat</td>
+<td>打印关于服务器的滚动状态：mem，clients，…</td>
+</tr>
+<tr>
+<td>–latency</td>
+<td>进入特殊模式，连续采样延迟。如果在交互式会话中使用此模式，它将运行永远显示实时统计信息。否则，如果–raw或 –csv被指定，或者如果您将输出重定向到非 TTY，它会采样1秒的延迟（您可以使用-i更改间隔），然后产生单个输出然后退出</td>
+</tr>
+<tr>
+<td>–latency-history</td>
+<td>与–latency类似，但跟踪延迟随时间变化。默认时间间隔是15秒。使用-i进行更改</td>
+</tr>
+<tr>
+<td>–latency-dist</td>
+<td>将延迟显示为频谱，需要xterm 256色,默认时间间隔是1秒。使用-i进行更改</td>
+</tr>
+<tr>
+<td>–lru-test &lt;keys></td>
+<td>模拟80-20分发的缓存工作负载</td>
+</tr>
+<tr>
+<td>–replica</td>
+<td>模拟显示从主服务器接收的命令的副本</td>
+</tr>
+<tr>
+<td>–rdb</td>
+<td>&lt;文件名>将RDB转储从远程服务器传输到本地文件</td>
+</tr>
+<tr>
+<td>–pipe</td>
+<td>将原始Redis协议从stdin传输到服务器</td>
+</tr>
+<tr>
+<td>–pipe-timeout &lt;n></td>
+<td>在–pipe模式下，如果发送完所有数据后中止并出错。 &lt;n>秒内未收到任何答复。 默认超时：30。使用0永远等待。</td>
+</tr>
+<tr>
+<td>–bigkeys</td>
+<td>示例Redis键，查找具有许多元素（复杂度）的键。</td>
+</tr>
+<tr>
+<td>–memkeys</td>
+<td>示例Redis密钥，查找消耗大量内存的密钥。</td>
+</tr>
+<tr>
+<td>–memkeys-samples &lt;n></td>
+<td>样本Redis密钥查找消耗大量内存的密钥。并定义要采样的关键元素的数量</td>
+</tr>
+<tr>
+<td>–hotkeys</td>
+<td>示例Redis键以查找热键。仅在maxmemory-policy为* lfu时有效。</td>
+</tr>
+<tr>
+<td>–scan</td>
+<td>使用SCAN命令列出所有键。</td>
+</tr>
+<tr>
+<td>–pattern &lt;pat></td>
+<td>与–scan一起使用以指定SCAN模式。</td>
+</tr>
+<tr>
+<td>–intrinsic-latency &lt;sec></td>
+<td>运行测试以测量内部系统延迟。测试将运行指定的秒数。</td>
+</tr>
+<tr>
+<td>–eval &lt;文件></td>
+<td>使用&lt;文件>处的Lua脚本发送EVAL命令</td>
+</tr>
+<tr>
+<td>–ldb</td>
+<td>与–eval一起使用，启用Redis Lua调试器。</td>
+</tr>
+<tr>
+<td>–ldb-sync-mode</td>
+<td>与–ldb类似，但在其中使用了同步Lua调试器, 此模式下，服务器被阻止，脚本更改为不从服务器内存回滚。</td>
+</tr>
+<tr>
+<td>–cluster &lt;命令> [args …][opts …]</td>
+<td>集群管理器命令和参数。</td>
+</tr>
+<tr>
+<td>–verbose</td>
+<td>详细模式</td>
+</tr>
+<tr>
+<td>–no-auth-warning</td>
+<td>在命令上使用密码时不显示警告消息线路接口</td>
+</tr>
+<tr>
+<td>–help</td>
+<td>输出此帮助并退出。</td>
+</tr>
+<tr>
+<td>–version</td>
+<td>输出版本并退出。</td>
+</tr>
+</tbody>
+</table>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1783,159 +2078,11 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/07/redis运维陷阱/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/07/redis运维陷阱/" class="post-title-link" itemprop="url">redis运维陷阱</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-07 16:41:34" itemprop="dateCreated datePublished" datetime="2019-09-07T16:41:34+08:00">2019-09-07</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-09 17:04:09" itemprop="dateModified" datetime="2019-09-09T17:04:09+08:00">2019-09-09</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/09/07/redis运维陷阱/" class="post-meta-item leancloud_visitors" data-flag-title="redis运维陷阱" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/09/07/redis运维陷阱/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/07/redis运维陷阱/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>9.3k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>15 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux配置优化"><a href="#Linux配置优化" class="headerlink" title="Linux配置优化"></a>Linux配置优化</h1><h2 id="内存分配控制"><a href="#内存分配控制" class="headerlink" title="内存分配控制"></a>内存分配控制</h2><h3 id="vm-overcommit-memory"><a href="#vm-overcommit-memory" class="headerlink" title="vm.overcommit_memory"></a>vm.overcommit_memory</h3><p>Linux对大部分申请内存的请求都回复yes，以便能运行更多的程序。因为申请内存后，并不会马上使用内存，这种技术叫做<code>overcommit</code>。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/07/redis运维陷阱/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1970,7 +2117,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2136,12 +2283,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">380k</span>
+    <span title="站点总字数">382k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:33</span>
+    <span title="站点阅读时长">10:36</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
