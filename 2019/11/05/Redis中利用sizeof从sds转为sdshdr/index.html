@@ -68,14 +68,19 @@
 	     });
 	</script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="RocWong">
-<meta property="og:url" content="https://jijiking51.cn/categories/Hadoop/index.html">
+  <meta name="description" content="转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));">
+<meta name="keywords" content="源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis中利用sizeof从sds转为sdshdr">
+<meta property="og:url" content="https://jijiking51.cn/2019/11/05/Redis中利用sizeof从sds转为sdshdr/index.html">
 <meta property="og:site_name" content="RocWong">
+<meta property="og:description" content="转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-05T08:15:43.731Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RocWong">
-  <link rel="canonical" href="https://jijiking51.cn/categories/Hadoop/">
+<meta name="twitter:title" content="Redis中利用sizeof从sds转为sdshdr">
+<meta name="twitter:description" content="转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));">
+  <link rel="canonical" href="https://jijiking51.cn/2019/11/05/Redis中利用sizeof从sds转为sdshdr/">
 
 
 <script id="page-configurations">
@@ -83,13 +88,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>分类: Hadoop | RocWong</title>
+  <title>Redis中利用sizeof从sds转为sdshdr | RocWong</title>
   <meta name="generator" content="Hexo 3.8.0">
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148097669-1"></script>
@@ -269,89 +274,224 @@
         <div class="content-wrap">
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-          <div id="content" class="content ">
+          <div id="content" class="content page-post-detail">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>Hadoop<small>分类</small>
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/11/05/Redis中利用sizeof从sds转为sdshdr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">Redis中利用sizeof从sds转为sdshdr
+
+          
         </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-05 16:10:31 / 修改时间：16:15:43" itemprop="dateCreated datePublished" datetime="2019-11-05T16:10:31+08:00">2019-11-05</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/11/05/Redis中利用sizeof从sds转为sdshdr/" class="post-meta-item leancloud_visitors" data-flag-title="Redis中利用sizeof从sds转为sdshdr" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/05/Redis中利用sizeof从sds转为sdshdr/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/11/05/Redis中利用sizeof从sds转为sdshdr/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info"><p>转载于：<a href="https://yisaer.github.io/2017/05/07/Redis1/" target="_blank" rel="noopener">Yisaer</a></p></div><hr><p>今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> *<span class="title">sh</span> = (<span class="title">void</span>*)(<span class="title">s</span>-(<span class="title">sizeof</span>(<span class="title">struct</span> <span class="title">sdshdr</span>)));</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+<p>最后查了资料终于明白了，特此记录一下。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>这里 s 是 const sds 类型，相关类型定义如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> len;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>当使用 sdsnewlen(const void <em>init, size_t initlen) 创建一个新的动态字符串时，Redis 会创建一个 struct sdshdr </em>sh 结构体，并将这个结构体的最后一个字符数组，也就是 sh-&gt;buf 返回，这样返回值是个普通的 C 字符串，因此便可以使用一些 string.h 和 stdlib.h 中的 C 字符串函数，而当想访问 sds 的 len 和 free 属性时，就需要先转成 struct sdshdr 结构。但是直接用 s-(sizeof(struct sdshdr)) 却是不知道怎么回事。</p>
+<p>后来直接使用那一行代码进行 Google，然后找到了结果。</p>
+<p><strong>C99 中的标准规定</strong>：</p>
+<p>As a special case, the last element of a structure with more than one named member may have an incomplete array type; this is called a flexible array member. In most situations, the flexible array member is ignored. In particular, the size of the structure is as if the flexible array member were omitted except that it may have more trailing padding than the omission would imply.</p>
+<p>However, when a . (or -&gt;) operator has a left operand that is (a pointer to) a structure with a flexible array member and the right operand names that member, it behaves as if that member were replaced with the longest array (with the same element type) that would not make the structure larger than the object being accessed; the offset of the array shall remain that of the flexible array member, even if this would differ from that of the replacement array. If this array would have no elements, it behaves as if it had one element but the behavior is undefined if any attempt is made to access that element or to generate a pointer one past it.</p>
+<p>struct sdshdr 结构体中的最后一个 char buf[] 被称为 flexible array member ，在计算结构体大小的时候是不记入在内的，因此 sizeof(struct sdshdr) 实际上就是 sizeof(unsigned int) + sizeof(unsigned int) 这样就能理解了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-----------</span><br><span class="line">|5|0|redis|</span><br><span class="line">-----------</span><br><span class="line">^   ^</span><br><span class="line">sh  sh-&gt;buf</span><br></pre></td></tr></table></figure>
+<p>所谓的 sizeof(struct sdshdr) 实际上是就是 len 和 free 所占的大小，因此用 sh-&gt;buf 的位置减去 sizeof(struct sdshdr) 就是 sh 的位置了，再经过 struct sdshdr * 转换，就可以得到 sds 对应的 struct sdshdr 结构体了。</p>
+
+    </div>
+
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="RocWong 支付宝">
+        <p>支付宝</p>
       </div>
+
+  </div>
+</div>
+
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>RocWong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://jijiking51.cn/2019/11/05/Redis中利用sizeof从sds转为sdshdr/" title="Redis中利用sizeof从sds转为sdshdr">https://jijiking51.cn/2019/11/05/Redis中利用sizeof从sds转为sdshdr/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
 
       
 
-  
-  
-  
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/源码/" rel="tag"><i class="fa fa-tag"></i> 源码</a>
+            
+          </div>
+        
 
-  
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/11/MySQL-复制/" rel="next" title="MySQL-复制">
+                  <i class="fa fa-chevron-left"></i> MySQL-复制
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
     
-    <div class="collection-title">
-      <h2 class="archive-year" id="archive-year-2019">2019</h2>
-    </div>
-  
-  
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-          <a class="post-title-link" href="/2019/04/11/eclipse开发Hadoop时异常org-apache-hadoop-security-AccessControlException/" itemprop="url">
-            <span itemprop="name">eclipse开发Hadoop时异常org.apache.hadoop.security.AccessControlException:</span>
-          </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-04-11T17:32:52+08:00"
-              content="2019-04-11">
-          04-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    </div>
-
   </div>
   
   
   
+  </article>
 
-  
-
+  </div>
 
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -367,8 +507,17 @@
     
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -525,6 +674,23 @@
             </script>
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原因"><span class="nav-number">1.</span> <span class="nav-text">原因</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
         <div class="back-to-top motion-element">
           <i class="fa fa-arrow-up"></i>
           <span>0%</span>
@@ -775,6 +941,9 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
 
   
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
 
 <script>
 NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {

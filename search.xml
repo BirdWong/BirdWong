@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Redis中利用sizeof从sds转为sdshdr]]></title>
+    <url>%2F2019%2F11%2F05%2FRedis%E4%B8%AD%E5%88%A9%E7%94%A8sizeof%E4%BB%8Esds%E8%BD%AC%E4%B8%BAsdshdr%2F</url>
+    <content type="text"><![CDATA[转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr))); 最后查了资料终于明白了，特此记录一下。 原因这里 s 是 const sds 类型，相关类型定义如下 1234567typedef char *sds;struct sdshdr &#123; unsigned int len; unsigned int free; char buf[];&#125;; 当使用 sdsnewlen(const void init, size_t initlen) 创建一个新的动态字符串时，Redis 会创建一个 struct sdshdr sh 结构体，并将这个结构体的最后一个字符数组，也就是 sh-&gt;buf 返回，这样返回值是个普通的 C 字符串，因此便可以使用一些 string.h 和 stdlib.h 中的 C 字符串函数，而当想访问 sds 的 len 和 free 属性时，就需要先转成 struct sdshdr 结构。但是直接用 s-(sizeof(struct sdshdr)) 却是不知道怎么回事。 后来直接使用那一行代码进行 Google，然后找到了结果。 C99 中的标准规定： As a special case, the last element of a structure with more than one named member may have an incomplete array type; this is called a flexible array member. In most situations, the flexible array member is ignored. In particular, the size of the structure is as if the flexible array member were omitted except that it may have more trailing padding than the omission would imply. However, when a . (or -&gt;) operator has a left operand that is (a pointer to) a structure with a flexible array member and the right operand names that member, it behaves as if that member were replaced with the longest array (with the same element type) that would not make the structure larger than the object being accessed; the offset of the array shall remain that of the flexible array member, even if this would differ from that of the replacement array. If this array would have no elements, it behaves as if it had one element but the behavior is undefined if any attempt is made to access that element or to generate a pointer one past it. struct sdshdr 结构体中的最后一个 char buf[] 被称为 flexible array member ，在计算结构体大小的时候是不记入在内的，因此 sizeof(struct sdshdr) 实际上就是 sizeof(unsigned int) + sizeof(unsigned int) 这样就能理解了。 12345-----------|5|0|redis|-----------^ ^sh sh-&gt;buf 所谓的 sizeof(struct sdshdr) 实际上是就是 len 和 free 所占的大小，因此用 sh-&gt;buf 的位置减去 sizeof(struct sdshdr) 就是 sh 的位置了，再经过 struct sdshdr * 转换，就可以得到 sds 对应的 struct sdshdr 结构体了。]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>源码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[MySQL-复制]]></title>
     <url>%2F2019%2F10%2F11%2FMySQL-%E5%A4%8D%E5%88%B6%2F</url>
     <content type="text"><![CDATA[MySQL从3.23开始提供复制功能，是指将主数据库的DDL和DML操作通过二进制日志传到复制数据库上，然后在从库上对这些日志重新执行，从而使得从库和主库的数据保持同步MySQL支持一台主库同时向多态从库进行复制，从库同时可以作为其他服务器的主库，实现链状复制。如果主库出现问题，可以快速切换到从库提供服务；可以在从库上执行查询操作，降低主库的访问压力（因为复制是异步复制，所以对于实时性要求较高的服务还是要从主库中获取）；可以在从库上执行备份，以免备份期间影响主库的服务 复制概述MySQL复制流程 MySQL主库在事务提交时把数据变更作为时间Events记录在二进制日志文件中Binlog中；MySQL主库上的sync_binlog参数控制Binlog日志刷新到磁盘 主库推送二进制日志文件Binlog中的事件到从库中继日志Relay Log，之后从库更具中继日志Relay Log重新做数据变更操作，通过逻辑复制以此来达到主库和从库的数据一直 MySQL复制通过三个线程完成，Binlog Dump线程跑在主库上，I/O线程和SQL线程跑在从库上。当从库上启动Start Slave时，首先创建I/O线程连接主库，主库随后创建Binlog Dump线程读取数据库事件并发送给I/O线程，I/O线程获取到事件数据后更新到从库的中继日志Relay Log中去，之后从库上的SQL线程读取中继日志Relay Log中更新的数据库事件并应用 graph TB D-->|4.SQL线程应用中继日志中的事件|A B-->|DML Commands|C(BinLog) A(Slave Database)-->|1.从库连接主库|B(Master Database) C-->|3.Binlog dump线程读取数据库事件并把数据发给I/O线程|D(Relay Log) A-->|2.I/O线程向主库要求数据|B 通过show processlist命令在主库上查看Binlog Dump线程，从Binlog Dump线程的状态可以看到，MySQL的复制是主库主动推送日志到从库去的，是属于推日志的方式来做同步]]></content>
