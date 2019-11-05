@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-05T08:15:43.731Z">
+<meta property="og:updated_time" content="2019-11-05T08:17:34.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis中利用sizeof从sds转为sdshdr">
 <meta name="twitter:description" content="转载于：Yisaer今天在阅读 Redis 源码时看到 sds.h 中的 sdslen 和 sdsavail 中看到一行语句不是很理解1struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));">
@@ -313,7 +313,7 @@
                 
               
 
-              <time title="创建时间：2019-11-05 16:10:31 / 修改时间：16:15:43" itemprop="dateCreated datePublished" datetime="2019-11-05T16:10:31+08:00">2019-11-05</time>
+              <time title="创建时间：2019-11-05 16:10:31 / 修改时间：16:17:34" itemprop="dateCreated datePublished" datetime="2019-11-05T16:10:31+08:00">2019-11-05</time>
             </span>
           
             
@@ -399,8 +399,10 @@
 <p>当使用 sdsnewlen(const void <em>init, size_t initlen) 创建一个新的动态字符串时，Redis 会创建一个 struct sdshdr </em>sh 结构体，并将这个结构体的最后一个字符数组，也就是 sh-&gt;buf 返回，这样返回值是个普通的 C 字符串，因此便可以使用一些 string.h 和 stdlib.h 中的 C 字符串函数，而当想访问 sds 的 len 和 free 属性时，就需要先转成 struct sdshdr 结构。但是直接用 s-(sizeof(struct sdshdr)) 却是不知道怎么回事。</p>
 <p>后来直接使用那一行代码进行 Google，然后找到了结果。</p>
 <p><strong>C99 中的标准规定</strong>：</p>
-<p>As a special case, the last element of a structure with more than one named member may have an incomplete array type; this is called a flexible array member. In most situations, the flexible array member is ignored. In particular, the size of the structure is as if the flexible array member were omitted except that it may have more trailing padding than the omission would imply.</p>
-<p>However, when a . (or -&gt;) operator has a left operand that is (a pointer to) a structure with a flexible array member and the right operand names that member, it behaves as if that member were replaced with the longest array (with the same element type) that would not make the structure larger than the object being accessed; the offset of the array shall remain that of the flexible array member, even if this would differ from that of the replacement array. If this array would have no elements, it behaves as if it had one element but the behavior is undefined if any attempt is made to access that element or to generate a pointer one past it.</p>
+<blockquote>
+<p>  As a special case, the last element of a structure with more than one named member may have an incomplete array type; this is called a flexible array member. In most situations, the flexible array member is ignored. In particular, the size of the structure is as if the flexible array member were omitted except that it may have more trailing padding than the omission would imply.</p>
+<p>  However, when a . (or -&gt;) operator has a left operand that is (a pointer to) a structure with a flexible array member and the right operand names that member, it behaves as if that member were replaced with the longest array (with the same element type) that would not make the structure larger than the object being accessed; the offset of the array shall remain that of the flexible array member, even if this would differ from that of the replacement array. If this array would have no elements, it behaves as if it had one element but the behavior is undefined if any attempt is made to access that element or to generate a pointer one past it.</p>
+</blockquote>
 <p>struct sdshdr 结构体中的最后一个 char buf[] 被称为 flexible array member ，在计算结构体大小的时候是不记入在内的，因此 sizeof(struct sdshdr) 实际上就是 sizeof(unsigned int) + sizeof(unsigned int) 这样就能理解了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-----------</span><br><span class="line">|5|0|redis|</span><br><span class="line">-----------</span><br><span class="line">^   ^</span><br><span class="line">sh  sh-&gt;buf</span><br></pre></td></tr></table></figure>
 <p>所谓的 sizeof(struct sdshdr) 实际上是就是 len 和 free 所占的大小，因此用 sh-&gt;buf 的位置减去 sizeof(struct sdshdr) 就是 sh 的位置了，再经过 struct sdshdr * 转换，就可以得到 sds 对应的 struct sdshdr 结构体了。</p>
