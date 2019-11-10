@@ -94,6 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.insertAdjacentHTML('beforeend', '<div class="search-pop-overlay"></div>');
     document.body.style.overflow = 'hidden';
     let el = document.querySelector('.popup');
+    document.getElementById('header').style.zIndex=2081;
     if (el.isVisible()) {
       el.style.display = 'none';
     } else {
