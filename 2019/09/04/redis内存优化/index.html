@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-18T13:11:23.647Z">
+<meta property="og:updated_time" content="2019-11-12T12:12:30.255Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis内存优化">
 <meta name="twitter:description" content="内存消耗分类redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片graph LR     subgraph used_memory     A(自身内存)     B(对象内存)     C(缓冲内存)     end     subgraph used_memory_rss-used_memory     D(内存碎片)     end">
@@ -318,18 +318,6 @@
               <time title="创建时间：2019-09-04 19:47:24" itemprop="dateCreated datePublished" datetime="2019-09-04T19:47:24+08:00">2019-09-04</time>
             </span>
           
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-18 21:11:23" itemprop="dateModified" datetime="2019-09-18T21:11:23+08:00">2019-09-18</time>
-              </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -429,7 +417,7 @@
 <p>巨大：[4MB，8MB，12MB，…]</p>
 <p>比如当保存5KB对象时jemalloc可能会采用8KB的块存储，而剩下的3KB空间变为了内存碎片不能再分配给其他对象存储。</p>
 </blockquote>
-<p>正常的碎片率（mem_fragmentation_ratio=used_memory_rss/used_memory）在1.03左右。</p>
+<p>正常的碎片率（mem_fragmentation_ratio=used_memory_rss/used_memory）在1.03左右。(used_memory并不一定准确的记录了真实使用量， 因为每个底层数据结构申请使用内存的时候都会占用一个<code>PREFIX_SIZE</code>记录这个数据块使用的内存大小， 但是这个<code>PREFIX_SIZE</code>不会被记录。当然，这个变量使用的值仅仅<code>sizeof(unsigned long)</code> 大小)</p>
 <p>以下场景容易出现高内存碎片问题</p>
 <ul>
 <li>频繁做更新操作，对已存在的键执行append、setrange等更新操作</li>
@@ -662,6 +650,8 @@ op8->op9->cond3</textarea><textarea id="flowchart-1-options" style="display: non
     
     
     
+      
+
         
       
         <div id="reward-container">
