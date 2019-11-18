@@ -243,7 +243,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">54</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">55</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -293,6 +293,171 @@
           <div id="content" class="content page-home">
             
   <section id="posts" class="posts-expand">
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/11/18/redis哨兵/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content="人法地、地法天、天法道、道法自然">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/11/18/redis哨兵/" class="post-title-link" itemprop="url">redis哨兵</a>
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-18 14:42:26" itemprop="dateCreated datePublished" datetime="2019-11-18T14:42:26+08:00">2019-11-18</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2019/11/18/redis哨兵/" class="post-meta-item leancloud_visitors" data-flag-title="redis哨兵" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/18/redis哨兵/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/11/18/redis哨兵/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>15k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>25 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Sentinel是redis的一个高可用实现之一。 Sentinel是由一个或者多个Sentinel实例组成的集群用于监视任意多个Redis-Master</p><pre class="mermaid">graph TB;
+    subgraph sentinel集群
+    A(sentinel1_master)-->B(sentinel2);
+    A-->C(sentinel3);
+    B-->A;
+    C-->A;
+    B-->C;
+    C-->B;
+    end
+
+    subgraph redis-master1
+    D(master)-->E(slave1)
+    D(master)-->E1(slave2)
+    D(master)-->E2(slave3)
+    end
+
+    subgraph redis-master2
+    F(master)-->G(slave1)
+    F(master)-->G1(slave2)
+    F(master)-->G2(slave3)
+    end
+
+    subgraph redis-master3
+    H(master)-->I(slave1)
+    H(master)-->I1(slave2)
+    H(master)-->I2(slave3)
+    end
+    A-->D
+    A-->F
+    A-->H</pre>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/11/18/redis哨兵/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
       
 
   <article class="post" itemscope itemtype="http://schema.org/Article">
@@ -1560,146 +1725,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/19/MySQL-SQL Mode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content="人法地、地法天、天法道、道法自然">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/19/MySQL-SQL Mode/" class="post-title-link" itemprop="url">MySQL-SQL Mode</a>
-          
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-19 19:39:41" itemprop="dateCreated datePublished" datetime="2019-09-19T19:39:41+08:00">2019-09-19</time>
-            </span>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            <span id="/2019/09/19/MySQL-SQL Mode/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-SQL Mode" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/09/19/MySQL-SQL Mode/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/19/MySQL-SQL Mode/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span>4.4k</span>
-            </span>
-          
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span>7 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="什么时SQL-Mode"><a href="#什么时SQL-Mode" class="headerlink" title="什么时SQL Mode"></a>什么时SQL Mode</h1><p>SQL Mode是SQL模式，定义了MySQL应支持的SQL语法，数据校验等。 方便在不同环境中使用MySQL</p><p>SQL Mode一般常用来解决以下问题</p><ol>
-<li>可以完成不同严格程度的数据校验，有效的保障数据准确性</li>
-<li>如果设置为ANSI模式，可以保证大多数的SQL符合标准的SQL语法，这样应用在不同类型的数据库之间进行迁移时不需要对业务的SQL进行较大的修改</li>
-<li>可以更方便的在不同数据库之间进行迁移</li>
-</ol>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/19/MySQL-SQL Mode/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1739,7 +1764,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1909,12 +1934,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">389k</span>
+    <span title="站点总字数">404k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:49</span>
+    <span title="站点阅读时长">11:14</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
