@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包    RPM 二进制 源码     优点 安装简单，适合初学者学习使用 安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL 可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL   缺点 需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-25T13:29:24.169Z">
+<meta property="og:updated_time" content="2019-11-20T04:28:42.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-高级安装和升级">
 <meta name="twitter:description" content="Linux/Unix平台下的安装安装包比较Linux的安装包分为RPM、二进制包和源码包    RPM 二进制 源码     优点 安装简单，适合初学者学习使用 安装简单，可以安装到任何路径下，灵活性好，一台服务器可以安装多个MySQL 可按需定制编译，最灵活，性能最好，一台服务器可以安装多个MySQL   缺点 需要单独下载客户端和服务器，安装路径不灵活，默认路径不能修改，一台服务器只能安装一个">
@@ -378,7 +378,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>5.2k</span>
+              <span>6.6k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -388,7 +388,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>9 分钟</span>
+              <span>11 分钟</span>
             </span>
           
 
@@ -433,7 +433,7 @@
 </table><a id="more"></a>
 
 <h2 id="安装RPM包"><a href="#安装RPM包" class="headerlink" title="安装RPM包"></a>安装RPM包</h2><p>通常只要下载server(<code>MySQL-包类型[Server]-版本信息[社区|企业] -版本号(5.7.21) -0.操作系统类型[rhel3].CPU类型[i386].rpm</code>)包和client<code>MySQL-包类型[Client]-版本信息[社区|企业] -版本号(5.7.21) -0.操作系统类型[rhel3].CPU类型[i386].rpm</code>包就可以满足大部分的应用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用以下命令安装RPM文件</span></span><br><span class="line">rpm -ivh 文件名</span><br><span class="line"><span class="comment"># -i, --install 表示对后面的RPM包进行安装</span></span><br><span class="line"><span class="comment"># -v, --verbose 安装过程中提供更多的输出信息</span></span><br><span class="line"><span class="comment"># -h, --hash 打印字符#来进行安装进度的提示</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看rpm命令信息</span></span><br><span class="line">rpm --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装前先卸载系统中的mysql内容</span></span><br><span class="line">rpm -qa | grep mysql</span><br><span class="line">yum remove xxxx</span><br><span class="line"></span><br><span class="line"><span class="comment">#下载libs、client、server、common</span></span><br><span class="line">wget ttps://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-community-[<span class="built_in">type</span>]-5.7.21-1.el6.x86_64.rpm</span><br><span class="line"><span class="comment"># 使用以下命令安装RPM文件</span></span><br><span class="line">rpm -ivh 文件名</span><br><span class="line"><span class="comment"># -i, --install 表示对后面的RPM包进行安装</span></span><br><span class="line"><span class="comment"># -v, --verbose 安装过程中提供更多的输出信息</span></span><br><span class="line"><span class="comment"># -h, --hash 打印字符#来进行安装进度的提示</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看rpm命令信息</span></span><br><span class="line">rpm --<span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依赖报错</span></span><br><span class="line">warning: mysql-community-server-5.7.21-1.el6.x86_64.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY</span><br><span class="line">error: Failed dependencies:</span><br><span class="line">	/usr/bin/perl is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	libnuma.so.1()(64bit) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	libnuma.so.1(libnuma_1.1)(64bit) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	libnuma.so.1(libnuma_1.2)(64bit) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	perl(File::Path) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	perl(Getopt::Long) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	perl(POSIX) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line">	perl(strict) is needed by mysql-community-server-5.7.21-1.el6.x86_64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装numactl、perl</span></span><br><span class="line">yum -y install numactl</span><br><span class="line">yum -y install perl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装完成之后进行初始化</span></span><br><span class="line">service mysqld start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看临时密码</span></span><br><span class="line">grep password /var/<span class="built_in">log</span>/mysqld.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 登录后修改密码</span></span><br><span class="line"><span class="comment">#	如果仅仅测试环境不需要严格密码规范</span></span><br><span class="line"><span class="comment">#	设置低强度密码要求</span></span><br><span class="line"><span class="built_in">set</span> global validate_password_policy=0;</span><br><span class="line"><span class="comment">#	设置长度只需要四位（最少四位，可以输入一但是也按四执行）</span></span><br><span class="line"><span class="built_in">set</span> global validate_password_length=4;</span><br><span class="line"><span class="comment">#	修改密码</span></span><br><span class="line"><span class="built_in">set</span> password=password(<span class="string">'1234'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照要求修改密码：包含大小写字母、数字、字符</span></span><br><span class="line"><span class="built_in">set</span> password=password(<span class="string">'*********'</span>);</span><br></pre></td></tr></table></figure>
 <h2 id="安装二进制包"><a href="#安装二进制包" class="headerlink" title="安装二进制包"></a>安装二进制包</h2><p>如果不想安装最简单却不够灵活的RPM包，又不想安装复杂费时的源码包，那么就可以安装已经编译好的二进制包</p>
 <ol>
 <li><p>用root登录操作系统，增加mysql用户和组，数据库将安装在此用户下</p>
@@ -915,12 +915,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">404k</span>
+    <span title="站点总字数">428k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:14</span>
+    <span title="站点阅读时长">11:53</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
 
