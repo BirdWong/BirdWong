@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-13T12:21:51.102Z">
+<meta property="og:updated_time" content="2019-11-24T05:43:25.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql的InnoDB与MyISAM速率对比">
 <meta name="twitter:description" content="转自：Steve BennettMyISAM与InnoDB速度对比我们首先创建一个设置为InnoDB存储引擎的表demo_dynamic，如下所示：除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。">
@@ -401,28 +401,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img alt="表demo_dynamic设置为InnoDB存储引擎" data-src="http://img.jijiking51.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p><a id="more"></a> 
+        <div class="note info"><p>转自：<a href="https://www.soliantconsulting.com/blog/mysql-optimization-myisam/" target="_blank" rel="noopener">Steve Bennett</a></p></div><h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p><p><img alt="表demo_dynamic设置为InnoDB存储引擎" data-src="http://img.jsuacm.cn/Fl92jEp7T7YIKNFjb9V0nghc1lNq"></p><p>除主键索引外，我们不会在表上添加任何索引。这将允许我们查看每个引擎的原始速度。</p><a id="more"></a> 
 
 
 
 
 
 
-<p><img alt="原本的存储引擎速度" data-src="http://img.jijiking51.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3"></p>
+<p><img alt="原本的存储引擎速度" data-src="http://img.jsuacm.cn/FtSsBGG6IaK1z8bG6M0a-yrkjBv3"></p>
 <p>我们在表中填充了5,000,000行。</p>
-<p><img alt="表填充了5,000行" data-src="http://img.jijiking51.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm"></p>
+<p><img alt="表填充了5,000行" data-src="http://img.jsuacm.cn/Fm6E9rNl9BcmPdwjEp2Qr-Wi0mSm"></p>
 <p>我选择了一个<em>demo_name</em>值来搜索行集中间的值。请注意，我们已使用随机密钥生成函数而不是实际名称的结果填充了<em>demo_name</em>列。我们还在查询中指定了SQL_NO_CACHE选项，以确保MySQL不会提取缓存结果。我们的搜索耗时高达4.32秒。不太好，但请记住，搜索列上没有索引。</p>
 <p>现在让我们将引擎更改为MyISAM并再次运行我们的SELECT。</p>
-<p><img alt="引擎更改为MyISAM" data-src="http://img.jijiking51.cn/FnToa6YcC5712umgVwCYtRIYGeKN"></p>
-<p><img alt="MyISAM选择" data-src="http://img.jijiking51.cn/FgPt_NagERlf0AA50c5v_Um1ebMF"></p>
+<p><img alt="引擎更改为MyISAM" data-src="http://img.jsuacm.cn/FnToa6YcC5712umgVwCYtRIYGeKN"></p>
+<p><img alt="MyISAM选择" data-src="http://img.jsuacm.cn/FgPt_NagERlf0AA50c5v_Um1ebMF"></p>
 <p>好。可以说选择MyISAM的速度更快。但是，使用MyISAM表的一个缺点是MyISAM实现了表级锁定。这意味着运行查询所花费的时间是1.58秒，任何其他查询都被放入队列中，以便在我们发布锁定后进行处理。四个查询同时尝试访问我们的<em>demo_dynamic</em>表的点，使用InnoDB的行级锁定会更有效。假设这四个查询没有尝试访问同一行。</p>
 <h1 id="固定表与动态表对比"><a href="#固定表与动态表对比" class="headerlink" title="固定表与动态表对比"></a>固定表与动态表对比</h1><p>幸运的是，通过使用固定（或静态）行格式，MyISAM表可以更快地选择记录。当表包含任何可变长度的列时，MyISAM默认使用动态行格式。（例如VARCHAR，TEXT，BLOB）。</p>
 <p>您可以通过查看<code>INFORMATION_SCHEMA.TABLES</code>表来检查表的当前行格式。</p>
-<p><img alt="检查行格式" data-src="http://img.jijiking51.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27"></p>
+<p><img alt="检查行格式" data-src="http://img.jsuacm.cn/FjlYz1DN9IseQoi_IL0Qit8DPO27"></p>
 <p>为了测试，我们将从我们的<em>demo_dynamic</em>表创建一个新的表<em>demo_fixed</em>，并将行格式设置为fixed。</p>
-<p><img alt="创建表格" data-src="http://img.jijiking51.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V"></p>
-<p><img alt="行格式" data-src="http://img.jijiking51.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL"></p>
-<p><img alt="从固定中选择" data-src="http://img.jijiking51.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi"></p>
+<p><img alt="创建表格" data-src="http://img.jsuacm.cn/Fkp9ZNDRgmQ1Y_OJyugcDrHTLu_V"></p>
+<p><img alt="行格式" data-src="http://img.jsuacm.cn/FqV5EZ6BERZSL36Vgl9tWkagKpgL"></p>
+<p><img alt="从固定中选择" data-src="http://img.jsuacm.cn/FmjqKUQsc4YxdkgnxLrJunqVRYwi"></p>
 <p>与Dynamic相比，固定行格式的速度提高了44％。固定行格式的缺点是存储列所需的空间。更改为固定行格式将填充任何带有空格的可变长度列。但是，只要您的性能权衡以磁盘空间为代价，性能就会获胜。</p>
 
     </div>

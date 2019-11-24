@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-06T13:52:43.008Z">
+<meta property="og:updated_time" content="2019-11-24T05:43:25.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis源码-压缩列表">
 <meta name="twitter:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
@@ -408,7 +408,7 @@
 </ul><a id="more"></a>
 
 <h1 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h1><p>压缩列表是为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的<strong>顺序性</strong>数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或一个整数值。</p>
-<p>压缩列表的组成：<img alt="压缩列表组成" data-src="http://img.jijiking51.cn/631be2db5bf1a838558566488aec8d7a.png"></p>
+<p>压缩列表的组成：<img alt="压缩列表组成" data-src="http://img.jsuacm.cn/631be2db5bf1a838558566488aec8d7a.png"></p>
 <table>
 <thead>
 <tr>
@@ -458,7 +458,7 @@
 <li>列表 zltail 属性的值为 0x3（十进制 60）， 这表示如果我们有一个指向压缩列表起始地址的指针 p ， 那么只要用指针 p 加上偏移量 60 ， 就可以计算出表尾节点 entry3 的地址。</li>
 <li>列表 zllen 属性的值为 0x3 （十进制 3）， 表示压缩列表包含三个节点。</li>
 </ul>
-<p><img alt="包含三个节点的压缩列表" data-src="http://img.jijiking51.cn/c0bae8fd18038741181489bf05040822.png"></p>
+<p><img alt="包含三个节点的压缩列表" data-src="http://img.jsuacm.cn/c0bae8fd18038741181489bf05040822.png"></p>
 <p>展示了一个包含五个节点压缩列表示例：</p>
 <ul>
 <li>列表 zlbytes 属性的值为 0xd2 （十进制 210）， 表示压缩列表的总长为 210 字节。</li>
@@ -490,8 +490,8 @@
 <li><p>如果前一节点的长度大于等于254字节，那么previous_entry_length属性的长度为5字节：其中属性的第一个字节会被设置为0xFE(十进制254)，之后的四个字节则用于保存前一节点的长度</p>
 </li>
 </ul>
-<p><img alt="1个字节长度的previous_entry_length" data-src="http://img.jijiking51.cn/9c117388959ff9bfc31910cc1b4aceb5.png"></p>
-<p><img alt="5个字节长度的previous_entry_length" data-src="http://img.jijiking51.cn/71218b6227b0f49714aebf0a537a5fec.png"></p>
+<p><img alt="1个字节长度的previous_entry_length" data-src="http://img.jsuacm.cn/9c117388959ff9bfc31910cc1b4aceb5.png"></p>
+<p><img alt="5个字节长度的previous_entry_length" data-src="http://img.jsuacm.cn/71218b6227b0f49714aebf0a537a5fec.png"></p>
 <ol>
 <li>第一幅图表示一个属性值为0x05的previous_entry_length，表示前一个节点的长度为5字节</li>
 <li>第二幅图表示一个属性为0xFE00002766的previous_entry_length，最高位的0xFE表示这是五个字节的属性，后面的0x00002766才是表示节点长度的值(十进制10086)</li>
@@ -505,10 +505,10 @@
 <li>通过用p3减去entry2节点previous_entry_length属性的值，我们得到一个指向entry2前一节点entry1起始地址的指针p4，entry1为压缩列表的表头节点</li>
 <li>最终我们从表尾节点向表头节点遍历了整个列表</li>
 </ol>
-<p><img alt="1" data-src="http://img.jijiking51.cn/6c5dd4ae5afbde41d7e483efaf168620.png"></p>
-<p><img alt="2" data-src="http://img.jijiking51.cn/678a191d34e8304fb3aaee5202043ee3.png"></p>
-<p><img alt="3" data-src="http://img.jijiking51.cn/c784af9861ebd06a3057819b864aaded.png"></p>
-<p><img alt="4" data-src="http://img.jijiking51.cn/23bf70c1dfbf8f02e932291bbad9dabc.png"></p>
+<p><img alt="1" data-src="http://img.jsuacm.cn/6c5dd4ae5afbde41d7e483efaf168620.png"></p>
+<p><img alt="2" data-src="http://img.jsuacm.cn/678a191d34e8304fb3aaee5202043ee3.png"></p>
+<p><img alt="3" data-src="http://img.jsuacm.cn/c784af9861ebd06a3057819b864aaded.png"></p>
+<p><img alt="4" data-src="http://img.jsuacm.cn/23bf70c1dfbf8f02e932291bbad9dabc.png"></p>
 <h2 id="encoding"><a href="#encoding" class="headerlink" title="encoding"></a>encoding</h2><p>节点的encoding属性记录了节点的content属性所保存数据的类型以及长度</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Extract the encoding from the byte pointed by 'ptr' and set it into</span></span><br><span class="line"><span class="comment"> * 'encoding'. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 从 ptr 中取出节点值的编码类型，并将它保存到 encoding 变量中。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * T = O(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZIP_ENTRY_ENCODING(ptr, encoding) do &#123;  \</span></span><br><span class="line">    (encoding) = (ptr[<span class="number">0</span>]); \</span><br><span class="line">    <span class="keyword">if</span> ((encoding) &lt; ZIP_STR_MASK) (encoding) &amp;= ZIP_STR_MASK; \</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 <p>字节数组编码</p>

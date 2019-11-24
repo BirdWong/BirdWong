@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="转载于：boyceTwo Phase Commit Protocol分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-17T13:31:10.437Z">
+<meta property="og:updated_time" content="2019-11-24T05:43:25.343Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL5.7.9完美的分布式事务支持">
 <meta name="twitter:description" content="转载于：boyceTwo Phase Commit Protocol分布式事务通常采用2PC协议，全称Two Phase Commitment Protocol。该协议主要为了解决在分布式数据库场景下，所有节点间数据一致性的问题。在分布式事务环境下，事务的提交会变得相对比较复杂，因为多个节点的存在，可能存在部分节点提交失败的情况，即事务的ACID特性需要在各个数据库实例中保证。总而言之，在分布式提">
@@ -430,9 +430,9 @@
 <p>还是以上面同样的表结构进行同样的操作如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA START 'mysql57';</span><br><span class="line">mysql&gt; INSERT INTO t VALUES(1,1);</span><br><span class="line">mysql&gt; XA END 'mysql57';</span><br><span class="line">mysql&gt; XA PREPARE 'mysql57'</span><br></pre></td></tr></table></figure>
 <p>这个时候，我们通过mysqlbinlog来查看下Master上的Binlog，结果如下：</p>
-<p><img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jijiking51.cn/FjAHi86hzTFqqQUzFHQUvcHwyhi5"></p>
+<p><img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jsuacm.cn/FjAHi86hzTFqqQUzFHQUvcHwyhi5"></p>
 <p>同时也对比下Slave上的Relay log，如下：</p>
-<p> <img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jijiking51.cn/Freiw5j83LHvNnjhkYNlAFEbOP9l"></p>
+<p> <img alt="MySQL 5.7 完美的分布式事务支持" data-src="http://img.jsuacm.cn/Freiw5j83LHvNnjhkYNlAFEbOP9l"></p>
 <p>通过上面的操作，明显发现在prepare以后，从XA START到XA PREPARE之间的操作都被记录到了Master的Binlog中，然后通过复制关系传到了Slave上。也就是说MySQL-5.7开始，MySQL对于分布式事务，在prepare的时候就完成了写Binlog的操作，通过新增一种叫 <strong>XA_prepare_log_event</strong> 的event类型来实现，这是与以前版本的主要区别(以前版本prepare时不写Binlog)</p>
 <p>当然仅靠这一点是不够的，因为我们知道Slave通过SQL thread来回放Relay log信息，由于prepare的事务能阻塞整个session，而回放的SQL thread只有一个(不考虑并行回放)，那么SQL thread会不会因为被分布式事务的prepare阶段所阻塞，从而造成整个SQL thread回放出现问题？这也正是官方要解决的第二个问题：怎么样能使SQL thread在回放到分布式事务的prepare阶段时，不阻塞后面event的回放？其实这个实现也很简单(在xa.cc::applier_reset_xa_trans)，只要在SQL thread回放到prepare的时候，进行类似于客户端断开连接的处理即可(把相关cache与SQL thread的连接句柄脱离)。最后在Slave服务器上，用户通过命令XA RECOVER可以查到如下信息：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; XA RECOVER;</span><br><span class="line">+<span class="comment">----------+--------------+--------------+---------+</span></span><br><span class="line">| formatID | gtrid_length | bqual_length | data    |</span><br><span class="line">+<span class="comment">----------+--------------+--------------+---------+</span></span><br><span class="line">| 1        | 7            | 0            | mysql57 |</span><br><span class="line">+<span class="comment">----------+--------------+--------------+---------+</span></span><br></pre></td></tr></table></figure>

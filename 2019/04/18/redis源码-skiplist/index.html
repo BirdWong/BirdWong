@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="跳跃表概念跳跃表是一种有序数据结构，他通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问的目的。跳跃表支持平均O(logN)、最坏O(N)复杂度的节点查找，还可以通过顺序性操作来批量处理节点。Redis使用跳跃表作为有序集合键的底层实现之一，如果一个有序集合包含的元素数量比较多，又或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表作为有序集合键的底层实现。redis只有">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-23T06:14:30.913Z">
+<meta property="og:updated_time" content="2019-11-24T05:43:25.411Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis源码-skiplist">
 <meta name="twitter:description" content="跳跃表概念跳跃表是一种有序数据结构，他通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问的目的。跳跃表支持平均O(logN)、最坏O(N)复杂度的节点查找，还可以通过顺序性操作来批量处理节点。Redis使用跳跃表作为有序集合键的底层实现之一，如果一个有序集合包含的元素数量比较多，又或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表作为有序集合键的底层实现。redis只有">
@@ -406,21 +406,21 @@
 <h2 id="跳跃表的实现"><a href="#跳跃表的实现" class="headerlink" title="跳跃表的实现"></a>跳跃表的实现</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 跳跃表节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 成员对象</span></span><br><span class="line">    robj *obj;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分值</span></span><br><span class="line">    <span class="keyword">double</span> score;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 后退指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">backward</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 层</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistLevel</span> &#123;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 前进指针</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">forward</span>;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 跨度</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> span;</span><br><span class="line"></span><br><span class="line">    &#125; level[];</span><br><span class="line"></span><br><span class="line">&#125; zskiplistNode;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>level: 节点中的层，可以有多个层，每个层都有两个属性，前进指针和跨度。前进指针用于访问位于表尾方向的其他节点，而跨度则记录了前进指针所指向节点和当前节点的距离。当程序从头表进行遍历的时候，访问会沿着层的前进指针进行。</p>
-<p>  一般来说，层数越多，访问其他节点速度就越快，每次创建一个新的跳跃表的时候，程序都根据幂次定律（越大的数出现几率越小）随机生成一个1-32的值作为level数组大小，这个数就是层的高度<br>  <img alt="层" data-src="http://img.jijiking51.cn/ea8ca5af82aa620fd5d6651939e941b6.png"></p>
-<p>  每个层都有一个指向表尾方向的前进指针<br>  <img alt="遍历图" data-src="http://img.jijiking51.cn/89a44735192091bc52aee1649f4c405a.png"></p>
+<p>  一般来说，层数越多，访问其他节点速度就越快，每次创建一个新的跳跃表的时候，程序都根据幂次定律（越大的数出现几率越小）随机生成一个1-32的值作为level数组大小，这个数就是层的高度<br>  <img alt="层" data-src="http://img.jsuacm.cn/ea8ca5af82aa620fd5d6651939e941b6.png"></p>
+<p>  每个层都有一个指向表尾方向的前进指针<br>  <img alt="遍历图" data-src="http://img.jsuacm.cn/89a44735192091bc52aee1649f4c405a.png"></p>
 <ul>
 <li>迭代程序首先访问跳跃表的第一个节点（表头）， 然后从第四层的前进指针移动到表中的第二个节点。</li>
 <li>在第二个节点时， 程序沿着第二层的前进指针移动到表中的第三个节点。</li>
 <li>在第三个节点时， 程序同样沿着第二层的前进指针移动到表中的第四个节点。</li>
 <li><p>当程序再次沿着第四个节点的前进指针移动时， 它碰到一个 NULL ， 程序知道这时已经到达了跳跃表的表尾， 于是结束这次遍历。</p>
 <p>层的跨度用于记录两个节点之间的距离：<br>两个节点之间的跨度越大， 它们相距得就越远。<br>指向 NULL 的所有前进指针的跨度都为 0 ， 因为它们没有连向任何节点。<br>初看上去， 很容易以为跨度和遍历操作有关， 但实际上并不是这样,遍历操作只使用前进指针就可以完成了， 跨度实际上是用来计算排位（rank）的： 在查找某个节点的过程中， 将沿途访问过的所有层的跨度累计起来， 得到的结果就是目标节点在跳跃表中的排位。</p>
-<p>举个例子， 下图用虚线标记了在跳跃表中查找分值为 3.0 、 成员对象为 o3 的节点时， 沿途经历的层： 查找的过程只经过了一个层， 并且层的跨度为 3 ， 所以目标节点在跳跃表中的排位为 3 。<br><img alt="计算跨度" data-src="http://img.jijiking51.cn/023a00c9ac8fc7e6d91777490a3a0fb6.png"></p>
+<p>举个例子， 下图用虚线标记了在跳跃表中查找分值为 3.0 、 成员对象为 o3 的节点时， 沿途经历的层： 查找的过程只经过了一个层， 并且层的跨度为 3 ， 所以目标节点在跳跃表中的排位为 3 。<br><img alt="计算跨度" data-src="http://img.jsuacm.cn/023a00c9ac8fc7e6d91777490a3a0fb6.png"></p>
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li><p>backward: 节点中指向位于当前节点的前一个节点。后退指针在程序从表尾向表头遍历时使用<br>  <img alt="跳跃表遍历" data-src="http://img.jijiking51.cn/ae0339d3ba8bee774173f683be4af77c.png"></p>
+<li><p>backward: 节点中指向位于当前节点的前一个节点。后退指针在程序从表尾向表头遍历时使用<br>  <img alt="跳跃表遍历" data-src="http://img.jsuacm.cn/ae0339d3ba8bee774173f683be4af77c.png"></p>
 <blockquote>
 <p>倒数第四个是头表，不包含对象</p>
 </blockquote>
@@ -429,7 +429,7 @@
 </li>
 <li>obj: 各个节点保存的成员对象，指向一个字符串对象，而字符串对象则保存一个SDS值<blockquote>
 <p>同一个跳跃表中，保存的成员对象是唯一的，但是多个节点保存的分值可以相同，分值相同的节点将按照成员对象在字典序中的大小来进行排序，成员对象小的将会靠近表头方向（从小到大)<br>例如：o1&lt;=o2&lt;=o3 分值相同的情况下排序如下</p>
-<p><img alt="相同分值" data-src="http://img.jijiking51.cn/09517f9b35684f57b87911627c50ba48.png"></p>
+<p><img alt="相同分值" data-src="http://img.jsuacm.cn/09517f9b35684f57b87911627c50ba48.png"></p>
 </blockquote>
 </li>
 </ul>
@@ -440,7 +440,7 @@
 <li>level: 记录目前跳跃表内，层数最大的那个节点的层数(表头节点的层数不计算在内)</li>
 <li>length: 记录跳跃表的长度，跳跃表目前包含节点的数量(表头节点不计算在内)</li>
 </ul>
-<p><img alt="跳跃表" data-src="http://img.jijiking51.cn/1a5c7e57b03456ce0cc1277ac396146c.png"></p>
+<p><img alt="跳跃表" data-src="http://img.jsuacm.cn/1a5c7e57b03456ce0cc1277ac396146c.png"></p>
 <h1 id="跳跃表API"><a href="#跳跃表API" class="headerlink" title="跳跃表API"></a>跳跃表API</h1><h2 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h2><table>
 <thead>
 <tr>
