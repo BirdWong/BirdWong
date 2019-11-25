@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-24T05:43:25.413Z">
+<meta property="og:updated_time" content="2019-11-25T09:42:25.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis源码-压缩列表">
 <meta name="twitter:description" content="是列表键和哈希键的底层实现之一。 当一个列表建只包含少量列表项，并且如果每个列表项是小整数值或者长度比较短的字符串，那么redis就会使用压缩列表来做列表键的底层实现。 当一个哈希键只包含少量键值对，并且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，那么redis会使用压缩列表来做哈希键的底层实现">
@@ -581,7 +581,7 @@
 </ul>
 <p>假如目前有以下情况，每个节点的长度介于250字节到253字节之间</p>
 <pre class="mermaid">graph TB
-    subgraph now,节点长度
+    subgraph now节点长度
     a(zlbytes)
     b(zltail)
     c(zllen)
@@ -596,7 +596,7 @@
 <p>因为节点长度都小于254字节， 所以<code>previous_entry_length</code>只需要1个字节保存。</p>
 <p>如果这个时候讲一个长度大于等于254字节的新节点new设置为压缩列表节点，那么new成为压缩列表e1的前置节点</p>
 <pre class="mermaid">graph TB
-    subgraph now,节点长度
+    subgraph now节点长度
     a(zlbytes)
     b(zltail)
     c(zllen)
