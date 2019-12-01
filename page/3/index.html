@@ -324,7 +324,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note info"><p>转自：[Steve Bennett](https://www.soliantconsulting.com/blog/mysql-optimization-myisam/)</p></div>
+          <div class="note info"><p>转自：[Steve Bennett](https://www.soliantconsulting.com/blog/mysql-optimization-myisam/)</p></div> 
+
+
+
+<h1 id="MyISAM与InnoDB速度对比"><a href="#MyISAM与InnoDB速度对比" class="headerlink" title="MyISAM与InnoDB速度对比"></a>MyISAM与InnoDB速度对比</h1><p>我们首先创建一个设置为InnoDB存储引擎的表<em>demo_dynamic</em>，如下所示：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/10/mysql%E7%9A%84InnoDB%E4%B8%8EMyISAM%E9%80%9F%E7%8E%87%E5%AF%B9%E6%AF%94/#more" rel="contents">
@@ -435,7 +439,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="redis的持久化rdb和aof的方式"><a href="#redis的持久化rdb和aof的方式" class="headerlink" title="redis的持久化rdb和aof的方式"></a>redis的持久化rdb和aof的方式</h1>
+          <h1 id="redis的持久化rdb和aof的方式"><a href="#redis的持久化rdb和aof的方式" class="headerlink" title="redis的持久化rdb和aof的方式"></a>redis的持久化rdb和aof的方式</h1><h2 id="各自怎么配置开启"><a href="#各自怎么配置开启" class="headerlink" title="各自怎么配置开启"></a>各自怎么配置开启</h2><h3 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h3>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/09/redis%E6%8C%81%E4%B9%85%E5%8C%96RDB%E5%92%8CAOF/#more" rel="contents">
@@ -546,7 +550,167 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="客户端连接可选参数"><a href="#客户端连接可选参数" class="headerlink" title="客户端连接可选参数"></a>客户端连接可选参数</h1>
+          <h1 id="客户端连接可选参数"><a href="#客户端连接可选参数" class="headerlink" title="客户端连接可选参数"></a>客户端连接可选参数</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-h</td>
+<td>服务器主机名</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>服务器端口</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>服务器套接字</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>服务器密码</td>
+</tr>
+<tr>
+<td>-u  &lt;uri&gt;</td>
+<td>服务器uri</td>
+</tr>
+<tr>
+<td>-r &lt;repeat&gt;</td>
+<td>执行指定的命令n次</td>
+</tr>
+<tr>
+<td>-i &lt;interval&gt;</td>
+<td>使用-r时，每个命令等待&lt;interval&gt;秒，可以指定亚秒时间，比如-i 0.1</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>数据库号</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>从stdin读取最后一个参数</td>
+</tr>
+<tr>
+<td>-d &lt;delimiter&gt;</td>
+<td>multi-bulk delimiter in用于原始格式（默认值为：\ n）</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>启用群集模式（跟踪-询问和移动重定向）</td>
+</tr>
+<tr>
+<td>–raw</td>
+<td>对回复使用原始格式（当STDOUT不是tty）</td>
+</tr>
+<tr>
+<td>–no-raw</td>
+<td>即使STDOUT不是tty，也强制格式化输出。</td>
+</tr>
+<tr>
+<td>–csv</td>
+<td>格式的CSV输出</td>
+</tr>
+<tr>
+<td>–stat</td>
+<td>打印关于服务器的滚动状态：mem，clients，…</td>
+</tr>
+<tr>
+<td>–latency</td>
+<td>进入特殊模式，连续采样延迟。如果在交互式会话中使用此模式，它将运行永远显示实时统计信息。否则，如果–raw或 –csv被指定，或者如果您将输出重定向到非 TTY，它会采样1秒的延迟（您可以使用-i更改间隔），然后产生单个输出然后退出</td>
+</tr>
+<tr>
+<td>–latency-history</td>
+<td>与–latency类似，但跟踪延迟随时间变化。默认时间间隔是15秒。使用-i进行更改</td>
+</tr>
+<tr>
+<td>–latency-dist</td>
+<td>将延迟显示为频谱，需要xterm 256色,默认时间间隔是1秒。使用-i进行更改</td>
+</tr>
+<tr>
+<td>–lru-test &lt;keys&gt;</td>
+<td>模拟80-20分发的缓存工作负载</td>
+</tr>
+<tr>
+<td>–replica</td>
+<td>模拟显示从主服务器接收的命令的副本</td>
+</tr>
+<tr>
+<td>–rdb</td>
+<td>&lt;文件名&gt;将RDB转储从远程服务器传输到本地文件</td>
+</tr>
+<tr>
+<td>–pipe</td>
+<td>将原始Redis协议从stdin传输到服务器</td>
+</tr>
+<tr>
+<td>–pipe-timeout &lt;n&gt;</td>
+<td>在–pipe模式下，如果发送完所有数据后中止并出错。 &lt;n&gt;秒内未收到任何答复。 默认超时：30。使用0永远等待。</td>
+</tr>
+<tr>
+<td>–bigkeys</td>
+<td>示例Redis键，查找具有许多元素（复杂度）的键。</td>
+</tr>
+<tr>
+<td>–memkeys</td>
+<td>示例Redis密钥，查找消耗大量内存的密钥。</td>
+</tr>
+<tr>
+<td>–memkeys-samples &lt;n&gt;</td>
+<td>样本Redis密钥查找消耗大量内存的密钥。并定义要采样的关键元素的数量</td>
+</tr>
+<tr>
+<td>–hotkeys</td>
+<td>示例Redis键以查找热键。仅在maxmemory-policy为* lfu时有效。</td>
+</tr>
+<tr>
+<td>–scan</td>
+<td>使用SCAN命令列出所有键。</td>
+</tr>
+<tr>
+<td>–pattern &lt;pat&gt;</td>
+<td>与–scan一起使用以指定SCAN模式。</td>
+</tr>
+<tr>
+<td>–intrinsic-latency &lt;sec&gt;</td>
+<td>运行测试以测量内部系统延迟。测试将运行指定的秒数。</td>
+</tr>
+<tr>
+<td>–eval &lt;文件&gt;</td>
+<td>使用&lt;文件&gt;处的Lua脚本发送EVAL命令</td>
+</tr>
+<tr>
+<td>–ldb</td>
+<td>与–eval一起使用，启用Redis Lua调试器。</td>
+</tr>
+<tr>
+<td>–ldb-sync-mode</td>
+<td>与–ldb类似，但在其中使用了同步Lua调试器, 此模式下，服务器被阻止，脚本更改为不从服务器内存回滚。</td>
+</tr>
+<tr>
+<td>–cluster &lt;命令&gt; [args …][opts …]</td>
+<td>集群管理器命令和参数。</td>
+</tr>
+<tr>
+<td>–verbose</td>
+<td>详细模式</td>
+</tr>
+<tr>
+<td>–no-auth-warning</td>
+<td>在命令上使用密码时不显示警告消息线路接口</td>
+</tr>
+<tr>
+<td>–help</td>
+<td>输出此帮助并退出。</td>
+</tr>
+<tr>
+<td>–version</td>
+<td>输出版本并退出。</td>
+</tr>
+</tbody></table>
+<h1 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/09/redis%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/#more" rel="contents">
@@ -657,7 +821,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="redis数据库"><a href="#redis数据库" class="headerlink" title="redis数据库"></a>redis数据库</h1>
+          <h1 id="redis数据库"><a href="#redis数据库" class="headerlink" title="redis数据库"></a>redis数据库</h1><ol>
+<li><p>非关系型数据库</p>
+</li>
+<li><p>以键(key)和值(value)做映射(mapping)</p>
+<p>value类型：</p>
+<ul>
+<li>string：字符串对象</li>
+<li>list：列表对象</li>
+<li>hash：哈希对象</li>
+<li>set：集合对象</li>
+<li>zset：有序集合对象</li>
+</ul>
+</li>
+</ol>
+<table id="jump1"><thead><th style="text-align:center">类型(前缀：REDIS)</th><th style="text-align:center">编码(前缀：REDIS_ENCODING)</th><th style="text-align:center">对象</th><th style="text-align:center">结构的读写能力</th></thead><tbody><tr><td style="text-align:center">STRING</td><td style="text-align:center">INT(long类型整数)</td><td style="text-align:center">整数值实现字符串对象</td><td rowspan="3" style="text-align:center">对整个字符串或者字符串的其一部分执行操作，对整数的浮点数执行自增或者自减操作</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">EMBSTR(embstr编码的简单字符串)</td><td style="text-align:center">embstr编码的简单动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">STRING</td><td style="text-align:center">RAW(简单动态字符串)</td><td style="text-align:center">动态字符串实现的字符串对象</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的列表对象</td><td rowspan="2" style="text-align:center">从链表的两端推入或者弹出元素，根据偏移量对链表进行修剪，读取单个或者多个元素，根据值查找或者移除元素</td></tr><tr><td style="text-align:center">LIST</td><td style="text-align:center">LINKEDLIST(双端链表)</td><td style="text-align:center">双端链表实现的列表对象</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的哈希对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个键值对，获取所有键值对</td></tr><tr><td style="text-align:center">HASH</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的哈希对象</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">INTSET(整数集合)</td><td style="text-align:center">整数集合实现的集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，检查一个元素是否存在与集合，计算交集，并集，差集，从集合里面随机获取元素</td></tr><tr><td style="text-align:center">SET</td><td style="text-align:center">HT(字典)</td><td style="text-align:center">字典实现的集合对象</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">ZIPLIST(压缩列表)</td><td style="text-align:center">压缩列表实现的有序集合对象</td><td rowspan="2" style="text-align:center">添加、获取、移除单个元素，根据分值范围或者成员来获取元素</td></tr><tr><td style="text-align:center">ZSET</td><td style="text-align:center">SKIPLIST(跳跃表和字典)</td><td style="text-align:center">跳跃表和字典实现的有序集合对象</td></tr></tbody></table>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/09/%E4%BA%86%E8%A7%A3redis/#more" rel="contents">
@@ -768,7 +946,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Linux配置优化"><a href="#Linux配置优化" class="headerlink" title="Linux配置优化"></a>Linux配置优化</h1>
+          <h1 id="Linux配置优化"><a href="#Linux配置优化" class="headerlink" title="Linux配置优化"></a>Linux配置优化</h1><h2 id="内存分配控制"><a href="#内存分配控制" class="headerlink" title="内存分配控制"></a>内存分配控制</h2><h3 id="vm-overcommit-memory"><a href="#vm-overcommit-memory" class="headerlink" title="vm.overcommit_memory"></a>vm.overcommit_memory</h3>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/07/redis%E8%BF%90%E7%BB%B4%E9%99%B7%E9%98%B1/#more" rel="contents">
@@ -879,7 +1057,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="使用缓存的收益与成本"><a href="#使用缓存的收益与成本" class="headerlink" title="使用缓存的收益与成本"></a>使用缓存的收益与成本</h1>
+          <h1 id="使用缓存的收益与成本"><a href="#使用缓存的收益与成本" class="headerlink" title="使用缓存的收益与成本"></a>使用缓存的收益与成本</h1><p><strong>收益</strong></p>
+<ul>
+<li>读写加速：因为缓存通常是全内存的，而存储层通常读写性能不够强悍，在客户端与存储层之间增加一个缓存层可以有效的加速读写</li>
+<li>减低后端负载： 减少后端的复杂计算和访问次数</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/07/redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1/#more" rel="contents">
@@ -990,7 +1172,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="内存消耗分类"><a href="#内存消耗分类" class="headerlink" title="内存消耗分类"></a>内存消耗分类</h1>
+          <h1 id="内存消耗分类"><a href="#内存消耗分类" class="headerlink" title="内存消耗分类"></a>内存消耗分类</h1><p>redis内存消耗主要为： 自身内存+对象内存+缓冲内存+内存碎片</p>
+<pre class="mermaid">graph LR
+    subgraph used_memory
+    A(自身内存)
+    B(对象内存)
+    C(缓冲内存)
+    end
+    subgraph used_memory_rss-used_memory
+    D(内存碎片)
+    end</pre>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/09/04/redis%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/#more" rel="contents">
@@ -1102,6 +1293,94 @@
 
       
           <p>info [section]：[section]可以是<code>all</code>、<code>default</code>或者以下选项，不带参数直接调用<code>info</code>时默认使用<code>default</code>。</p>
+<h1 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h1><table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">redis_version</td>
+<td align="center">redis版本</td>
+</tr>
+<tr>
+<td align="center">redis_git_sha1</td>
+<td align="center">GIT SHA1</td>
+</tr>
+<tr>
+<td align="center">redis_git_dirty</td>
+<td align="center">Git dirty flag</td>
+</tr>
+<tr>
+<td align="center">redis_build_id</td>
+<td align="center">redis编译时产生的id</td>
+</tr>
+<tr>
+<td align="center">redis_mode</td>
+<td align="center">运行模式(standalone,cluster)</td>
+</tr>
+<tr>
+<td align="center">os</td>
+<td align="center">redis服务器宿主操作系统</td>
+</tr>
+<tr>
+<td align="center">arch_bits</td>
+<td align="center">架构（32或64位）</td>
+</tr>
+<tr>
+<td align="center">multiplexing_api</td>
+<td align="center">redis所使用的事件处理机制</td>
+</tr>
+<tr>
+<td align="center">atomicvar_api</td>
+<td align="center">原子处理API</td>
+</tr>
+<tr>
+<td align="center">gcc_version</td>
+<td align="center">编译redis时使用的GCC版本</td>
+</tr>
+<tr>
+<td align="center">process_id</td>
+<td align="center">redis进程id</td>
+</tr>
+<tr>
+<td align="center">run_id</td>
+<td align="center">redis服务器随机标识（用于sentinel和集群）</td>
+</tr>
+<tr>
+<td align="center">tcp_port</td>
+<td align="center">redis监听端口</td>
+</tr>
+<tr>
+<td align="center">uptime_in_seconds</td>
+<td align="center">已经运行的秒数</td>
+</tr>
+<tr>
+<td align="center">uptime_in_days</td>
+<td align="center">已经运行的天数</td>
+</tr>
+<tr>
+<td align="center">hz</td>
+<td align="center">执行后台任务函数被调用的频率</td>
+</tr>
+<tr>
+<td align="center">configured_hz</td>
+<td align="center">设置的调用频率</td>
+</tr>
+<tr>
+<td align="center">lru_clock</td>
+<td align="center">以分钟为单位进行自增的时钟，用于 LRU 管理</td>
+</tr>
+<tr>
+<td align="center">executable</td>
+<td align="center">执行文件位置</td>
+</tr>
+<tr>
+<td align="center">config_file</td>
+<td align="center">配置文件位置</td>
+</tr>
+</tbody></table>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/08/27/redis-5-0-5%20info%E4%BF%A1%E6%81%AF%E8%AF%A6%E8%A7%A3/#more" rel="contents">
@@ -1212,7 +1491,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="下载安装文件"><a href="#下载安装文件" class="headerlink" title="下载安装文件"></a>下载安装文件</h1>
+          <h1 id="下载安装文件"><a href="#下载安装文件" class="headerlink" title="下载安装文件"></a>下载安装文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">$ wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 解压</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">$ tar -zxvf zookeeper-3.4.14.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除无用文件</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">$ rm -rf dist-maven/ src/ *.xml *.txt</span></pre></td></tr></table></figure>
+
+<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/08/26/zookeeper%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/#more" rel="contents">
@@ -1324,6 +1605,10 @@
 
       
           <p>在redis中可以通过<code>slaveof</code>命令让一个服务器去复制另一个服务器，其中被复制的服务器叫做主服务器，对主服务器进行复制的叫做从服务器。</p>
+<pre class="mermaid">graph LR
+A[从服务器] -->|复制| B(主服务器)</pre>
+
+<h1 id="旧版复制的实现"><a href="#旧版复制的实现" class="headerlink" title="旧版复制的实现"></a>旧版复制的实现</h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/08/23/redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more" rel="contents">

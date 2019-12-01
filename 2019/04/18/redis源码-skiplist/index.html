@@ -54,13 +54,13 @@
 	     });
 	</script>
 
-  <meta name="description" content="跳跃表">
+  <meta name="description" content="跳跃表概念跳跃表是一种有序数据结构，他通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问的目的。跳跃表支持平均O(logN)、最坏O(N)复杂度的节点查找，还可以通过顺序性操作来批量处理节点。Redis使用跳跃表作为有序集合键的底层实现之一，如果一个有序集合包含的元素数量比较多，又或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表作为有序集合键的底层实现。redis只有">
 <meta name="keywords" content="源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis源码-skiplist">
 <meta property="og:url" content="https:&#x2F;&#x2F;jijiking51.cn&#x2F;2019&#x2F;04&#x2F;18&#x2F;redis%E6%BA%90%E7%A0%81-skiplist&#x2F;index.html">
 <meta property="og:site_name" content="RocWong">
-<meta property="og:description" content="跳跃表">
+<meta property="og:description" content="跳跃表概念跳跃表是一种有序数据结构，他通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问的目的。跳跃表支持平均O(logN)、最坏O(N)复杂度的节点查找，还可以通过顺序性操作来批量处理节点。Redis使用跳跃表作为有序集合键的底层实现之一，如果一个有序集合包含的元素数量比较多，又或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表作为有序集合键的底层实现。redis只有">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;img.jsuacm.cn&#x2F;ea8ca5af82aa620fd5d6651939e941b6.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;img.jsuacm.cn&#x2F;89a44735192091bc52aee1649f4c405a.png">
