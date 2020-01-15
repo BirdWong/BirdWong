@@ -55,7 +55,7 @@
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="存储引擎概述存储引擎包括：MyISAM、InnoDB、BDB、MEMORY、MERGE、EXAMPLE、NDB Cluster、ARCHIVE、CSV、BLACKHOLE、FEDERATED。 以上引擎只有InnoDB和BDB提供事务安全表，其他引擎都是非事物安全表">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-24T05:43:25.358Z">
+<meta property="og:updated_time" content="2020-01-15T10:52:05.267Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://rocwong.top/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
@@ -490,7 +490,7 @@
 <p>通过alter命令可以修改表的类型</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> TableName row_format = <span class="keyword">fixed</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># Fixed 固定表</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dynamic 动态表</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 表的类型可以通过以下sql查询</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> row_format  <span class="keyword">from</span> infomation_schema.tables <span class="keyword">where</span> table_name = <span class="string">'TableName'</span>;</span></pre></td></tr></table></figure>
 
-<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB提供了提交、回滚和崩溃恢复能力的事物安全。但是相对比MyISAM,InnoDB的处理效率会低一些*<a href="https://jijiking51.cn/2019/09/10/mysql%E7%9A%84InnoDB%E4%B8%8EMyISAM%E9%80%9F%E7%8E%87%E5%AF%B9%E6%AF%94/" target="_blank" rel="noopener">MyISAM与InnoDB速率对比</a>*，并且会占用更多的磁盘空间以保存数据和索引</p>
+<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB提供了提交、回滚和崩溃恢复能力的事物安全。但是相对比MyISAM,InnoDB的处理效率会低一些*<a href="https://rocwong.top/2019/09/10/mysql%E7%9A%84InnoDB%E4%B8%8EMyISAM%E9%80%9F%E7%8E%87%E5%AF%B9%E6%AF%94/">MyISAM与InnoDB速率对比</a>*，并且会占用更多的磁盘空间以保存数据和索引</p>
 <p><strong>InnoDB</strong>特点</p>
 <ol>
 <li><p>自动增长列</p>
