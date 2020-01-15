@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://jijiking51.cn').hostname,
+    hostname: new URL('https://rocwong.top').hostname,
     root: '/',
     scheme: 'Muse',
     version: '7.6.0',
@@ -52,7 +52,7 @@
 <meta name="keywords" content="踩坑,配置,高可用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx安装配置并使用keepalived实现高可用双机热备">
-<meta property="og:url" content="https:&#x2F;&#x2F;jijiking51.cn&#x2F;2019&#x2F;04&#x2F;11&#x2F;Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;rocwong.top&#x2F;2019&#x2F;04&#x2F;11&#x2F;Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87&#x2F;index.html">
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="所用安装包也可以从此处下载   下载nginx 官网：https:&#x2F;&#x2F;nginx.org&#x2F;（我的是1.8.1） 上传并解压nginx tar -zxvf nginx-1.8.1.tar.gz -C &#x2F;usr&#x2F;local&#x2F;src 编译nginx #进入到nginx源码目录 cd &#x2F;usr&#x2F;local&#x2F;src&#x2F;nginx-1.8.1 #检查安装环境,并指定将来要安装的路径 .&#x2F;configure –p">
 <meta property="og:locale" content="zh-CN">
@@ -61,7 +61,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20181014112942419?watermark&#x2F;2&#x2F;text&#x2F;aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0tpbmdfR2lqaQ&#x3D;&#x3D;&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA&#x3D;&#x3D;&#x2F;dissolve&#x2F;70">
 
-<link rel="canonical" href="https://jijiking51.cn/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">
+<link rel="canonical" href="https://rocwong.top/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">
 
 
 <script id="page-configurations">
@@ -238,7 +238,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">
+    <link itemprop="mainEntityOfPage" href="https://rocwong.top/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -428,7 +428,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/https:/jijiking51.cn/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" title="Nginx安装配置并使用keepalived实现高可用双机热备">https://jijiking51.cn/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/</a>
+    <a href="/https:/rocwong.top/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" title="Nginx安装配置并使用keepalived实现高可用双机热备">https://rocwong.top/2019/04/11/Nginx安装配置并使用keepalived实现高可用双机热备/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -799,7 +799,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
       quicklink({
         timeout: 3000,
         priority: true,
-        ignores: [uri => uri.includes('#'),uri => uri == 'https://jijiking51.cn/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/',]
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://rocwong.top/2019/04/11/Nginx%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8keepalived%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/',]
       });
       });
   </script>

@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://jijiking51.cn').hostname,
+    hostname: new URL('https://rocwong.top').hostname,
     root: '/',
     scheme: 'Muse',
     version: '7.6.0',
@@ -51,14 +51,14 @@
   <meta name="description" content="LOCK TABLE &amp;amp; UNLOCK TABLE LOCK TABLE：可以锁定当前线程的表，如果表被其他线程锁定，则当前线程会等待到可以获取锁定为止 UNLOCK TABLE：可以释放当前线程获得的任何锁定， 但是当前线程执行LOCK TABLE其他表的时候或者当前连接被关闭的时候，所有由当前线程锁定的表被隐含的解锁     client 1 client 2    lock tabl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-事务控制和锁定语句">
-<meta property="og:url" content="https:&#x2F;&#x2F;jijiking51.cn&#x2F;2019&#x2F;09&#x2F;15&#x2F;MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;rocwong.top&#x2F;2019&#x2F;09&#x2F;15&#x2F;MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5&#x2F;index.html">
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="LOCK TABLE &amp;amp; UNLOCK TABLE LOCK TABLE：可以锁定当前线程的表，如果表被其他线程锁定，则当前线程会等待到可以获取锁定为止 UNLOCK TABLE：可以释放当前线程获得的任何锁定， 但是当前线程执行LOCK TABLE其他表的时候或者当前连接被关闭的时候，所有由当前线程锁定的表被隐含的解锁     client 1 client 2    lock tabl">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-24T05:43:25.374Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jijiking51.cn/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/">
+<link rel="canonical" href="https://rocwong.top/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/">
 
 
 <script id="page-configurations">
@@ -235,7 +235,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/">
+    <link itemprop="mainEntityOfPage" href="https://rocwong.top/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -579,7 +579,7 @@
 <td># 被异常终止，client2无法查到插入记录,如果此时client2存在分布式事务并且提交成功，会导致分布式事务的不完整<br>select f from t where f = 1; <br>+—+<br> / f /<br>+—+</td>
 </tr>
 </tbody></table>
-<p>如果分支事务在执行到prepare状态时，数据库异常，且不能再正常启动，需要使用备份和binlog恢复数据，那么那些在prepare状态的分支事务因为并没有记录到binlog，所以不能通过binlog来进行恢复，在数据库回复后，将丢失这部分数据。<strong>MySQL5.7.9</strong>之后修复了这个严重的问题<a href="https://jijiking51.cn/2019/09/17/MySQL5-7-9%E5%AE%8C%E7%BE%8E%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%94%AF%E6%8C%81/">MySQL完美的分布式事务</a></p>
+<p>如果分支事务在执行到prepare状态时，数据库异常，且不能再正常启动，需要使用备份和binlog恢复数据，那么那些在prepare状态的分支事务因为并没有记录到binlog，所以不能通过binlog来进行恢复，在数据库回复后，将丢失这部分数据。<strong>MySQL5.7.9</strong>之后修复了这个严重的问题<a href="https://jijiking51.cn/2019/09/17/MySQL5-7-9%E5%AE%8C%E7%BE%8E%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%94%AF%E6%8C%81/" target="_blank" rel="noopener">MySQL完美的分布式事务</a></p>
 
     </div>
 
@@ -610,7 +610,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/https:/jijiking51.cn/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/" title="MySQL-事务控制和锁定语句">https://jijiking51.cn/2019/09/15/MySQL-事务控制和锁定语句/</a>
+    <a href="/https:/rocwong.top/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/" title="MySQL-事务控制和锁定语句">https://rocwong.top/2019/09/15/MySQL-事务控制和锁定语句/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -975,7 +975,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
       quicklink({
         timeout: 3000,
         priority: true,
-        ignores: [uri => uri.includes('#'),uri => uri == 'https://jijiking51.cn/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/',]
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://rocwong.top/2019/09/15/MySQL-%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6%E5%92%8C%E9%94%81%E5%AE%9A%E8%AF%AD%E5%8F%A5/',]
       });
       });
   </script>

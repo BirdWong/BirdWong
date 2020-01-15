@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://jijiking51.cn').hostname,
+    hostname: new URL('https://rocwong.top').hostname,
     root: '/',
     scheme: 'Muse',
     version: '7.6.0',
@@ -51,14 +51,14 @@
   <meta name="description" content="存储引擎概述存储引擎包括：MyISAM、InnoDB、BDB、MEMORY、MERGE、EXAMPLE、NDB Cluster、ARCHIVE、CSV、BLACKHOLE、FEDERATED。 以上引擎只有InnoDB和BDB提供事务安全表，其他引擎都是非事物安全表">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-存储引擎">
-<meta property="og:url" content="https:&#x2F;&#x2F;jijiking51.cn&#x2F;2019&#x2F;09&#x2F;13&#x2F;MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;rocwong.top&#x2F;2019&#x2F;09&#x2F;13&#x2F;MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E&#x2F;index.html">
 <meta property="og:site_name" content="RocWong">
 <meta property="og:description" content="存储引擎概述存储引擎包括：MyISAM、InnoDB、BDB、MEMORY、MERGE、EXAMPLE、NDB Cluster、ARCHIVE、CSV、BLACKHOLE、FEDERATED。 以上引擎只有InnoDB和BDB提供事务安全表，其他引擎都是非事物安全表">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-24T05:43:25.358Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jijiking51.cn/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+<link rel="canonical" href="https://rocwong.top/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
 
 
 <script id="page-configurations">
@@ -235,7 +235,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jijiking51.cn/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+    <link itemprop="mainEntityOfPage" href="https://rocwong.top/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -490,7 +490,7 @@
 <p>通过alter命令可以修改表的类型</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> TableName row_format = <span class="keyword">fixed</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># Fixed 固定表</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dynamic 动态表</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 表的类型可以通过以下sql查询</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> row_format  <span class="keyword">from</span> infomation_schema.tables <span class="keyword">where</span> table_name = <span class="string">'TableName'</span>;</span></pre></td></tr></table></figure>
 
-<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB提供了提交、回滚和崩溃恢复能力的事物安全。但是相对比MyISAM,InnoDB的处理效率会低一些*<a href="https://jijiking51.cn/2019/09/10/mysql%E7%9A%84InnoDB%E4%B8%8EMyISAM%E9%80%9F%E7%8E%87%E5%AF%B9%E6%AF%94/">MyISAM与InnoDB速率对比</a>*，并且会占用更多的磁盘空间以保存数据和索引</p>
+<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB提供了提交、回滚和崩溃恢复能力的事物安全。但是相对比MyISAM,InnoDB的处理效率会低一些*<a href="https://jijiking51.cn/2019/09/10/mysql%E7%9A%84InnoDB%E4%B8%8EMyISAM%E9%80%9F%E7%8E%87%E5%AF%B9%E6%AF%94/" target="_blank" rel="noopener">MyISAM与InnoDB速率对比</a>*，并且会占用更多的磁盘空间以保存数据和索引</p>
 <p><strong>InnoDB</strong>特点</p>
 <ol>
 <li><p>自动增长列</p>
@@ -607,7 +607,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/https:/jijiking51.cn/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" title="MySQL-存储引擎">https://jijiking51.cn/2019/09/13/MySQL-存储引擎/</a>
+    <a href="/https:/rocwong.top/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" title="MySQL-存储引擎">https://rocwong.top/2019/09/13/MySQL-存储引擎/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -972,7 +972,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
       quicklink({
         timeout: 3000,
         priority: true,
-        ignores: [uri => uri.includes('#'),uri => uri == 'https://jijiking51.cn/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/',]
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://rocwong.top/2019/09/13/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/',]
       });
       });
   </script>
