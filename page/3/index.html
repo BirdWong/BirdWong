@@ -1807,7 +1807,7 @@ A[从服务器] -->|复制| B(主服务器)</pre>
       var url = visitors.getAttribute('id').trim();
       var title = visitors.getAttribute('data-flag-title').trim();
 
-      Counter('get', `/classes/Counter?where=${encodeURIComponent(JSON.stringify({ url }))}&limit=1`)
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
         .then(response => response.json())
         .then(({ results }) => {
           if (results.length > 0) {
@@ -1842,7 +1842,7 @@ A[从服务器] -->|复制| B(主服务器)</pre>
         return element.getAttribute('id').trim();
       });
 
-      Counter('get', `?where=${encodeURIComponent(JSON.stringify({ url: { '$in': entries } }))}`)
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
         .then(response => response.json())
         .then(({ results }) => {
           if (results.length === 0) {
