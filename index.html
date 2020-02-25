@@ -234,6 +234,166 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rocwong.top/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="RocWong">
+      <meta itemprop="description" content="人法地、地法天、天法道、道法自然">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RocWong">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/" class="post-title-link" itemprop="url">redis5.0新特性-STREAM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-12 15:55:44" itemprop="dateCreated datePublished" datetime="2020-02-12T15:55:44+08:00">2020-02-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/" class="post-meta-item leancloud_visitors" data-flag-title="redis5.0新特性-STREAM" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>23 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="新增stream数据结构类型"><a href="#新增stream数据结构类型" class="headerlink" title="新增stream数据结构类型"></a>新增stream数据结构类型</h1><p>stream与list等类型其实有大多数的相似功能，借鉴了kafka类似设计，是一个新的强大的支持多播的可持久化消息队列</p>
+<table>
+<thead>
+<tr>
+<th>比较项</th>
+<th>Stream</th>
+<th>List, Pub/Sub, Zset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复杂度</td>
+<td>获取元素高效，复杂度为O(logN)</td>
+<td>List获取元素的复杂度为O(N)</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>支持offset，每个消息元素有唯一id。不会因为新元素加入或者其他元素淘汰而改变id。</td>
+<td>List没有offset概念，如果有元素被逐出，无法确定最新的元素</td>
+</tr>
+<tr>
+<td>持久化</td>
+<td>支持消息元素持久化，可以保存到AOF和RDB中。</td>
+<td>Pub/Sub不支持持久化消息。</td>
+</tr>
+<tr>
+<td>消费分组</td>
+<td>支持消费分组</td>
+<td>Pub/Sub不支持消费分组</td>
+</tr>
+<tr>
+<td>消息确认</td>
+<td>支持ACK（消费确认）</td>
+<td>Pub/Sub不支持</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>Stream性能与消费者数量无明显关系</td>
+<td>Pub/Sub性能与客户端数量正相关</td>
+</tr>
+<tr>
+<td>逐出</td>
+<td>允许按时间线逐出历史数据，支持block，给予radix tree和listpack，内存开销少。</td>
+<td>Zset不能重复添加相同元素，不支持逐出和block，内存开销大。</td>
+</tr>
+<tr>
+<td>删除元素</td>
+<td>不能从中间删除消息元素。</td>
+<td>Zet支持删除任意元素</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/12/redis5-0%E6%96%B0%E7%89%B9%E6%80%A7-STREAM/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://rocwong.top/2019/11/18/redis%E5%93%A8%E5%85%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1281,117 +1441,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rocwong.top/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="RocWong">
-      <meta itemprop="description" content="人法地、地法天、天法道、道法自然">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RocWong">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/" class="post-title-link" itemprop="url">MySQL-高级安装和升级</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-19 21:40:19" itemprop="dateCreated datePublished" datetime="2019-09-19T21:40:19+08:00">2019-09-19</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL-高级安装和升级" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>12 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux-Unix平台下的安装"><a href="#Linux-Unix平台下的安装" class="headerlink" title="Linux/Unix平台下的安装"></a>Linux/Unix平台下的安装</h1><h2 id="安装包比较"><a href="#安装包比较" class="headerlink" title="安装包比较"></a>安装包比较</h2><p>Linux的安装包分为RPM、二进制包和源码包</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/09/19/MySQL-%E9%AB%98%E7%BA%A7%E5%AE%89%E8%A3%85%E5%92%8C%E5%8D%87%E7%BA%A7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1442,7 +1491,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1529,12 +1578,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">429k</span>
+    <span title="站点总字数">442k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:01</span>
+    <span title="站点阅读时长">13:23</span>
 </div>
 
         
