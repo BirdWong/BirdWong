@@ -466,7 +466,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.4k</span>
+              <span>6.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -485,12 +485,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="数据流指向"><a href="#数据流指向" class="headerlink" title="数据流指向"></a>数据流指向</h1><ol>
+          <table>
+<thead>
+<tr>
+<th>变量设置方式</th>
+<th>str 没有设置</th>
+<th>str 为空字串</th>
+<th>str 已设置非为空字串</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>var=${str-expr}</td>
+<td>var=expr</td>
+<td>var=</td>
+<td>var=$str</td>
+</tr>
+<tr>
+<td>var=${str:-expr}</td>
+<td>var=expr</td>
+<td>var=expr</td>
+<td>var=$str</td>
+</tr>
+<tr>
+<td>var=${str+expr}</td>
+<td>var=</td>
+<td>var=expr</td>
+<td>var=expr</td>
+</tr>
+<tr>
+<td>var=${str:+expr}</td>
+<td>var=</td>
+<td>var=</td>
+<td>var=expr</td>
+</tr>
+<tr>
+<td>var=${str=expr}</td>
+<td>str=expr var=expr</td>
+<td>str 不变 var=</td>
+<td>str 不变 var=$str</td>
+</tr>
+<tr>
+<td>var=${str:=expr}</td>
+<td>str=expr var=expr</td>
+<td>str=expr var=expr</td>
+<td>str 不变 var=$str</td>
+</tr>
+<tr>
+<td>var=${str?expr}</td>
+<td>expr 输出至 stderr</td>
+<td>var=</td>
+<td>var=$str</td>
+</tr>
+<tr>
+<td>var=${str:?expr}</td>
+<td>expr 输出至 stderr</td>
+<td>expr 输出至 stderr</td>
+<td>var=$str</td>
+</tr>
+</tbody></table>
+<h1 id="数据流指向"><a href="#数据流指向" class="headerlink" title="数据流指向"></a>数据流指向</h1><ol>
 <li>标准输入（stdin） ：代码为 0 ，使用 &lt; 或 &lt;&lt; ；</li>
 <li>标准输出（stdout）：代码为 1 ，使用 &gt; 或 &gt;&gt; ；</li>
 <li>标准错误输出（stderr）：代码为 2 ，使用 2&gt; 或 2&gt;&gt; ；</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将标准输出到test文件</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># echo 123 1&gt;test</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># cat test </span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">123</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将错误输出到test文件</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># cat dfdfd 2&gt;test</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># cat test </span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">cat: dfdfd: 没有那个文件或目录</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直接运行脚本</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># sh test.sh </span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">cat: testdfs: 没有那个文件或目录</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">stdout</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行一个脚本， 将标准输出到test文件， 将错误输出到垃圾桶文件</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># sh test.sh 2&gt;/dev/null 1&gt;test</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># cat test</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">stdout</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将错误输出到标准输出，并将标准输出到test文件【这个输出的顺序不能换】</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># sh test.sh  1&gt;test 2&gt;&amp;1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">[root@study roc]<span class="comment"># cat test</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">cat: testdfs: 没有那个文件或目录</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">stdout</span></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/17/Bash%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/#more" rel="contents">
@@ -1630,7 +1687,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">479k</span>
+    <span title="站点总字数">480k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
